@@ -74,6 +74,18 @@ section.list { padding:28px 0; }
 .row .thumb img { width:100%; height:100%; object-fit:cover; }
 .row strong { display:block; font-size:15px; line-height:1.45; margin-top:4px; }
 .noimg { display:flex; width:100%; height:100%; align-items:center; justify-content:center; font-size:28px; }
+/* 기술블로그 ↔ 뉴스 좌우 넘기기: 가로 스크롤 + 칸 맞춤(scroll-snap). 탭이 지금 칸을 보여 준다 */
+.tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.tab { display:flex; align-items:center; gap:8px; padding:6px 18px 6px 8px; border-radius:999px; border:1px solid var(--line); background:var(--card);
+  font:700 19px/1.2 Pretendard, 'Malgun Gothic', system-ui, sans-serif; color:var(--sub); cursor:pointer; }
+.tab img { width:36px; height:36px; object-fit:contain; }
+.tab[aria-selected="true"] { background:var(--brand); border-color:var(--brand); color:#fff; }
+.slider { display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; overscroll-behavior-x:contain; scrollbar-width:none; cursor:grab; }
+.slider::-webkit-scrollbar { display:none; }
+.slider.drag { scroll-snap-type:none; scroll-behavior:auto; cursor:grabbing; user-select:none; }
+.slide { flex:0 0 100%; min-width:0; scroll-snap-align:start; }
+.slide .head { margin-bottom:12px; }
+.row img { -webkit-user-drag:none; }
 .channels { padding:28px 0 8px; }
 .chs { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
 .ch { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
@@ -94,6 +106,7 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   header .wrap { grid-template-columns:1fr; height:auto; padding:12px 16px; gap:8px; justify-items:center; }
   .wrap { padding:0 16px; } .grid, .values .wrap, .chs { grid-template-columns:1fr; }
   .about .box { grid-template-columns:1fr; } .about img { width:90px; } h1 { font-size:30px; }
+  .slide .head { flex-direction:column; align-items:flex-start; gap:2px; } .slide .head p { word-break:keep-all; }
 }
 </style>
 </head>
@@ -124,14 +137,22 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   <div class="value"><img src="assets/poses/news.webp" alt=""><div><b>쉽게 정리해요</b><span>새 모델·서비스 소식을 확인해서</span></div></div>
 </div></section>
 
-<section class="list" id="tech"><div class="wrap">
-  <div class="head"><div><h2><img src="assets/poses/explain.webp" alt="">기술블로그</h2><p>AI 활용 39편 · 프로젝트 개발기 33편</p></div><a class="more" href="https://happyvarious.com/ai/">전체 글 보기 →</a></div>
-  <div class="grid"><a class="card" href="https://happyvarious.com/posts/20261016-ai-code-motion-prompt-pack/"><span class="thumb"><img src="assets/thumbs/20261016-ai-code-motion-prompt-pack.webp" alt="" loading="lazy" width="360" height="360"></span><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.16</span></span><strong>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</strong><span class="desc">SNS에 도는 모션그래픽 프롬프트 팩은 영상 생성 AI가 아니라 코드로 영상을 만든다. 직접 만든 오리지널 캐릭터 프리즘이 나오는 12초 인트로와 프롬프트 원문을 놓고, 프레임 360장을 pycairo로 그려 ffmpeg 파이프로 압축하는 흐름, ease-out-back 이징, 글자 마스크 리빌, 사선 와이프, 꽃 모양 렌즈와 로그 공간 줌, 배경 제거와 스티커 외곽선, numpy로 합성한 120 BPM 소리까지 프롬프트 한 줄이 어떤 코드가 되는지 풀었다. 코드로 만드는 모션그래픽 연재 1편.</span></a><a class="card" href="https://happyvarious.com/posts/20261016-ai-code-motion-project-intro/"><span class="thumb"><img src="assets/thumbs/20261016-ai-code-motion-project-intro.webp" alt="" loading="lazy" width="360" height="360"></span><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.16</span></span><strong>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</strong><span class="desc">코드로 만드는 모션그래픽 2편. 1편 프롬프트 팩의 틀은 그대로 두고 장면과 숫자만 실제 프로젝트(SECOND SYNTAX 새벽 콘텐츠 자동화)로 바꿔 12초 소개 영상을 만들었다. 프롬프트 원문(4,972자), 코딩 에이전트가 짠 파이썬 1,230줄의 구조, 미리보기 5번·고친 곳 8군데, 마지막 렌더 21.4초·2.78MB, 글꼴·AAC 피크 같은 막힌 곳과 내 프로젝트로 바꿔 만드는 순서까지.</span></a><a class="card" href="https://happyvarious.com/posts/20261013-ai-motion-graphics/"><span class="thumb"><img src="assets/thumbs/20261013-ai-motion-graphics.webp" alt="" loading="lazy" width="360" height="360"></span><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.13</span></span><strong>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</strong><span class="desc">AI로 모션그래픽을 만드는 세 가지 방법(영상 생성 모델, AI가 쓰는 코드, 편집 툴 AI 기능)을 정리하고, 같은 6초 소개 장면을 코드·Kling 2.5 Turbo·Veo 3.1 Fast로 직접 만들어 시간·요금·한글 정확도를 비교했다. 클로드 코드로 프롬프트 두 줄 만에 MP4를 뽑는 순서, Veo 3.1 요금과 비율, 클로드 모션·리모션·하이퍼프레임즈, 어디에 무엇을 쓰면 좋은지까지.</span></a><a class="card" href="https://happyvarious.com/posts/20261007-aside-browser/"><span class="thumb"><img src="assets/thumbs/20261007-aside-browser.webp" alt="" loading="lazy" width="360" height="360"></span><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.07</span></span><strong>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</strong><span class="desc">YC 2025년 가을 기수 스타트업이 만든 에이전트 브라우저 Aside를 공식 사이트·도움말·약관 기준으로 정리했다. 로그인한 사이트를 AI가 직접 다루는 방식, 메모리·비밀번호 금고·루틴 같은 주요 기능, 무료·Pro·Max 요금과 AI 모델 연결, 작업 내용이 어디에 남고 어디로 가는지, 프롬프트 인젝션을 고려해 안전하게 맡기는 순서까지. 직접 설치해 써 본 사용기는 아니다.</span></a><a class="card" href="https://happyvarious.com/posts/20261002-llmgw-33-human-and-ai/"><span class="thumb"><img src="assets/thumbs/20261002-llmgw-33-human-and-ai.webp" alt="" loading="lazy" width="360" height="360"></span><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.10.02</span></span><strong>AI 코딩 도우미 협업 회고, 사람이 판단하고 AI가 만들었다 (LLM 중계기 개발기)</strong><span class="desc">LLM 중계기 개발기의 마지막 편입니다. 7월 13일부터 10월 1일까지 쌓인 저장 기록 394개를 주별로 펼치고, AI 코딩 도우미가 공동 작성자로 이름을 올린 기록이 얼마나 되는지, 시험과 릴리스 노트가 어떻게 늘었는지 세어 봤어요. AI는 코드·시험·릴리스 노트·저장 메모를 썼고, 사람은 무엇을 만들고 뺄지 정하고, AI의 &#x27;고쳤다&#x27;를 실제 환경에서 확인하고, 직접 재고, 지킬 규칙을 정했다는 것을 기록으로 정리합니다. 1편의 세 질문에 답하고, 아직 계획인 다음 단계와 연재 전체 목차로 마무리해요.</span></a><a class="card" href="https://happyvarious.com/posts/20261002-llmgw-32-fake-vs-real/"><span class="thumb"><img src="assets/thumbs/20261002-llmgw-32-fake-vs-real.webp" alt="" loading="lazy" width="360" height="360"></span><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.10.02</span></span><strong>목 테스트 한계, 가짜로 통과해도 스모크 테스트가 필요한 이유 (LLM 중계기 개발기)</strong><span class="desc">LLM 중계기의 자동 시험은 대부분 진짜 AI 대신 흉내만 내는 가짜를 상대로 합니다. 빠르고, 늘 같은 결과가 나오고, 고장을 일부러 만들 수 있어서예요. 그런데 가짜는 내가 아는 만큼만 진짜를 닮습니다. 최신 Codex만 흉내 낸 가짜 탓에 옛 판 Codex의 거절을 몰랐던 날, 개발 폴더에서 띄운 중계기로만 시험해 배포판에서 빠진 변경 이력을 몰랐던 일주일, 그리고 그 뒤에 만든 윈도 실전 점검과 실제 AI 점검까지. &#x27;가짜는 매번, 진짜는 내놓기 전에 적어도 한 번&#x27;이라는 균형을 비개발자 눈높이로 정리했습니다.</span></a></div>
-</div></section>
-
-<section class="list" id="news"><div class="wrap">
-  <div class="head"><div><h2><img src="assets/poses/news.webp" alt="">AI 뉴스</h2><p>발표 원문을 확인해서 쉽게 정리한 소식 34편</p></div><a class="more" href="https://happyvarious.com/news/">뉴스 전체 보기 →</a></div>
-  <div class="rows"><a class="row" href="https://happyvarious.com/posts/20261016-ai-marketing-news/"><span class="thumb"><img src="assets/thumbs/20261016-ai-marketing-news.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.16</span></span><strong>AI 마케팅 뉴스, 쇼피파이 숍 MCP와 AI 검색 인용 출처</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261014-gemini-4-argon-vs-opus/"><span class="thumb"><img src="assets/thumbs/20261014-gemini-4-argon-vs-opus.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.14</span></span><strong>제미나이 4 아르곤 출시, 오퍼스 5.5와 같은 지시로 직접 비교</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261012-ai-marketing-news/"><span class="thumb"><img src="assets/thumbs/20261012-ai-marketing-news.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.12</span></span><strong>AI 마케팅 뉴스, 파워링크 AI 요약텍스트 연기와 포털 실시간 트렌드</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261009-skt-token-gateway/"><span class="thumb"><img src="assets/thumbs/20261009-skt-token-gateway.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.10</span></span><strong>SKT 토큰 게이트웨이 뜻, 연결 전략과 도입 전 확인할 점</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261009-rtx-spark-windows/"><span class="thumb"><img src="assets/thumbs/20261009-rtx-spark-windows.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.10</span></span><strong>RTX Spark 정리, 로컬 AI 성능과 제품별 출하 일정</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261009-openai-false-front-operations/"><span class="thumb"><img src="assets/thumbs/20261009-openai-false-front-operations.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.10</span></span><strong>OpenAI 영향력 작전 차단, 가짜 기자와 출처 검증법</strong></span></a></div>
+<!-- (2026-10-16 happy_various) 기술블로그도 뉴스와 같은 줄 보기로, 두 목록을 한 칸에서 좌우로 넘긴다 — 탭이 곧 제목(제목 중복 없음) -->
+<section class="list" id="docs"><div class="wrap">
+  <div class="tabs" role="tablist" aria-label="글 목록">
+    <button class="tab" role="tab" id="tab-tech" aria-controls="tech" aria-selected="true" data-i="0"><img src="assets/poses/explain.webp" alt="">기술블로그</button>
+    <button class="tab" role="tab" id="tab-news" aria-controls="news" aria-selected="false" data-i="1"><img src="assets/poses/news.webp" alt="">AI 뉴스</button>
+  </div>
+  <div class="slider" id="slider">
+    <div class="slide" id="tech" role="tabpanel" aria-labelledby="tab-tech">
+      <div class="head"><p>AI 활용 39편 · 프로젝트 개발기 33편</p><a class="more" href="https://happyvarious.com/ai/">전체 글 보기 →</a></div>
+      <div class="rows"><a class="row" href="https://happyvarious.com/posts/20261016-ai-code-motion-prompt-pack/"><span class="thumb"><img src="assets/thumbs/20261016-ai-code-motion-prompt-pack.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.16</span></span><strong>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261016-ai-code-motion-project-intro/"><span class="thumb"><img src="assets/thumbs/20261016-ai-code-motion-project-intro.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.16</span></span><strong>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261013-ai-motion-graphics/"><span class="thumb"><img src="assets/thumbs/20261013-ai-motion-graphics.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.13</span></span><strong>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261007-aside-browser/"><span class="thumb"><img src="assets/thumbs/20261007-aside-browser.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.07</span></span><strong>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261002-llmgw-33-human-and-ai/"><span class="thumb"><img src="assets/thumbs/20261002-llmgw-33-human-and-ai.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.10.02</span></span><strong>AI 코딩 도우미 협업 회고, 사람이 판단하고 AI가 만들었다 (LLM 중계기 개발기)</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261002-llmgw-32-fake-vs-real/"><span class="thumb"><img src="assets/thumbs/20261002-llmgw-32-fake-vs-real.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.10.02</span></span><strong>목 테스트 한계, 가짜로 통과해도 스모크 테스트가 필요한 이유 (LLM 중계기 개발기)</strong></span></a></div>
+    </div>
+    <div class="slide" id="news" role="tabpanel" aria-labelledby="tab-news">
+      <div class="head"><p>발표 원문을 확인해서 쉽게 정리한 소식 34편</p><a class="more" href="https://happyvarious.com/news/">뉴스 전체 보기 →</a></div>
+      <div class="rows"><a class="row" href="https://happyvarious.com/posts/20261016-ai-marketing-news/"><span class="thumb"><img src="assets/thumbs/20261016-ai-marketing-news.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.16</span></span><strong>AI 마케팅 뉴스, 쇼피파이 숍 MCP와 AI 검색 인용 출처</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261014-gemini-4-argon-vs-opus/"><span class="thumb"><img src="assets/thumbs/20261014-gemini-4-argon-vs-opus.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.14</span></span><strong>제미나이 4 아르곤 출시, 오퍼스 5.5와 같은 지시로 직접 비교</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261012-ai-marketing-news/"><span class="thumb"><img src="assets/thumbs/20261012-ai-marketing-news.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.12</span></span><strong>AI 마케팅 뉴스, 파워링크 AI 요약텍스트 연기와 포털 실시간 트렌드</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261009-skt-token-gateway/"><span class="thumb"><img src="assets/thumbs/20261009-skt-token-gateway.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.10</span></span><strong>SKT 토큰 게이트웨이 뜻, 연결 전략과 도입 전 확인할 점</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261009-rtx-spark-windows/"><span class="thumb"><img src="assets/thumbs/20261009-rtx-spark-windows.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.10</span></span><strong>RTX Spark 정리, 로컬 AI 성능과 제품별 출하 일정</strong></span></a><a class="row" href="https://happyvarious.com/posts/20261009-openai-false-front-operations/"><span class="thumb"><img src="assets/thumbs/20261009-openai-false-front-operations.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.10.10</span></span><strong>OpenAI 영향력 작전 차단, 가짜 기자와 출처 검증법</strong></span></a></div>
+    </div>
+  </div>
 </div></section>
 
 <section class="channels"><div class="wrap">
@@ -151,5 +172,36 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
 </div></div></section>
 
 <footer><div class="wrap"><span>© 2026 SECOND SYNTAX by WY</span><span>글 원문은 지금 happyvarious.com 에 있어요 · 캐릭터는 AI 이미지 생성</span></div></footer>
+<script>
+(function () {
+  var s = document.getElementById('slider'), sec = document.getElementById('docs');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var slides = Array.prototype.slice.call(s.querySelectorAll('.slide'));
+  var cur = function () { var x = s.scrollLeft, best = 0; slides.forEach(function (el, i) { if (Math.abs(el.offsetLeft - s.offsetLeft - x) < Math.abs(slides[best].offsetLeft - s.offsetLeft - x)) best = i; }); return best; };
+  var mark = function (i) { tabs.forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); }); };
+  var go = function (i, smooth) { s.scrollTo({ left: slides[i].offsetLeft - s.offsetLeft, behavior: smooth === false ? 'auto' : 'smooth' }); mark(i); };
+  var raf = 0;
+  s.addEventListener('scroll', function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { mark(cur()); }); }, { passive: true });
+  tabs.forEach(function (t, i) { t.addEventListener('click', function () { go(i); }); });
+  // 메뉴·첫 화면 단추의 #tech·#news — 목록 칸으로 내려가서 그 칸으로 넘긴다
+  document.querySelectorAll('a[href="#tech"], a[href="#news"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault(); var i = a.getAttribute('href') === '#news' ? 1 : 0;
+      var d = a.closest('details'); if (d) d.open = false;
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); go(i); history.replaceState(null, '', a.getAttribute('href'));
+    });
+  });
+  if (location.hash === '#news' || location.hash === '#tech') { go(location.hash === '#news' ? 1 : 0, false); sec.scrollIntoView(); }
+  // 마우스로 끌어서 넘기기(터치·트랙패드는 브라우저가 한다). 끌었으면 글 링크로 넘어가지 않게
+  var down = false, moved = false, sx = 0, sl = 0;
+  s.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; down = true; moved = false; sx = e.clientX; sl = s.scrollLeft; });
+  window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - sx; if (Math.abs(dx) > 5) { moved = true; s.classList.add('drag'); } if (moved) s.scrollLeft = sl - dx; });
+  window.addEventListener('pointerup', function () { if (!down) return; down = false; if (!moved) return; s.classList.remove('drag');
+    var dx = s.scrollLeft - sl, start = Math.round(sl / (s.clientWidth + 24)), i = cur();
+    if (Math.abs(dx) > 60 && i === start) i = Math.max(0, Math.min(slides.length - 1, start + (dx > 0 ? 1 : -1)));   // 조금만 끌어도 다음 칸으로
+    go(i); });
+  s.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+})();
+</script>
 </body>
 </html>
