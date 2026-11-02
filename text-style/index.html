@@ -29,7 +29,7 @@
 .results-head{display:flex;justify-content:space-between;align-items:center;gap:7px;flex:none;min-height:27px}.results-title{margin:0;font-size:12px;font-weight:750;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}.results-title span{font-weight:400;color:var(--muted);font-size:10px}.shuffle{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:650;border:1px solid var(--line);border-radius:8px;background:transparent;padding:6px 8px;white-space:nowrap}.shuffle:hover{background:#eae2f7}.shuffle:disabled{opacity:.4}.head-btns{display:flex;gap:5px;flex:none}.ai-btn{min-width:82px;justify-content:space-between;gap:6px;font-variant-numeric:tabular-nums}.ai-btn .track{position:relative;width:24px;height:14px;border-radius:7px;background:#d9d4e6;flex:none;transition:background .15s}.ai-btn .track::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #1f1a3340;transition:transform .15s,background .15s}.ai-btn[aria-checked=true]{background:#f3fbe0;border-color:#b6d36a;color:var(--ink)}.ai-btn[aria-checked=true] .track{background:var(--navy)}.ai-btn[aria-checked=true] .track::after{transform:translateX(10px);background:var(--lime)}.ai-btn.loading .track{background:#b6d36a}.ai-btn.loading .track::after{transform:translateX(5px)}.ai-btn.loading .track::after{animation:twinkle .7s ease-in-out infinite alternate}@keyframes twinkle{to{opacity:.3}}.ai-btn[aria-disabled=true]{opacity:.45}.results-title .mood{color:var(--navy);font-weight:700}.ai-picks{display:none;flex:none;border:1px solid #cdbfe8;background:#f6f3fc;border-radius:12px;padding:6px}.ai-shown .ai-picks{display:block}.ai-head{display:flex;align-items:baseline;gap:7px;min-width:0;margin:0 2px 5px}.ai-title{font-size:11px;font-weight:800;color:var(--navy);white-space:nowrap}.ai-status{min-width:0;font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;height:clamp(36px,calc(var(--app-height,100dvh)*.085),84px)}.ai-card{border-color:#ddd3f0}.ai-card:hover:not(:disabled){border-color:#a996d4}.ai-card .style-name{color:#5b4a8a}.ai-card.wait{border-style:dashed;background:linear-gradient(90deg,#eee8f8 30%,#fcfbfe 50%,#eee8f8 70%) 0 0/200% 100%;animation:shimmer 1.3s linear infinite}.ai-card.wait .result-text{color:#6f5f99}.ai-card.idle{border-style:dashed;background:#fbf9fe}@keyframes shimmer{to{background-position:-200% 0}}
 .results{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:6px}.result-card{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:0;width:100%;overflow:hidden;padding:7px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:left;transition:background .12s,border-color .12s}.result-card.fixed{background:#f2f8e8;border-color:#d5e4bc}.result-card.random:nth-child(even){background:#f5f2fa}.result-card:hover:not(:disabled){border-color:#b0bd98}.result-card:active:not(:disabled){background:#e4efcc}.result-card.copied{background:#e0f5ac!important;border-color:#8caf4a}.card-meta{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:4px;flex:none}.style-name{color:var(--muted);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.fixed .style-name{color:#677a48}.copy-icon{display:flex;align-items:center;justify-content:center;color:#93998b;flex:none}.copy-icon svg{width:12px;height:12px}.copied .copy-icon{color:#4f7522}.result-card:disabled .copy-icon{opacity:.25}.result-text{font-family:"Cambria Math","STIX Two Math","Noto Sans Math","Noto Sans Symbols 2",var(--font);font-size:clamp(12px,3.7vw,22px);line-height:1.35;letter-spacing:-.2px;white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis;max-height:1.35em;min-height:0;flex-shrink:0}.result-card:disabled .result-text{font:12px/1.3 var(--font);color:#a1a697}.legend{flex:none;margin:0;text-align:center;font-size:9px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .input-panel{flex:none;background:#fff;border:1px solid #d5dcce;border-radius:12px;padding:8px 10px;box-shadow:0 -2px 15px #25291f04}.input-panel:focus-within{border-color:#8ba75c;box-shadow:0 0 0 2px #dcf78b66}.input-top{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px}.input-top label{font-size:11px;font-weight:750}.input-tools{display:flex;gap:6px;align-items:center}.counter{font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}.clear,.done{height:25px;border:0;border-radius:6px;font-size:10px;padding:3px 7px;background:#f0f2eb}.clear{display:flex;align-items:center;justify-content:center;width:25px;padding:0}.done{background:var(--lime);font-weight:700}.input-row{display:flex;align-items:center;gap:6px}textarea#source{width:100%;display:block;flex:1;height:39px;min-height:0;max-height:39px;padding:6px 0;resize:none;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px;line-height:1.45}textarea::placeholder{color:#9a9f91}.sample{flex:none;border:1px solid var(--line);border-radius:7px;background:#fafbf7;padding:6px;font-size:9px;color:#68705d}
-footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:9px;line-height:1.2;color:var(--muted)}footer a{display:flex;align-items:center;gap:3px;color:inherit;text-decoration:none}footer svg{width:11px;height:11px}.toast{position:fixed;left:50%;top:12px;transform:translate(-50%,-8px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:11px;font-size:12px;box-shadow:0 4px 20px #25291f22;z-index:50;white-space:nowrap;pointer-events:none;transition:opacity .15s,transform .15s}.toast.show{opacity:1;transform:translate(-50%,0)}dialog{width:min(90vw,420px);max-height:90dvh;border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff;color:var(--ink)}dialog::backdrop{background:#20231e75}dialog h2{margin:0 0 8px;font-size:17px}dialog p{font-size:12px;line-height:1.5;color:var(--muted);word-break:keep-all}dialog textarea{width:100%;height:80px;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:16px}dialog button{float:right;margin-top:10px;padding:8px 18px;border:0;border-radius:8px;background:var(--lime);font-weight:700}dialog button.ghost{margin-right:8px;background:#f0f2eb;font-weight:600}.choice{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0 0}.choice b{font-size:13px}.choice p{margin:4px 0 0}.choice.ai{border-color:#c9de95;background:#f8fcef}dialog p.fine{margin:10px 0 0;font-size:11px}
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:9px;line-height:1.2;color:var(--muted)}footer a{display:flex;align-items:center;gap:3px;color:inherit;text-decoration:none}footer svg{width:11px;height:11px}.toast{position:fixed;left:50%;top:12px;transform:translate(-50%,-8px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:11px;font-size:12px;box-shadow:0 4px 20px #25291f22;z-index:50;white-space:nowrap;pointer-events:none;transition:opacity .15s,transform .15s}.toast.show{opacity:1;transform:translate(-50%,0)}dialog{width:min(90vw,420px);max-height:90dvh;border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff;color:var(--ink)}dialog::backdrop{background:#20231e75}dialog h2{margin:0 0 8px;font-size:17px}dialog p{font-size:12px;line-height:1.5;color:var(--muted);word-break:keep-all}dialog textarea{width:100%;height:80px;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:16px}dialog button{float:right;margin-top:10px;padding:8px 18px;border:0;border-radius:8px;background:var(--lime);font-weight:700}
 .compact .shell{gap:5px;padding-top:5px;padding-bottom:5px}.compact header{height:26px}.compact .mark{height:24px;width:24px;font-size:17px}.compact .brand{font-size:14px}.compact .icon-btn{height:24px;min-width:24px}.compact .ss img{width:22px;height:22px}.compact .guide{width:20px;height:20px}.compact .notice{min-height:24px;padding:4px 7px}.compact .results{gap:4px}.compact .result-card{padding:4px 6px;border-radius:8px}.compact .card-meta{margin-bottom:2px}.compact .result-text{font-size:16px;-webkit-line-clamp:1;max-height:1.25em;white-space:nowrap;text-overflow:ellipsis;display:block}.compact .input-panel{padding:5px 8px}.compact #source{height:30px;max-height:30px;padding:3px 0}.compact .input-top{margin-bottom:1px}.compact .legend{font-size:8px}.compact .ai-picks{padding:4px}.compact .ai-head{margin-bottom:3px}.compact .ai-row{gap:4px}.compact footer{display:none}
 .tiny .shell{gap:4px}.tiny header{height:22px}.tiny .ss span{display:none}.tiny .notice{min-height:22px}.tiny .notice strong{font-size:10px}.tiny .notice .note-text{font-size:9px}.tiny .results-head{min-height:23px}.tiny .shuffle{padding:4px 6px}.tiny .card-meta{display:none}.tiny .result-card{padding:2px 5px;justify-content:center}.tiny .result-text{font-size:14px}.tiny .legend{display:none}.tiny .ai-head{display:none}.tiny .input-top label{font-size:10px}.tiny .input-panel{padding:4px 7px}.tiny .input-tools{gap:4px}.tiny .clear,.tiny .done{height:21px}
 @media(min-width:700px){.ai-row{gap:9px}.ai-title{font-size:12px}.ai-status{font-size:11px}.shell{padding-left:20px;padding-right:20px;gap:10px}.results{gap:9px}.result-card{padding:10px 13px}.style-name{font-size:11px}.result-text{font-size:25px}.notice{font-size:12px}.notice strong{font-size:12px}}@media(max-width:340px){.shell{padding-left:8px;padding-right:8px;gap:6px}.notice .note-text{font-size:9px}.notice strong{font-size:10px}.result-card{padding-left:6px;padding-right:6px}.style-name{font-size:8px}.sample{display:none}}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -51,7 +51,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 <h2>글씨 뚝딱</h2>
 <p class="intro-lead">영문을 쓰면 15가지 유니코드 스타일로 바로 바꿔 줘요. 마음에 드는 칸을 누르면 복사돼요.</p>
 <ol class="steps"><li><b>쓰기</b>아래 칸에 영문을 입력해요</li><li><b>고르기</b>첫 줄은 글 분위기에 맞춘 추천, 15칸 중 골라요</li><li><b>복사</b>누르면 끝 — 소개글·닉네임·댓글에 붙여넣어요</li></ol>
-<ul class="facts"><li>설치·로그인 없음, 입력한 글자는 서버로 보내지 않아요</li><li>✨ AI 추천은 원할 때만 켜요 — 이 기기 안에서 돌고, 처음 한 번 <span data-ai-size></span>를 받아요</li><li>한글은 그대로, 숫자는 일부 스타일만 바뀌어요</li><li>긴 문구도 전체가 복사돼요</li></ul>
+<ul class="facts"><li>설치·로그인 없음, 입력한 글자는 서버로 보내지 않아요</li><li>✨ AI 추천은 원할 때만 켜요 — 페이지 안의 작은 분위기 모델(약 0.9MB)이 고르고, 글은 밖으로 나가지 않아요</li><li>AI 모델: potion-retrieval-32M(MIT)을 바탕으로 직접 학습</li><li>한글은 그대로, 숫자는 일부 스타일만 바뀌어요</li><li>긴 문구도 전체가 복사돼요</li></ul>
 <div class="intro-actions"><button class="btn primary" type="button" data-share><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v7h14v-7"/></svg>친구에게 공유</button><a class="btn" href="/">SECOND SYNTAX 홈</a></div>
 </aside>
 <main class="shell">
@@ -71,7 +71,6 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 <div class="scrim" id="scrim"></div>
 <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <dialog id="manual-copy" aria-labelledby="manual-title"><h2 id="manual-title">글씨를 길게 눌러 복사해주세요</h2><p>이 브라우저에서 자동 복사를 허용하지 않았어요. 아래 글씨를 선택해 복사할 수 있어요.</p><textarea id="manual-text" readonly aria-label="복사할 텍스트"></textarea><button id="close-dialog" type="button">닫기</button></dialog>
-<dialog id="ai-dialog" aria-labelledby="ai-title"><h2 id="ai-title">AI 추천을 받을까요?</h2><div class="choice ai"><b>✨ AI 추천</b><p>AI가 글 분위기를 읽고 어울리는 글씨 3개를 따로 골라요. 이 기기 안에서만 돌아서 입력한 글은 밖으로 나가지 않아요. 처음 한 번 <span data-ai-size></span>를 받아요(와이파이 권장), 다음부터는 바로 켜져요.</p></div><div class="choice"><b>기본 추천</b><p>글 속 낱말(birthday·love·sale 등)을 보고 바로 골라요. 받는 것 없이 지금처럼 써요.</p></div><p class="fine">언제든 위 'AI 추천' 스위치로 켜고 끌 수 있어요 · AI 모델 <span data-ai-name></span>(공개 모델)</p><button id="ai-start" type="button">AI 추천 받기</button><button class="ghost" id="ai-cancel" type="button">기본 추천만</button></dialog>
 <script>
 'use strict';
 // STYLE ENGINE: only ASCII letters and digits are replaced. Other text stays intact.
@@ -187,7 +186,7 @@ function render(reroll=false){
  moodLabel.textContent=mood?'· '+MOODS[mood].label:'· 누르면 복사';
  legend.textContent=ai.state!=='off'?'✨ AI 추천은 위 3칸 · 아래 첫 줄은 기본 · 나머지 12개는 랜덤'
   :mood?'첫 줄 3개: \''+MOODS[mood].label+'\'에 맞춘 기본 추천 · 누르면 복사'
-  :ai.state==='off'&&aiChoice!=='0'&&!ai.unsupported?'첫 줄 3개는 기본 추천 · 위 \'AI 추천\'을 켜면 AI가 골라요'
+  :ai.state==='off'&&aiChoice!=='0'?'첫 줄 3개는 기본 추천 · 위 \'AI 추천\'을 켜면 AI가 골라요'
   :'첫 줄 3개는 기본 추천 · 나머지 12개는 랜덤';
  counter.textContent=Array.from(text).length+' / 500';shuffle.disabled=empty;document.getElementById('clear').disabled=!text;
  const unchanged=!empty&&!/[A-Za-z0-9]/.test(text);note.classList.toggle('unsupported',unchanged);
@@ -257,89 +256,93 @@ info.addEventListener('click',()=>setIntro(true));
 document.getElementById('intro-close').addEventListener('click',()=>setIntro(false));
 scrim.addEventListener('click',()=>setIntro(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&intro.classList.contains('open'))setIntro(false);});
-// AI PICKS: WebLLM runs a small model on this device's GPU (WebGPU). It downloads only after the visitor agrees,
-// stays in the browser cache, and the typed text never leaves the device. The model only names a mood; MOODS maps it to styles.
-const WEBLLM='https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.87/+esm';
-const AI_MODEL='Qwen3-0.6B-q4f16_1-MLC',AI_NAME='Qwen3 0.6B',AI_SIZE='약 340MB';
-const AI_SYSTEM='You choose the mood of a short text that someone will decorate with fancy Unicode letters for an Instagram bio, nickname or caption. The text may mix English and Korean.\nMoods:\n'+Object.entries(MOODS).map(([k,m])=>'- '+k+': '+m.hint).join('\n')+'\nPick the single best mood name from the list. First say in a few words what the text is, then pick the mood. Reply only with JSON: {"about": "<a few words>", "mood": "<mood name>"}';
-// One example per mood; asking for a short 'about' first made the small model pick better (81% on unseen phrases vs 35% for keywords).
-const AI_SHOTS=[['Deploying v2.0 tonight','tech','a developer update'],['hamster cheeks','cute','a cute pet'],['Flash sale starts now','announce','a store promotion'],['my heart is yours','love','a romantic line'],['Push harder, one more rep','sports','workout motivation'],['The Grand Velvet Lounge','elegant','a classy venue name'],['404 brain not found','funny','a self-deprecating joke'],['GG, rematch?','game','gamer talk'],['Rainy day reading','calm','a quiet daily moment'],['Black rose cult','dark','a gothic band name'],['Congrats on the new job!','celebrate','a congratulation']];
-const AI_SCHEMA=JSON.stringify({type:'object',properties:{about:{type:'string'},mood:{type:'string',enum:Object.keys(MOODS)}},required:['about','mood']});
+// AI PICKS (2026-11-03): a tiny mood model made for this page — about 0.9MB, no GPU, no server.
+// mood/train.py folds static word vectors (Model2Vec potion-retrieval-32M, MIT) and an 11-mood classifier into one table:
+// each word piece has 11 scores and a text's mood is the average over its pieces. The text never leaves the page.
+const AI_MODEL_URL='assets/mood-model.json?v=3fd2188a';
 const ai={state:'off'};
 const aiCache=new Map();
 const aiBtn=document.getElementById('ai');
-const aiDialog=document.getElementById('ai-dialog');
 let aiTimer;
-document.querySelectorAll('[data-ai-size]').forEach(el=>el.textContent=AI_SIZE);
-document.querySelectorAll('[data-ai-name]').forEach(el=>el.textContent=AI_NAME);
-// The visitor's choice: '1' = AI picks, '0' = basic picks only (then we stop pointing at the switch). Nothing stored = not asked yet.
+// The visitor's choice: '1' = AI picks on, '0' = basic picks only (then we stop pointing at the switch). Nothing stored = not chosen yet.
 let aiChoice=null;try{aiChoice=localStorage.getItem('ts-ai');}catch(_){}
 function rememberAI(choice){aiChoice=choice;try{localStorage.setItem('ts-ai',choice);}catch(_){}}
-function setAIState(state,progress=0){
+function setAIState(state){
  ai.state=state;aiBtn.setAttribute('aria-checked',String(state==='on'));aiBtn.classList.toggle('loading',state==='loading');aiBtn.setAttribute('aria-busy',String(state==='loading'));
- ai.progressShort=progress===null?'AI 준비 중…':'AI 받는 중 '+Math.floor(progress*100)+'%';
- ai.progressText=progress===null?'AI 준비 중…':ai.progressShort+' · 처음 한 번만';
+ ai.progressShort=ai.progressText='AI 준비 중…';
  renderAI();
 }
-async function gpuReady(){
- if(!navigator.gpu)return false;
- try{const adapter=await navigator.gpu.requestAdapter();return !!adapter&&adapter.features.has('shader-f16');}catch(_){return false;}
+// BERT-style WordPiece — the same pieces as the model's tokenizer: lowercase, accents off, split on spaces and punctuation, ## pieces.
+function makeTokenizer(vocab){
+ const index=new Map(vocab.map((t,i)=>[t,i]));
+ const isPunct=c=>{const n=c.codePointAt(0);return(n>=33&&n<=47)||(n>=58&&n<=64)||(n>=91&&n<=96)||(n>=123&&n<=126)||/\p{P}/u.test(c);};
+ const isCJK=n=>(n>=0x4E00&&n<=0x9FFF)||(n>=0x3400&&n<=0x4DBF)||(n>=0x20000&&n<=0x2A6DF)||(n>=0x2A700&&n<=0x2B73F)||(n>=0x2B740&&n<=0x2B81F)||(n>=0x2B820&&n<=0x2CEAF)||(n>=0xF900&&n<=0xFAFF)||(n>=0x2F800&&n<=0x2FA1F);
+ function normalize(text){
+  let out='';
+  for(const c of text){const n=c.codePointAt(0);if(n===0||n===0xFFFD||(/\p{C}/u.test(c)&&!/[\t\n\r]/.test(c)))continue;if(/\s/.test(c)){out+=' ';continue;}out+=isCJK(n)?' '+c+' ':c;}
+  return out.normalize('NFD').replace(/\p{Mn}/gu,'').toLowerCase();
+ }
+ return text=>{
+  const out=[];
+  for(const raw of normalize(text).split(' ')){
+   if(!raw)continue;
+   const words=[];let cur='';
+   for(const c of raw){if(isPunct(c)){if(cur)words.push(cur);words.push(c);cur='';}else cur+=c;}
+   if(cur)words.push(cur);
+   for(const w of words){
+    const chars=Array.from(w);if(chars.length>100)continue;
+    const pieces=[];let start=0,bad=false;
+    while(start<chars.length){
+     let end=chars.length,found=-1;
+     while(start<end){const sub=(start?'##':'')+chars.slice(start,end).join('');if(index.has(sub)){found=index.get(sub);break;}end--;}
+     if(found<0){bad=true;break;}
+     pieces.push(found);start=end;
+    }
+    if(!bad)out.push(...pieces);
+   }
+  }
+  return out;
+ };
+}
+async function loadModel(){
+ if(ai.model)return;
+ const res=await fetch(AI_MODEL_URL);if(!res.ok)throw new Error('model '+res.status);
+ const m=await res.json();const bin=atob(m.scores);const scores=new Int8Array(bin.length);
+ for(let i=0;i<bin.length;i++)scores[i]=bin.charCodeAt(i)<<24>>24;
+ ai.model={moods:m.moods,scale:m.scale,bias:m.bias,scores,pieces:makeTokenizer(m.vocab.split('\n'))};
+}
+function modelMood(text){
+ const {moods,scale,bias,scores,pieces}=ai.model,ids=pieces(text),K=moods.length;
+ if(!ids.length)return null;
+ const sum=new Float32Array(K);
+ for(const id of ids)for(let k=0;k<K;k++)sum[k]+=scores[id*K+k];
+ let best=0;for(let k=0;k<K;k++){sum[k]=sum[k]*scale/ids.length+bias[k];if(sum[k]>sum[best])best=k;}
+ return moods[best];
 }
 async function startAI(){
- setAIState('loading',null);render();
+ const first=aiChoice!=='1';
+ setAIState('loading');render();
  try{
-  const webllm=await import(WEBLLM);
-  const code="import{WebWorkerMLCEngineHandler}from'"+WEBLLM+"';const h=new WebWorkerMLCEngineHandler();self.onmessage=m=>h.onmessage(m);";
-  ai.worker=new Worker(URL.createObjectURL(new Blob([code],{type:'text/javascript'})),{type:'module'});
-  const engine=await webllm.CreateWebWorkerMLCEngine(ai.worker,AI_MODEL,{initProgressCallback:r=>{if(ai.state==='loading')setAIState('loading',/^Fetching/.test(r.text)?r.progress:null);}});
-  if(ai.state!=='loading')return;
-  ai.engine=engine;setAIState('on');rememberAI('1');render();askAI();
- }catch(_){if(ai.state==='loading'){stopAI();rememberAI('0');showToast('AI를 켜지 못했어요 · 기본 추천은 그대로');}}
+  await loadModel();if(ai.state!=='loading')return;
+  setAIState('on');rememberAI('1');render();queueAI();
+  if(first)showToast('AI 추천을 켰어요 · 이 기기 안에서 골라요');
+ }catch(_){if(ai.state==='loading'){setAIState('off');render();showToast('AI를 불러오지 못했어요 · 기본 추천은 그대로');}}
 }
-function stopAI(){
- clearTimeout(aiTimer);if(ai.worker)ai.worker.terminate();
- ai.worker=ai.engine=null;ai.busy=ai.again=false;
- setAIState('off');render();
-}
-function queueAI(){clearTimeout(aiTimer);if(ai.state==='on')aiTimer=setTimeout(askAI,450);}
-async function askAI(){
+function stopAI(){clearTimeout(aiTimer);setAIState('off');render();}
+function queueAI(){clearTimeout(aiTimer);if(ai.state==='on')aiTimer=setTimeout(askAI,300);}
+// English goes to the model; text without Latin letters (Korean only) falls back to the Korean keywords.
+function askAI(){
  const text=source.value.trim();
- if(ai.state!=='on'||!text||!/[A-Za-z가-힣]/.test(text)||aiCache.has(text))return;
- if(ai.busy){ai.again=true;return;}
- const engine=ai.engine;ai.busy=true;
- const messages=[{role:'system',content:AI_SYSTEM}];
- AI_SHOTS.forEach(([q,mood,about])=>messages.push({role:'user',content:'Text: "'+q+'"'},{role:'assistant',content:JSON.stringify({about,mood})}));
- messages.push({role:'user',content:'Text: "'+text.slice(0,200)+'"'});
- try{
-  const reply=await engine.chat.completions.create({messages,temperature:0,max_tokens:48,response_format:{type:'json_object',schema:AI_SCHEMA},extra_body:{enable_thinking:false}});
-  const mood=JSON.parse(reply.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/,'').trim()).mood;
-  aiCache.set(text,MOODS[mood]?mood:null);
- }catch(_){if(ai.engine===engine)aiCache.set(text,null);}
- if(ai.engine!==engine)return;
- ai.busy=false;
+ if(ai.state!=='on'||!text||aiCache.has(text))return;
+ aiCache.set(text,/[A-Za-z]/.test(text)?modelMood(text):keywordMood(text));
  renderAI();
- if(ai.again){ai.again=false;askAI();}
 }
-async function modelCached(){try{const webllm=await import(WEBLLM);return await webllm.hasModelInCache(AI_MODEL);}catch(_){return false;}}
-// Off -> already downloaded? just switch on; otherwise ask first (AI or basic). On -> off. Downloading -> stop.
-aiBtn.addEventListener('click',async()=>{
- if(ai.state==='on'){stopAI();rememberAI('0');showToast('AI 추천을 껐어요');return;}
- if(ai.state==='loading'){stopAI();rememberAI('0');showToast('내려받기를 멈췄어요');return;}
- if(ai.checking)return;
- if(ai.unsupported||!(await gpuReady())){showToast('이 브라우저에선 AI 추천을 못 써요');return;}
- ai.checking=true;const cached=await modelCached();ai.checking=false;
- if(ai.state!=='off')return;
- if(cached)startAI();else aiDialog.showModal();
+// The switch is the visitor's choice: on loads the small model, off goes back to basic picks only.
+aiBtn.addEventListener('click',()=>{
+ if(ai.state==='off'){startAI();return;}
+ stopAI();rememberAI('0');showToast('AI 추천을 껐어요');
 });
-document.getElementById('ai-start').addEventListener('click',()=>{aiDialog.close();startAI();});
-document.getElementById('ai-cancel').addEventListener('click',()=>{aiDialog.close();rememberAI('0');render();});
-// Chose AI before and the model is still cached: switch back on without asking (no download).
-// Browsers without WebGPU keep the switch visible but dimmed, so the option is still explained.
-(async()=>{
- if(!(await gpuReady())){ai.unsupported=true;aiBtn.setAttribute('aria-disabled','true');render();return;}
- if(aiChoice!=='1')return;
- try{const webllm=await import(WEBLLM);if(await webllm.hasModelInCache(AI_MODEL)&&ai.state==='off')startAI();}catch(_){}
-})();
+if(aiChoice==='1')startAI();
 function fitViewport(){
  const h=Math.round(window.visualViewport?window.visualViewport.height:window.innerHeight);
  document.documentElement.style.setProperty('--app-height',h+'px');
