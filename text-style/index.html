@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="theme-color" content="#f8f7fc">
+<!-- 글씨 뚝딱 — SECOND SYNTAX 제품 페이지판(2026-11-03). 원본: github.com/waneekim/text-style 4297881 -->
+<meta name="description" content="영문을 입력하면 굵게·필기체·두 줄 아웃라인 등 15가지 유니코드 스타일로 바로 바꿔 줘요. 누르면 복사 — 인스타 소개글·닉네임에 붙여넣기. 설치·로그인 없음.">
+<title>글씨 뚝딱 — 영문 글씨체 15가지 변환·복사 | SECOND SYNTAX</title>
+<link rel="canonical" href="https://second-syntax.com/text-style/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SECOND SYNTAX">
+<meta property="og:title" content="글씨 뚝딱 — 영문을 15가지 스타일로">
+<meta property="og:description" content="쓰고, 고르고, 누르면 복사. 설치·로그인 없이 바로 써요.">
+<meta property="og:url" content="https://second-syntax.com/text-style/">
+<meta property="og:image" content="https://second-syntax.com/text-style/assets/og.png?v=19f1b99a">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon-64.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"글씨 뚝딱","url":"https://second-syntax.com/text-style/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"SECOND SYNTAX","url":"https://second-syntax.com/"}}</script>
+<style>
+:root{--bg:#f8f7fc;--ink:#1f1a33;--muted:#5d5873;--line:#e7e3f1;--lime:#dcf78b;--purple:#f0ecf8;--navy:#3d2f63;--font:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none}body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}button,textarea,a{-webkit-tap-highlight-color:transparent}button,textarea{font:inherit}button{color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{cursor:default}button:focus-visible,a:focus-visible{outline:2px solid #8261be;outline-offset:2px}svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}button svg{pointer-events:none}
+.shell{height:var(--app-height,100dvh);max-height:820px;max-width:760px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 12px calc(8px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;min-height:0}header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;flex:none;height:32px}.brand{display:flex;align-items:center;gap:7px;margin:0;font-size:16px;font-weight:800;letter-spacing:-.6px;white-space:nowrap}.mark{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:var(--navy);color:var(--lime);font:italic 700 20px Georgia,serif}
+.ss{display:flex;align-items:center;gap:6px;justify-self:start;min-width:0;color:var(--navy);text-decoration:none;font-size:10px;font-weight:800;letter-spacing:.8px}.ss img{width:26px;height:26px;border-radius:8px;flex:none}.ss span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.head-tools{display:flex;gap:5px;justify-self:end}.icon-btn{display:flex;align-items:center;justify-content:center;gap:4px;height:29px;min-width:29px;padding:0 9px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:11px;font-weight:700;color:var(--navy)}.icon-btn svg{width:14px;height:14px}.icon-btn:hover{background:var(--purple)}
+.notice{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:none;min-height:31px;border:1px solid #dce8bc;background:#eff6df;border-radius:9px;padding:6px 9px;font-size:11px}.notice .say{display:flex;align-items:center;gap:7px;min-width:0}.guide{width:24px;height:24px;border-radius:50%;flex:none;background:#fff;border:1px solid #c9d8f6}.notice strong{font-size:11px;white-space:nowrap}.notice .note-text{font-size:10px;color:#68734f;line-height:1.35;text-align:right}.notice.unsupported{background:#f3ecfc;border-color:#e0d4f1}.notice.unsupported .note-text{color:#765696}
+.results-head{display:flex;justify-content:space-between;align-items:center;gap:7px;flex:none;min-height:27px}.results-title{margin:0;font-size:12px;font-weight:750;white-space:nowrap}.results-title span{font-weight:400;color:var(--muted);font-size:10px}.shuffle{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:650;border:1px solid var(--line);border-radius:8px;background:transparent;padding:6px 8px;white-space:nowrap}.shuffle:hover{background:#eae2f7}.shuffle:disabled{opacity:.4}
+.results{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:6px}.result-card{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:0;width:100%;overflow:hidden;padding:7px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:left;transition:background .12s,border-color .12s}.result-card.fixed{background:#f2f8e8;border-color:#d5e4bc}.result-card.random:nth-child(even){background:#f5f2fa}.result-card:hover:not(:disabled){border-color:#b0bd98}.result-card:active:not(:disabled){background:#e4efcc}.result-card.copied{background:#e0f5ac!important;border-color:#8caf4a}.card-meta{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:4px;flex:none}.style-name{color:var(--muted);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.fixed .style-name{color:#677a48}.copy-icon{display:flex;align-items:center;justify-content:center;color:#93998b;flex:none}.copy-icon svg{width:12px;height:12px}.copied .copy-icon{color:#4f7522}.result-card:disabled .copy-icon{opacity:.25}.result-text{font-family:"Cambria Math","STIX Two Math","Noto Sans Math","Noto Sans Symbols 2",var(--font);font-size:clamp(12px,3.7vw,22px);line-height:1.35;letter-spacing:-.2px;white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis;max-height:1.35em;min-height:0;flex-shrink:0}.result-card:disabled .result-text{font:12px/1.3 var(--font);color:#a1a697}.legend{flex:none;margin:0;text-align:center;font-size:9px;line-height:1.3;color:var(--muted)}
+.input-panel{flex:none;background:#fff;border:1px solid #d5dcce;border-radius:12px;padding:8px 10px;box-shadow:0 -2px 15px #25291f04}.input-panel:focus-within{border-color:#8ba75c;box-shadow:0 0 0 2px #dcf78b66}.input-top{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px}.input-top label{font-size:11px;font-weight:750}.input-tools{display:flex;gap:6px;align-items:center}.counter{font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}.clear,.done{height:25px;border:0;border-radius:6px;font-size:10px;padding:3px 7px;background:#f0f2eb}.clear{display:flex;align-items:center;justify-content:center;width:25px;padding:0}.done{background:var(--lime);font-weight:700}.input-row{display:flex;align-items:center;gap:6px}textarea#source{width:100%;display:block;flex:1;height:39px;min-height:0;max-height:39px;padding:6px 0;resize:none;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px;line-height:1.45}textarea::placeholder{color:#9a9f91}.sample{flex:none;border:1px solid var(--line);border-radius:7px;background:#fafbf7;padding:6px;font-size:9px;color:#68705d}
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:9px;line-height:1.2;color:var(--muted)}footer a{display:flex;align-items:center;gap:3px;color:inherit;text-decoration:none}footer svg{width:11px;height:11px}.toast{position:fixed;left:50%;top:12px;transform:translate(-50%,-8px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:11px;font-size:12px;box-shadow:0 4px 20px #25291f22;z-index:50;white-space:nowrap;pointer-events:none;transition:opacity .15s,transform .15s}.toast.show{opacity:1;transform:translate(-50%,0)}dialog{width:min(90vw,420px);max-height:90dvh;border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff;color:var(--ink)}dialog::backdrop{background:#20231e75}dialog h2{margin:0 0 8px;font-size:17px}dialog p{font-size:12px;line-height:1.5;color:var(--muted)}dialog textarea{width:100%;height:80px;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:16px}dialog button{float:right;margin-top:10px;padding:8px 18px;border:0;border-radius:8px;background:var(--lime);font-weight:700}
+.compact .shell{gap:5px;padding-top:5px;padding-bottom:5px}.compact header{height:26px}.compact .mark{height:24px;width:24px;font-size:17px}.compact .brand{font-size:14px}.compact .icon-btn{height:24px;min-width:24px}.compact .ss img{width:22px;height:22px}.compact .guide{width:20px;height:20px}.compact .notice{min-height:24px;padding:4px 7px}.compact .results{gap:4px}.compact .result-card{padding:4px 6px;border-radius:8px}.compact .card-meta{margin-bottom:2px}.compact .result-text{font-size:16px;-webkit-line-clamp:1;max-height:1.25em;white-space:nowrap;text-overflow:ellipsis;display:block}.compact .input-panel{padding:5px 8px}.compact #source{height:30px;max-height:30px;padding:3px 0}.compact .input-top{margin-bottom:1px}.compact .legend{font-size:8px}.compact footer{display:none}
+.tiny .shell{gap:4px}.tiny header{height:22px}.tiny .ss span{display:none}.tiny .notice{min-height:22px}.tiny .notice strong{font-size:10px}.tiny .notice .note-text{font-size:9px}.tiny .results-head{min-height:23px}.tiny .shuffle{padding:4px 6px}.tiny .card-meta{display:none}.tiny .result-card{padding:2px 5px;justify-content:center}.tiny .result-text{font-size:14px}.tiny .legend{display:none}.tiny .input-top label{font-size:10px}.tiny .input-panel{padding:4px 7px}.tiny .input-tools{gap:4px}.tiny .clear,.tiny .done{height:21px}
+@media(min-width:700px){.shell{padding-left:20px;padding-right:20px;gap:10px}.results{gap:9px}.result-card{padding:10px 13px}.style-name{font-size:11px}.result-text{font-size:25px}.notice{font-size:12px}.notice strong{font-size:12px}}@media(max-width:340px){.shell{padding-left:8px;padding-right:8px;gap:6px}.notice .note-text{font-size:9px}.notice strong{font-size:10px}.result-card{padding-left:6px;padding-right:6px}.style-name{font-size:8px}.sample{display:none}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* SECOND SYNTAX 제품 소개 — PC 는 왼쪽 칸, 폰은 ⓘ 로 여는 아래 시트(2026-11-03) */
+.intro{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}.intro-art{position:relative;margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;justify-content:center}.intro-art img{display:block;width:100%;height:auto;max-height:min(40vh,330px);object-fit:contain}.intro-art figcaption{position:absolute;left:8px;bottom:8px;font-size:10px;color:var(--muted);background:#ffffffd9;padding:2px 8px;border-radius:999px}
+.intro-eyebrow{margin:14px 0 2px;font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--navy)}.intro h2{margin:0;font-size:26px;letter-spacing:-.8px}.intro-lead{margin:6px 0 12px;font-size:13px;line-height:1.6;color:var(--muted);word-break:keep-all}.steps{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:7px}.steps li{display:flex;gap:8px;align-items:baseline;font-size:12.5px;line-height:1.45}.steps b{flex:none;font-size:11px;background:var(--lime);border-radius:6px;padding:1px 7px}.facts{margin:0 0 14px;padding-left:16px;font-size:11.5px;line-height:1.65;color:var(--muted)}
+.intro-actions{display:flex;gap:8px}.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-size:13px;font-weight:700;text-decoration:none}.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.intro-close{position:absolute;z-index:2;top:10px;right:10px;width:32px;height:32px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 6px #1f1a3322;display:grid;place-items:center}
+@media(max-width:979px){.intro{position:fixed;left:0;right:0;bottom:0;z-index:60;max-width:560px;margin:0 auto;max-height:88dvh;overflow:auto;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px #1f1a3333;transform:translateY(105%);visibility:hidden;transition:transform .2s,visibility .2s}.intro.open{transform:none;visibility:visible}.scrim{position:fixed;inset:0;z-index:55;background:#1f1a3366;opacity:0;pointer-events:none;transition:opacity .2s}.scrim.open{opacity:1;pointer-events:auto}}
+@media(min-width:980px){.layout{display:flex;align-items:center;justify-content:center;gap:28px;height:var(--app-height,100dvh);padding:0 24px}.layout .shell{margin:0;flex:1;max-width:680px}.intro{position:relative;width:330px;flex:none;max-height:calc(var(--app-height,100dvh) - 32px);overflow:auto}.info-btn,.intro-close,.scrim{display:none}}
+@media(max-width:420px){.ss span,.icon-btn .lbl{display:none}.icon-btn{padding:0}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="intro" id="intro" aria-label="글씨 뚝딱 소개">
+<button class="intro-close" id="intro-close" type="button" aria-label="소개 닫기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+<figure class="intro-art"><picture><source media="(min-width:980px)" srcset="assets/page-full.webp"><img src="assets/page-bust.webp" alt="글씨 뚝딱 캐릭터 PAGE 가 빛나는 두루마리와 펜을 들고 있어요" width="420" height="385"></picture><figcaption>PAGE · 글씨 뚝딱 담당 (AI 이미지 생성)</figcaption></figure>
+<p class="intro-eyebrow">SECOND SYNTAX · TYPE · TAP · COPY</p>
+<h2>글씨 뚝딱</h2>
+<p class="intro-lead">영문을 쓰면 15가지 유니코드 스타일로 바로 바꿔 줘요. 마음에 드는 칸을 누르면 복사돼요.</p>
+<ol class="steps"><li><b>쓰기</b>아래 칸에 영문을 입력해요</li><li><b>고르기</b>15칸 중 마음에 드는 글씨를 골라요</li><li><b>복사</b>누르면 끝 — 소개글·닉네임·댓글에 붙여넣어요</li></ol>
+<ul class="facts"><li>설치·로그인 없음, 입력한 글자는 서버로 보내지 않아요</li><li>한글은 그대로, 숫자는 일부 스타일만 바뀌어요</li><li>긴 문구도 전체가 복사돼요</li></ul>
+<div class="intro-actions"><button class="btn primary" type="button" data-share><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v7h14v-7"/></svg>친구에게 공유</button><a class="btn" href="/">SECOND SYNTAX 홈</a></div>
+</aside>
+<main class="shell">
+<header><a class="ss" href="/" aria-label="SECOND SYNTAX 홈"><img src="data:image/webp;base64,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" alt=""><span>SECOND SYNTAX</span></a><h1 class="brand"><span class="mark" aria-hidden="true">Aa</span>글씨 뚝딱</h1><div class="head-tools"><button class="icon-btn" type="button" data-share aria-label="글씨 뚝딱 링크 공유"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v7h14v-7"/></svg><span class="lbl">공유</span></button><button class="icon-btn info-btn" id="info" type="button" aria-label="글씨 뚝딱 소개" aria-controls="intro" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/></svg></button></div></header>
+<div class="notice" id="language-note" role="note"><span class="say"><img class="guide" src="data:image/webp;base64,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" alt="PAGE"><strong>영문만 스타일 변환 지원</strong></span><span class="note-text" id="note-text">한글은 그대로 · 숫자는 일부 지원</span></div>
+<div class="results-head"><h2 class="results-title">추천 스타일 15 <span>· 누르면 복사</span></h2><button class="shuffle" id="shuffle" type="button" aria-label="랜덤 스타일 12개 다시 추천"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h3c4 0 8 10 12 10h3M17 13l4 4-4 4M3 17h3c1 0 2-1 3-2M15 9c1-1 2-2 3-2h3M17 3l4 4-4 4"/></svg>다시 추천</button></div>
+<section class="results" id="results" aria-label="변환된 스타일 15개"></section>
+<p class="legend">첫 줄 3개는 고정 · 나머지 12개는 랜덤</p>
+<section class="input-panel" aria-label="영문 텍스트 입력">
+<div class="input-top"><label for="source">영문 입력</label><div class="input-tools"><span class="counter" id="counter">7 / 500</span><button class="clear" id="clear" type="button" aria-label="입력 지우기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button><button class="done" id="done" type="button">완료</button></div></div>
+<div class="input-row"><textarea id="source" rows="1" maxlength="500" placeholder="영문 입력 → 위에서 골라 복사" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="language-note">INJEONG</textarea><button class="sample" type="button" data-sample="Daebak!!" aria-label="Daebak 예시 입력">예시</button></div>
+</section>
+<footer><a href="/">© SECOND SYNTAX by WY · 캐릭터 AI 이미지 생성</a><a href="./index.html" download="text-style.html" id="download"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>HTML 저장</a></footer>
+</main>
+</div>
+<div class="scrim" id="scrim"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<dialog id="manual-copy" aria-labelledby="manual-title"><h2 id="manual-title">글씨를 길게 눌러 복사해주세요</h2><p>이 브라우저에서 자동 복사를 허용하지 않았어요. 아래 글씨를 선택해 복사할 수 있어요.</p><textarea id="manual-text" readonly aria-label="복사할 텍스트"></textarea><button id="close-dialog" type="button">닫기</button></dialog>
+<script>
+'use strict';
+// STYLE ENGINE: only ASCII letters and digits are replaced. Other text stays intact.
+const range = (start, count = 26) => Array.from({length:count}, (_,i) => String.fromCodePoint(start+i));
+const letters = text => Array.from(text);
+const styles = [
+ {id:'sans-bold',name:'깔끔한 굵게',upper:range(0x1D5D4),lower:range(0x1D5EE),digits:range(0x1D7EC,10)},
+ {id:'sans-bold-italic',name:'굵은 기울임',upper:range(0x1D63C),lower:range(0x1D656),digits:range(0x1D7EC,10)},
+ {id:'fraktur-bold',name:'클래식 고딕',upper:range(0x1D56C),lower:range(0x1D586),digits:range(0x1D7CE,10)},
+ {id:'serif-bold',name:'세리프 굵게',upper:range(0x1D400),lower:range(0x1D41A),digits:range(0x1D7CE,10)},
+ {id:'serif-italic',name:'가벼운 기울임',upper:range(0x1D434),lower:letters('𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧'),digits:null},
+ {id:'serif-bold-italic',name:'세리프 굵은 기울임',upper:range(0x1D468),lower:range(0x1D482),digits:range(0x1D7CE,10)},
+ {id:'sans-italic',name:'산뜻한 기울임',upper:range(0x1D608),lower:range(0x1D622),digits:range(0x1D7E2,10)},
+ {id:'monospace',name:'타자기',upper:range(0x1D670),lower:range(0x1D68A),digits:range(0x1D7F6,10)},
+ {id:'double-struck',name:'두 줄 아웃라인',upper:letters('𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ'),lower:range(0x1D552),digits:range(0x1D7D8,10)},
+ {id:'script',name:'부드러운 필기체',upper:letters('𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵'),lower:letters('𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏'),digits:null},
+ {id:'script-bold',name:'굵은 필기체',upper:range(0x1D4D0),lower:range(0x1D4EA),digits:range(0x1D7CE,10)},
+ {id:'fraktur',name:'가느다란 고딕',upper:letters('𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ'),lower:range(0x1D51E),digits:null},
+ {id:'fullwidth',name:'넉넉한 전각',upper:range(0xFF21),lower:range(0xFF41),digits:range(0xFF10,10)},
+ {id:'circled',name:'동그라미',upper:range(0x24B6),lower:range(0x24D0),digits:letters('⓪①②③④⑤⑥⑦⑧⑨')},
+ {id:'squared',name:'네모 대문자',upper:range(0x1F130),lower:range(0x1F130),digits:null},
+ {id:'negative-squared',name:'검정 네모',upper:range(0x1F170).map(c=>c+'\uFE0E'),lower:range(0x1F170).map(c=>c+'\uFE0E'),digits:null},
+ {id:'negative-circled',name:'검정 동그라미',upper:range(0x1F150),lower:range(0x1F150),digits:letters('⓿❶❷❸❹❺❻❼❽❾')},
+ {id:'smallcaps',name:'스몰 캡스',upper:letters('ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ'),lower:letters('ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ'),digits:null},
+ {id:'underline',name:'밑줄',upper:range(65),lower:range(97),digits:range(48,10),mark:'\u0332'},
+ {id:'strike',name:'취소선',upper:range(65),lower:range(97),digits:range(48,10),mark:'\u0336'},
+ {id:'double-underline',name:'이중 밑줄',upper:range(65),lower:range(97),digits:range(48,10),mark:'\u0333'},
+ {id:'spaced',name:'여유로운 자간',upper:range(65).map(c=>c+'\u2009'),lower:range(97).map(c=>c+'\u2009'),digits:range(48,10).map(c=>c+'\u2009')}
+];
+function convert(text,style){
+ return Array.from(text,c=>{const n=c.codePointAt(0);let mapped;if(n>=65&&n<=90)mapped=style.upper[n-65];else if(n>=97&&n<=122)mapped=style.lower[n-97];else if(n>=48&&n<=57&&style.digits)mapped=style.digits[n-48];else return c;return mapped+(style.mark||'');}).join('');
+}
+function pickRandom(previous=[]){
+ const pool=styles.slice(3);
+ for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+ const selected=pool.slice(0,12);
+ if(selected.every((s,i)=>s.id===previous[i]))[selected[0],selected[1]]=[selected[1],selected[0]];
+ return selected;
+}
+// UI
+const source=document.getElementById('source');
+const results=document.getElementById('results');
+const counter=document.getElementById('counter');
+const shuffle=document.getElementById('shuffle');
+const note=document.getElementById('language-note');
+const noteText=document.getElementById('note-text');
+const toast=document.getElementById('toast');
+const manualDialog=document.getElementById('manual-copy');
+const manualText=document.getElementById('manual-text');
+const copySVG='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>';
+const checkSVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
+let randomStyles=pickRandom();
+let inputTimer,toastTimer,composing=false;
+const cards=Array.from({length:15},(_,i)=>{
+ const button=document.createElement('button');button.type='button';button.className='result-card '+(i>=3?'random':'fixed');
+ button.innerHTML='<span class="card-meta"><span class="style-name"></span><span class="copy-icon">'+copySVG+'</span></span><span class="result-text"></span>';
+ button.addEventListener('click',()=>copyResult(button));results.append(button);return button;
+});
+function showToast(message){clearTimeout(toastTimer);toast.textContent=message;toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),1800);}
+function render(reroll=false){
+ if(reroll)randomStyles=pickRandom(randomStyles.map(s=>s.id));
+ const text=source.value;const empty=!text.trim();const chosen=[...styles.slice(0,3),...randomStyles];
+ counter.textContent=Array.from(text).length+' / 500';shuffle.disabled=empty;document.getElementById('clear').disabled=!text;
+ const unchanged=!empty&&!/[A-Za-z0-9]/.test(text);note.classList.toggle('unsupported',unchanged);
+ noteText.textContent=unchanged?'한글 변환 불가 · 영문을 입력해주세요':'한글은 그대로 · 숫자는 일부 지원';
+ cards.forEach((card,i)=>{card.classList.remove('copied');clearTimeout(card.copyTimer);card.styleId=chosen[i].id;card.copyText=empty?'':convert(text,chosen[i]);card.disabled=empty;card.querySelector('.style-name').textContent=String(i+1).padStart(2,'0')+' '+chosen[i].name;card.querySelector('.result-text').textContent=empty?'영문 입력':card.copyText;card.querySelector('.copy-icon').innerHTML=copySVG;card.setAttribute('aria-label',chosen[i].name+' 스타일 복사');});
+}
+function fallbackCopy(text){
+ const active=document.activeElement;const start=active===source?source.selectionStart:null;const end=active===source?source.selectionEnd:null;
+ const temp=document.createElement('textarea');temp.value=text;temp.readOnly=true;temp.style.cssText='position:fixed;left:-9999px;top:0;font-size:16px;opacity:0';document.body.append(temp);temp.select();temp.setSelectionRange(0,temp.value.length);
+ let ok=false;try{ok=document.execCommand('copy');}catch(_){}temp.remove();if(active&&active.focus){active.focus({preventScroll:true});if(start!==null)source.setSelectionRange(start,end);}return ok;
+}
+async function copyResult(card){
+ const text=card.copyText;if(!text)return;
+ let ok=false;
+ try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);ok=true;}else{ok=fallbackCopy(text);}}catch(_){ok=fallbackCopy(text);}
+ if(ok){showToast('복사했어요! 원하는 곳에 붙여넣기');if(card.copyText===text){card.classList.add('copied');card.querySelector('.copy-icon').innerHTML=checkSVG;clearTimeout(card.copyTimer);card.copyTimer=setTimeout(()=>{card.classList.remove('copied');card.querySelector('.copy-icon').innerHTML=copySVG;},1600);}}
+ else{manualText.value=text;manualDialog.showModal();manualText.focus();manualText.select();}
+}
+function queueInput(){clearTimeout(inputTimer);if(composing)return;inputTimer=setTimeout(()=>render(true),120);}
+source.addEventListener('input',queueInput);
+source.addEventListener('compositionstart',()=>{composing=true;clearTimeout(inputTimer);});
+source.addEventListener('compositionend',()=>{composing=false;queueInput();});
+document.getElementById('clear').addEventListener('click',()=>{clearTimeout(inputTimer);source.value='';render();source.focus();});
+document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{clearTimeout(inputTimer);source.value=button.dataset.sample;render(true);}));
+shuffle.addEventListener('click',()=>{clearTimeout(inputTimer);render(true);showToast('새 스타일 12개를 추천했어요');});
+document.getElementById('done').addEventListener('click',()=>{clearTimeout(inputTimer);render();source.blur();});
+document.getElementById('close-dialog').addEventListener('click',()=>manualDialog.close());
+// Download the original self-contained document, never the rendered cards.
+document.getElementById('download').href=window.location.href.split('#')[0];
+// SECOND SYNTAX: share the page link (system share sheet, or copy) and the intro sheet on phones.
+const PAGE_URL='https://second-syntax.com/text-style/';
+async function shareLink(){
+ const data={title:'글씨 뚝딱 — SECOND SYNTAX',text:'영문을 15가지 스타일로 바꾸고 누르면 바로 복사돼요',url:PAGE_URL};
+ if(navigator.share){try{await navigator.share(data);return;}catch(e){if(e&&e.name==='AbortError')return;}}
+ let ok=false;
+ try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(PAGE_URL);ok=true;}else{ok=fallbackCopy(PAGE_URL);}}catch(_){ok=fallbackCopy(PAGE_URL);}
+ if(ok)showToast('링크를 복사했어요! 붙여넣어 공유하세요');
+ else{manualText.value=PAGE_URL;manualDialog.showModal();manualText.focus();manualText.select();}
+}
+document.querySelectorAll('[data-share]').forEach(button=>button.addEventListener('click',shareLink));
+const intro=document.getElementById('intro');
+const scrim=document.getElementById('scrim');
+const info=document.getElementById('info');
+function setIntro(open){intro.classList.toggle('open',open);scrim.classList.toggle('open',open);info.setAttribute('aria-expanded',String(open));if(open)document.getElementById('intro-close').focus({preventScroll:true});else if(document.activeElement&&intro.contains(document.activeElement))info.focus({preventScroll:true});}
+info.addEventListener('click',()=>setIntro(true));
+document.getElementById('intro-close').addEventListener('click',()=>setIntro(false));
+scrim.addEventListener('click',()=>setIntro(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&intro.classList.contains('open'))setIntro(false);});
+function fitViewport(){
+ const h=Math.round(window.visualViewport?window.visualViewport.height:window.innerHeight);
+ document.documentElement.style.setProperty('--app-height',h+'px');
+ document.documentElement.classList.toggle('compact',h<560);
+ document.documentElement.classList.toggle('tiny',h<420);
+}
+window.addEventListener('resize',fitViewport);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',fitViewport);
+fitViewport();
+render();
+</script>
+</body>
+</html>

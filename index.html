@@ -43,6 +43,15 @@ h1 em { font-style:normal; color:var(--brand); background:linear-gradient(transp
 .hero-art { position:relative; display:flex; justify-content:center; }
 .hero-art::before { content:""; position:absolute; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--lav), transparent 70%); top:20px; }
 .hero-art img { position:relative; width:250px; height:auto; }
+/* (2026-11-03) 첫 도구 글씨 뚝딱 — 도구 목록 없이 바로 들어간다. NEON 9 은 첫 화면에 쓰지 않는다(제품 페이지에만) */
+.product { padding:0 0 28px; }
+.prod { display:grid; grid-template-columns:auto 1fr auto auto; gap:18px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:18px 20px; transition:box-shadow .15s; }
+.prod:hover { box-shadow:0 8px 24px rgba(40,30,80,.10); }
+.prod-mark { display:grid; place-items:center; width:56px; height:56px; border-radius:17px; background:var(--brand); color:#dcf78b; font:italic 700 30px Georgia, serif; }
+.prod-txt .eyebrow { font-size:11px; }
+.prod-txt b { display:block; font-size:21px; letter-spacing:-.01em; }
+.prod-txt .desc { display:block; color:var(--sub); font-size:14px; word-break:keep-all; }
+.prod-sample { font-family:"Cambria Math","STIX Two Math","Noto Sans Math","Noto Sans Symbols 2",serif; font-size:21px; color:var(--brand); white-space:nowrap; }
 .values { padding:8px 0 40px; }
 .values .wrap { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
 .value { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px; display:flex; gap:14px; align-items:center; }
@@ -101,6 +110,7 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
 @media (max-width: 900px) {
   .hero .wrap { grid-template-columns:1fr; text-align:left; } .hero-art { order:-1; } .hero-art img { width:180px; }
   h1 { font-size:34px; } .grid, .values .wrap, .chs { grid-template-columns:1fr 1fr; } .rows { grid-template-columns:1fr; }
+  .prod { grid-template-columns:auto 1fr; } .prod-sample, .prod .btn { grid-column:1 / -1; } .prod .btn { text-align:center; }
 }
 @media (max-width: 600px) {
   header .wrap { grid-template-columns:1fr; height:auto; padding:12px 16px; gap:8px; justify-items:center; }
@@ -116,6 +126,7 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   <nav>
     <a href="./">홈</a>
     <details><summary>Docs ▾</summary><div class="menu"><a href="#tech">🛠️ 기술블로그</a><a href="#news">📰 뉴스</a></div></details>
+    <a href="text-style/">글씨 뚝딱</a>
     <a href="#about">About</a>
   </nav>
   <span></span>
@@ -130,6 +141,13 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   </div>
   <div class="hero-art"><img src="assets/poses/hello.webp" alt="SECOND SYNTAX 로봇 캐릭터가 손을 흔들어요"></div>
 </div></section>
+
+<section class="product"><div class="wrap"><a class="prod" href="text-style/">
+  <span class="prod-mark" aria-hidden="true">Aa</span>
+  <span class="prod-txt"><span class="eyebrow">NEW · 첫 번째 도구</span><b>글씨 뚝딱</b><span class="desc">영문을 15가지 스타일로 바꾸고, 누르면 바로 복사해요</span></span>
+  <span class="prod-sample" aria-hidden="true">𝐒𝐘𝐍𝐓𝐀𝐗 · 𝓢𝔂𝓷𝓽𝓪𝔁 · 𝕊𝕪𝕟𝕥𝕒𝕩</span>
+  <span class="btn primary">바로 쓰기 →</span>
+</a></div></section>
 
 <section class="values"><div class="wrap">
   <div class="value"><img src="assets/poses/laptop.webp" alt=""><div><b>직접 써 보고</b><span>업무에 바로 쓰는 AI 활용법</span></div></div>
