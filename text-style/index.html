@@ -343,6 +343,8 @@ aiBtn.addEventListener('click',()=>{
  stopAI();rememberAI('0');showToast('AI 추천을 껐어요');
 });
 if(aiChoice==='1')startAI();
+// The first AI version (WebLLM, about 350MB) kept its model in Cache Storage — free that space for visitors who tried it.
+if(window.caches)caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('webllm/')).map(k=>caches.delete(k)))).catch(()=>{});
 function fitViewport(){
  const h=Math.round(window.visualViewport?window.visualViewport.height:window.innerHeight);
  document.documentElement.style.setProperty('--app-height',h+'px');
