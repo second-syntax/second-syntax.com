@@ -257,9 +257,10 @@ document.getElementById('intro-close').addEventListener('click',()=>setIntro(fal
 scrim.addEventListener('click',()=>setIntro(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&intro.classList.contains('open'))setIntro(false);});
 // AI PICKS (2026-11-03): a tiny mood model made for this page — about 0.9MB, no GPU, no server.
-// mood/train.py folds static word vectors (Model2Vec potion-retrieval-32M, MIT) and an 11-mood classifier into one table:
-// each word piece has 11 scores and a text's mood is the average over its pieces. The text never leaves the page.
-const AI_MODEL_URL='assets/mood-model.json?v=3fd2188a';
+// mood/train.py folds static word vectors (Model2Vec potion-retrieval-32M, MIT) and a mood classifier into one table
+// (SECOND SYNTAX kit format local-classifier-v1): each word piece has a score per label and a text's mood is the average
+// over its pieces. The text never leaves the page. The 'plain' label (everyday lines like "i am working", 11/03) shows as calm.
+const AI_MODEL_URL='assets/mood-model.json?v=725f7fc6';
 const ai={state:'off'};
 const aiCache=new Map();
 const aiBtn=document.getElementById('ai');
@@ -307,9 +308,10 @@ function makeTokenizer(vocab){
 async function loadModel(){
  if(ai.model)return;
  const res=await fetch(AI_MODEL_URL);if(!res.ok)throw new Error('model '+res.status);
- const m=await res.json();const bin=atob(m.scores);const scores=new Int8Array(bin.length);
+ const m=await res.json();if(m.schema!=='second-syntax-llm/local-classifier-v1')throw new Error('model format');
+ const bin=atob(m.scores);const scores=new Int8Array(bin.length);
  for(let i=0;i<bin.length;i++)scores[i]=bin.charCodeAt(i)<<24>>24;
- ai.model={moods:m.moods,scale:m.scale,bias:m.bias,scores,pieces:makeTokenizer(m.vocab.split('\n'))};
+ ai.model={moods:m.labels.map(l=>l==='plain'?'calm':l),scale:m.scale,bias:m.bias,scores,pieces:makeTokenizer(m.vocab.split('\n'))};
 }
 function modelMood(text){
  const {moods,scale,bias,scores,pieces}=ai.model,ids=pieces(text),K=moods.length;
