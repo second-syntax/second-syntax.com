@@ -26,7 +26,7 @@
 .shell{height:var(--app-height,100dvh);max-height:820px;max-width:760px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 12px calc(8px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;min-height:0}header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;flex:none;height:32px}.brand{display:flex;align-items:center;gap:7px;margin:0;font-size:16px;font-weight:800;letter-spacing:-.6px;white-space:nowrap}.mark{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:var(--navy);color:var(--lime);font:italic 700 20px Georgia,serif}
 .ss{display:flex;align-items:center;gap:6px;justify-self:start;min-width:0;color:var(--navy);text-decoration:none;font-size:10px;font-weight:800;letter-spacing:.8px}.ss img{width:26px;height:26px;border-radius:8px;flex:none}.ss span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.head-tools{display:flex;gap:5px;justify-self:end}.icon-btn{display:flex;align-items:center;justify-content:center;gap:4px;height:29px;min-width:29px;padding:0 9px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:11px;font-weight:700;color:var(--navy)}.icon-btn svg{width:14px;height:14px}.icon-btn:hover{background:var(--purple)}
 .notice{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:none;min-height:31px;border:1px solid #dce8bc;background:#eff6df;border-radius:9px;padding:6px 9px;font-size:11px}.notice .say{display:flex;align-items:center;gap:7px;min-width:0}.guide{width:24px;height:24px;border-radius:50%;flex:none;background:#fff;border:1px solid #c9d8f6}.notice strong{font-size:11px;white-space:nowrap}.notice .note-text{font-size:10px;color:#68734f;line-height:1.35;text-align:right}.notice.unsupported{background:#f3ecfc;border-color:#e0d4f1}.notice.unsupported .note-text{color:#765696}
-.results-head{display:flex;justify-content:space-between;align-items:center;gap:7px;flex:none;min-height:27px}.results-title{margin:0;font-size:12px;font-weight:750;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}.results-title span{font-weight:400;color:var(--muted);font-size:10px}.shuffle{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:650;border:1px solid var(--line);border-radius:8px;background:transparent;padding:6px 8px;white-space:nowrap}.shuffle:hover{background:#eae2f7}.shuffle:disabled{opacity:.4}.head-btns{display:flex;gap:5px;flex:none}.ai-btn{min-width:82px;justify-content:space-between;gap:6px;font-variant-numeric:tabular-nums}.ai-btn .track{position:relative;width:24px;height:14px;border-radius:7px;background:#d9d4e6;flex:none;transition:background .15s}.ai-btn .track::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #1f1a3340;transition:transform .15s,background .15s}.ai-btn[aria-checked=true]{background:#f3fbe0;border-color:#b6d36a;color:var(--ink)}.ai-btn[aria-checked=true] .track{background:var(--navy)}.ai-btn[aria-checked=true] .track::after{transform:translateX(10px);background:var(--lime)}.ai-btn.loading .track{background:#b6d36a}.ai-btn.loading .track::after{transform:translateX(5px)}.ai-btn.loading .track::after{animation:twinkle .7s ease-in-out infinite alternate}@keyframes twinkle{to{opacity:.3}}.ai-btn[aria-disabled=true]{opacity:.45}.results-title .mood{color:var(--navy);font-weight:700}.ai-picks{display:none;flex:none;border:1px solid #cdbfe8;background:#f6f3fc;border-radius:12px;padding:6px}.ai-shown .ai-picks{display:block}.ai-head{display:flex;align-items:baseline;gap:7px;min-width:0;margin:0 2px 5px}.ai-title{font-size:11px;font-weight:800;color:var(--navy);white-space:nowrap}.ai-status{min-width:0;font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;height:clamp(36px,calc(var(--app-height,100dvh)*.085),84px)}.ai-card{border-color:#ddd3f0}.ai-card:hover:not(:disabled){border-color:#a996d4}.ai-card .style-name{color:#5b4a8a}.ai-card.wait{border-style:dashed;background:linear-gradient(90deg,#eee8f8 30%,#fcfbfe 50%,#eee8f8 70%) 0 0/200% 100%;animation:shimmer 1.3s linear infinite}.ai-card.wait .result-text{color:#6f5f99}.ai-card.idle{border-style:dashed;background:#fbf9fe}@keyframes shimmer{to{background-position:-200% 0}}
+.results-head{display:flex;justify-content:space-between;align-items:center;gap:7px;flex:none;min-height:27px}.results-title{margin:0;font-size:12px;font-weight:750;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}.results-title span{font-weight:400;color:var(--muted);font-size:10px}.shuffle{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:650;border:1px solid var(--line);border-radius:8px;background:transparent;padding:6px 8px;white-space:nowrap}.shuffle:hover{background:#eae2f7}.shuffle:disabled{opacity:.4}.head-btns{display:flex;gap:5px;flex:none}.ai-btn{min-width:106px;justify-content:space-between;gap:6px;font-variant-numeric:tabular-nums}.ai-btn .track{position:relative;width:24px;height:14px;border-radius:7px;background:#d9d4e6;flex:none;transition:background .15s}.ai-btn .track::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #1f1a3340;transition:transform .15s,background .15s}.ai-btn[aria-checked=true]{background:#f3fbe0;border-color:#b6d36a;color:var(--ink)}.ai-btn[aria-checked=true] .track{background:var(--navy)}.ai-btn[aria-checked=true] .track::after{transform:translateX(10px);background:var(--lime)}.ai-btn[aria-disabled=true]{opacity:.45}.ai-btn.loading{color:var(--navy)}.results-title .mood{color:var(--navy);font-weight:700}.ai-picks{display:none;flex:none;border:1px solid #cdbfe8;background:#f6f3fc;border-radius:12px;padding:6px}.ai-shown .ai-picks{display:block}.ai-head{display:flex;align-items:baseline;gap:7px;min-width:0;margin:0 2px 5px}.ai-title{font-size:11px;font-weight:800;color:var(--navy);white-space:nowrap}.ai-status{min-width:0;font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;height:clamp(36px,calc(var(--app-height,100dvh)*.085),84px)}.ai-card{border-color:#ddd3f0}.ai-card:hover:not(:disabled){border-color:#a996d4}.ai-card .style-name{color:#5b4a8a}.ai-card.wait{border-style:dashed;background:linear-gradient(90deg,#eee8f8 30%,#fcfbfe 50%,#eee8f8 70%) 0 0/200% 100%;animation:shimmer 1.3s linear infinite}.ai-card.wait .result-text{color:#6f5f99}.ai-card.idle{border-style:dashed;background:#fbf9fe}@keyframes shimmer{to{background-position:-200% 0}}
 .results{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:6px}.result-card{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:0;width:100%;overflow:hidden;padding:7px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:left;transition:background .12s,border-color .12s}.result-card.fixed{background:#f2f8e8;border-color:#d5e4bc}.result-card.random:nth-child(even){background:#f5f2fa}.result-card:hover:not(:disabled){border-color:#b0bd98}.result-card:active:not(:disabled){background:#e4efcc}.result-card.copied{background:#e0f5ac!important;border-color:#8caf4a}.card-meta{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:4px;flex:none}.style-name{color:var(--muted);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.fixed .style-name{color:#677a48}.copy-icon{display:flex;align-items:center;justify-content:center;color:#93998b;flex:none}.copy-icon svg{width:12px;height:12px}.copied .copy-icon{color:#4f7522}.result-card:disabled .copy-icon{opacity:.25}.result-text{font-family:"Cambria Math","STIX Two Math","Noto Sans Math","Noto Sans Symbols 2",var(--font);font-size:clamp(12px,3.7vw,22px);line-height:1.35;letter-spacing:-.2px;white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis;max-height:1.35em;min-height:0;flex-shrink:0}.result-card:disabled .result-text{font:12px/1.3 var(--font);color:#a1a697}.legend{flex:none;margin:0;text-align:center;font-size:9px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .input-panel{flex:none;background:#fff;border:1px solid #d5dcce;border-radius:12px;padding:8px 10px;box-shadow:0 -2px 15px #25291f04}.input-panel:focus-within{border-color:#8ba75c;box-shadow:0 0 0 2px #dcf78b66}.input-top{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px}.input-top label{font-size:11px;font-weight:750}.input-tools{display:flex;gap:6px;align-items:center}.counter{font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}.clear,.done{height:25px;border:0;border-radius:6px;font-size:10px;padding:3px 7px;background:#f0f2eb}.clear{display:flex;align-items:center;justify-content:center;width:25px;padding:0}.done{background:var(--lime);font-weight:700}.input-row{display:flex;align-items:center;gap:6px}textarea#source{width:100%;display:block;flex:1;height:39px;min-height:0;max-height:39px;padding:6px 0;resize:none;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px;line-height:1.45}textarea::placeholder{color:#9a9f91}.sample{flex:none;border:1px solid var(--line);border-radius:7px;background:#fafbf7;padding:6px;font-size:9px;color:#68705d}
 footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:9px;line-height:1.2;color:var(--muted)}footer a{display:flex;align-items:center;gap:3px;color:inherit;text-decoration:none}footer svg{width:11px;height:11px}.toast{position:fixed;left:50%;top:12px;transform:translate(-50%,-8px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:11px;font-size:12px;box-shadow:0 4px 20px #25291f22;z-index:50;white-space:nowrap;pointer-events:none;transition:opacity .15s,transform .15s}.toast.show{opacity:1;transform:translate(-50%,0)}dialog{width:min(90vw,420px);max-height:90dvh;border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff;color:var(--ink)}dialog::backdrop{background:#20231e75}dialog h2{margin:0 0 8px;font-size:17px}dialog p{font-size:12px;line-height:1.5;color:var(--muted);word-break:keep-all}dialog textarea{width:100%;height:80px;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:16px}dialog button{float:right;margin-top:10px;padding:8px 18px;border:0;border-radius:8px;background:var(--lime);font-weight:700}
@@ -627,16 +627,18 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&intro.classList.con
 // Korean (11/03 "한글을 번역해서 넣는것"): the model reads English pieces only, so the Korean words in a line become English words
 // first (mood/ko-words.json) and go to a Korean-tab table trained on the same English lines plus Korean lines turned into English
 // words (mood/ko-phrases.json) — the English tab keeps its own table. That table keeps only the pieces the words can make (mood/ko.js pack).
-const AI_MODEL_URL='assets/mood-model.json?v=725f7fc6',KO_MODEL_URL='assets/mood-model-ko.json?v=47214c33';
+const AI_MODEL_URL='assets/mood-model.json?v=3f6b78ee',KO_MODEL_URL='assets/mood-model-ko.json?v=b3658158',AI_BYTES=Number('1704895');
 const ai={state:'off'};
 const aiCache=new Map();
-const aiBtn=document.getElementById('ai');
+const aiBtn=document.getElementById('ai'),aiLabel=document.getElementById('ai-label');
 let aiTimer;
 // The visitor's choice: '1' = AI picks on, '0' = basic picks only (then we stop pointing at the switch). Nothing stored = not chosen yet.
 let aiChoice=null;try{aiChoice=localStorage.getItem('ts-ai');}catch(_){}
 function rememberAI(choice){aiChoice=choice;try{localStorage.setItem('ts-ai',choice);}catch(_){}}
+// While the tables download the switch stays off and its label counts 준비 중 0…99%; it slides on only once they are ready.
 function setAIState(state){
  ai.state=state;aiBtn.setAttribute('aria-checked',String(state==='on'));aiBtn.classList.toggle('loading',state==='loading');aiBtn.setAttribute('aria-busy',String(state==='loading'));
+ aiLabel.textContent=state==='loading'?'준비 중 0%':'AI 추천';
  ai.progressShort=ai.progressText='AI 준비 중…';
  renderAI();
 }
@@ -650,7 +652,7 @@ function makeTokenizer(vocab){
   for(const c of text){const n=c.codePointAt(0);if(n===0||n===0xFFFD||(/\p{C}/u.test(c)&&!/[\t\n\r]/.test(c)))continue;if(/\s/.test(c)){out+=' ';continue;}out+=isCJK(n)?' '+c+' ':c;}
   return out.normalize('NFD').replace(/\p{Mn}/gu,'').toLowerCase();
  }
- return text=>{
+ const tokenize=text=>{
   const out=[];
   for(const raw of normalize(text).split(' ')){
    if(!raw)continue;
@@ -671,6 +673,8 @@ function makeTokenizer(vocab){
   }
   return out;
  };
+ tokenize.rank=word=>index.get(word);   // a whole word's place in the vocabulary — common words come first (unstretch)
+ return tokenize;
 }
 function readModel(m){
  if(m.schema!=='second-syntax-llm/local-classifier-v1')throw new Error('model format');
@@ -678,12 +682,30 @@ function readModel(m){
  for(let i=0;i<bin.length;i++)scores[i]=bin.charCodeAt(i)<<24>>24;
  return{moods:m.labels.map(l=>l==='plain'?'calm':l),scale:m.scale,bias:m.bias,scores,pieces:makeTokenizer(m.vocab.split('\n'))};
 }
+// The server sends the tables gzipped, so the percent counts unpacked bytes against their real sizes (AI_BYTES, filled in by build.py).
+async function fetchJSON(url,onBytes){
+ const res=await fetch(url);if(!res.ok)throw new Error('model '+res.status);
+ if(!res.body||!res.body.getReader||!window.TextDecoder)return res.json();
+ const reader=res.body.getReader(),dec=new TextDecoder();let text='';
+ for(;;){const {done,value}=await reader.read();if(done)break;text+=dec.decode(value,{stream:true});onBytes(value.length);}
+ return JSON.parse(text+dec.decode());
+}
 async function loadModel(){
  if(ai.model)return;
- const [res,kres]=await Promise.all([fetch(AI_MODEL_URL),fetch(KO_MODEL_URL)]);if(!res.ok||!kres.ok)throw new Error('model '+res.status+'/'+kres.status);
- const [m,k]=await Promise.all([res.json(),kres.json()]);
+ let got=0;
+ const tick=n=>{got+=n;const label='준비 중 '+Math.min(99,Math.floor(100*got/(AI_BYTES||1)))+'%';if(ai.state==='loading'&&aiLabel.textContent!==label)aiLabel.textContent=label;};
+ const [m,k]=await Promise.all([fetchJSON(AI_MODEL_URL,tick),fetchJSON(KO_MODEL_URL,tick)]);
  ai.koModel=readModel(k);ai.words={nouns:new Map(Object.entries(k.words.noun)),stems:new Map(Object.entries(k.words.stem))};
  ai.model=readModel(m);
+}
+// Stretched words (wooooow, loooove, yesss): 3+ same letters become 2 or 1 — the whole word the model knows, the more common
+// one when both are (coool → cool not col, sooo → so not soo). Unread, wooooow split into woo ##oo ##ow and fell to plain (11/03).
+function unstretch(text,model=ai.model){
+ return text.replace(/[A-Za-z]*([A-Za-z])\1\1[A-Za-z]*/g,w=>{
+  const two=w.replace(/([A-Za-z])\1{2,}/g,'$1$1'),one=w.replace(/([A-Za-z])\1{2,}/g,'$1');
+  const r2=model.pieces.rank(two.toLowerCase()),r1=model.pieces.rank(one.toLowerCase());
+  return r2!==undefined&&(r1===undefined||r2<r1)?two:one;
+ });
 }
 function modelMood(text,model=ai.model){
  const {moods,scale,bias,scores,pieces}=model,ids=pieces(text),K=moods.length;
@@ -730,7 +752,7 @@ const aiKey=()=>lang+':'+typed().trim();
 function askAI(){
  const text=typed().trim(),key=aiKey();
  if(ai.state!=='on'||!text||aiCache.has(key))return;
- aiCache.set(key,lang==='ko'?koMood(text):/[A-Za-z]/.test(text)?modelMood(text):keywordMood(text));
+ aiCache.set(key,lang==='ko'?koMood(text):/[A-Za-z]/.test(text)?modelMood(unstretch(text)):keywordMood(text));
  renderAI();
 }
 // The switch is the visitor's choice: on loads the small model, off goes back to basic picks only.
