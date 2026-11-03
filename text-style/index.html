@@ -627,7 +627,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&intro.classList.con
 // Korean (11/03 "한글을 번역해서 넣는것"): the model reads English pieces only, so the Korean words in a line become English words
 // first (mood/ko-words.json) and go to a Korean-tab table trained on the same English lines plus Korean lines turned into English
 // words (mood/ko-phrases.json) — the English tab keeps its own table. That table keeps only the pieces the words can make (mood/ko.js pack).
-const AI_MODEL_URL='assets/mood-model.json?v=3f6b78ee',KO_MODEL_URL='assets/mood-model-ko.json?v=b3658158',AI_BYTES=Number('1704895');
+const AI_MODEL_URL='assets/mood-model.json?v=3f6b78ee',KO_MODEL_URL='assets/mood-model-ko.json?v=8ec38d93',AI_BYTES=Number('1705968');
 const ai={state:'off'};
 const aiCache=new Map();
 const aiBtn=document.getElementById('ai'),aiLabel=document.getElementById('ai-label');
@@ -695,7 +695,7 @@ async function loadModel(){
  let got=0;
  const tick=n=>{got+=n;const label='준비 중 '+Math.min(99,Math.floor(100*got/(AI_BYTES||1)))+'%';if(ai.state==='loading'&&aiLabel.textContent!==label)aiLabel.textContent=label;};
  const [m,k]=await Promise.all([fetchJSON(AI_MODEL_URL,tick),fetchJSON(KO_MODEL_URL,tick)]);
- ai.koModel=readModel(k);ai.words={nouns:new Map(Object.entries(k.words.noun)),stems:new Map(Object.entries(k.words.stem))};
+ ai.koModel=readModel(k);ai.words={nouns:new Map(Object.entries(k.words.noun)),stems:new Map(Object.entries(k.words.stem)),exact:new Map(Object.entries(k.words.exact||{}))};
  ai.model=readModel(m);
 }
 // Stretched words (wooooow, loooove, yesss): 3+ same letters become 2 or 1 — the whole word the model knows, the more common
@@ -727,12 +727,15 @@ async function startAI(){
 function stopAI(){clearTimeout(aiTimer);setAIState('off');render();}
 // Korean words → English words. noun: 2+ syllables anywhere in a word (생일파티 → birthday party), one syllable only before
 // a particle (꽃이); stem: from the start of a word (귀여워서 → cute). Longer finds win; Latin words pass through; ㅋㅋ → lol.
-const KO_JAMO=[[/ㅋㅋ/,'lol'],[/ㅎㅎ/,'haha']];
+const KO_JAMO=[[/ㅊㅋ/,'congratulations'],[/ㅇㅋ/,'okay'],[/ㄱㅅ/,'thanks'],[/ㄹㅇ/,'for real'],[/ㅋㅋ/,'lol'],[/ㅎㅎ/,'haha']];
+// exact = interjections that count only as the whole first word (와 대박 — but 잠이 안 와·와요·이야기 are other words). Stretched words (와아아·헐헐) are squeezed when nothing else matched.
 function koEnglish(text){
- const {nouns,stems}=ai.words,out=[];
- for(const part of text.match(/[가-힣]+|[A-Za-z][A-Za-z'’-]*|[ㄱ-ㅣ]+/g)||[]){
+ const {nouns,stems,exact}=ai.words,out=[];let words=0;
+ for(const part of text.replace(/오\s+마이\s+(?=갓|가뜨)/g,'오마이').match(/[가-힣]+|[A-Za-z][A-Za-z'’-]*|[ㄱ-ㅣ]+/g)||[]){
   if(/^[A-Za-z]/.test(part)){out.push(part);continue;}
   if(/^[ㄱ-ㅣ]/.test(part)){const j=KO_JAMO.find(([re])=>re.test(part));if(j)out.push(j[1]);continue;}
+  const lead=!words++;
+  if(lead&&exact.has(part)){out.push(exact.get(part));continue;}
   const found=[];
   for(let len=Math.min(part.length,8);len;len--)if(stems.has(part.slice(0,len))){found.push([0,len,stems.get(part.slice(0,len))]);break;}
   for(let at=0;at<part.length;at++)for(let len=Math.min(part.length-at,8);len;len--){
@@ -741,6 +744,11 @@ function koEnglish(text){
   }
   const picked=[];
   for(const f of found.sort((a,b)=>b[1]-a[1]||a[0]-b[0]))if(!picked.some(p=>p[0]<f[0]+f[1]&&f[0]<p[0]+p[1]))picked.push(f);
+  if(!picked.length){
+   const rep=part.replace(/(.)\1+/g,'$1'),short=rep.replace(/(.)[아어오우으이]+$/,'$1');
+   const en=lead&&(exact.get(rep)||exact.get(short))||rep!==part&&nouns.get(rep);
+   if(en)out.push(en);
+  }
   out.push(...picked.sort((a,b)=>a[0]-b[0]).map(p=>p[2]));
  }
  return out.join(' ');
