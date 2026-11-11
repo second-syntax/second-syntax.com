@@ -367,9 +367,21 @@ const HANJA_SOUND={요:'要',다:'多',해:'海',고:'高',도:'道',화:'火',�
  월:'月',중:'中',상:'上',장:'長',생:'生',동:'東',남:'南',북:'北',공:'工',용:'龍',목:'木',과:'果',복:'福',축:'祝',정:'正',전:'田',원:'元',안:'安',감:'甘',강:'江',
  김:'金',명:'名',반:'半',방:'方',분:'分',선:'先',성:'星',아:'我',애:'愛',양:'羊',외:'外',유:'有',음:'音',의:'衣',입:'入',초:'草',추:'秋',출:'出',태:'太',평:'平',
  품:'品',풍:'風',합:'合',행:'行',향:'香',형:'兄',휴:'休',희:'喜',무:'無',견:'犬',녀:'女'};
+// Words a one-syllable pun spoils (2026-11-11 "어색한 결과는 수정해줘": 엄馬 생신, 생神, 雨승 축하海, 출山, 이四, 승眞, 메里 크리스馬스, 새海, 많二):
+// family names and celebration words, matched from the start of a word. Only the syllables listed after a word may still change —
+// the ones whose Hanja is the word's own (生日, 祝賀, 合格, 入學, 出産), so 생日 축하海 · 合격 · 入학 · 出산 stay.
+const HANJA_WORDS=pairs('할아버지= 할머니= 어머니= 아버지= 어머님= 아버님= 부모님= 선생님= 엄마= 아빠= 생신= 축하=축 합격=합 입학=입 출산=출 순산= 우승= 승진= 이사= 개업= 졸업= 결혼= 크리스마스= 메리= 새해= 많이=');
+function hanjaOff(text){
+ const off=new Set();
+ for(const [w,keep] of HANJA_WORDS)for(let i=text.indexOf(w);i>=0;i=text.indexOf(w,i+1)){
+  if(isHangul(text[i-1]))continue;
+  for(let j=0;j<w.length;j++)if(!keep.includes(w[j]))off.add(i+j);
+ }
+ return off;
+}
 function hanjaPlay(text,style){
- const spots=[];
- for(let i=0;i<text.length;i++)if(HANJA_SOUND[text[i]])spots.push({at:i,len:1,to:HANJA_SOUND[text[i]],score:spotScore(text,i)});
+ const spots=[],off=hanjaOff(text);
+ for(let i=0;i<text.length;i++)if(HANJA_SOUND[text[i]]&&!off.has(i))spots.push({at:i,len:1,to:HANJA_SOUND[text[i]],score:spotScore(text,i)});
  return swapSome(text,spots,style);
 }
 // English (11/03, widened the same evening — it changed under half of everyday lines): one or two swaps, Korean always left.
@@ -394,6 +406,10 @@ const EN_MIX=pairs(`진짜=REAL 정말=REAL 최고=BEST 사랑=LOVE 행복=HAPPY
 // [table, score, whole word only]. A whole-word swap may keep a particle after it (COFFEE를, TODAY도).
 // Two puns turned up in over a quarter of all swaps (오늘 → OH늘, every -고 → 먹GO): 오 at the start of a word now ranks with
 // TODAY, and 고 or 오 inside a word ranks below anything else.
+// 개 and 업 that are part of an ordinary word, not the slang or the English UP (2026-11-11: 개업 축하합니다 → DOG업, 졸업 축하해 → 졸UP).
+const NOT_DOG=/^개(?:업|인|발|학|월|봉|선|최|념|구리|나리|미|방|설|정|통|혁|요|막|강|교|장|점|관|시|천|성|그|수|별|조|화|편|척|근|운|울)/,
+ NOT_UP=/^(?:[졸개취창사직기영작수산농휴폐공상어임광본부전실잔동종협생분파태과학대중]업|.?업[무체계종적소주자보])/;
+const enOff=(text,i,k,start)=>k==='개'?NOT_DOG.test(text.slice(i)):k==='업'&&(NOT_UP.test(text.slice(i-1,i+1))||start&&NOT_UP.test(' '+text.slice(i,i+2)));
 const soundScore=(k,start)=>start?(k==='오'?1.4:2):(k==='고'||k==='오'?.5:1);
 const EN_KINDS=[[EN_LOAN,2.2,true],[EN_SLANG,2,false],[EN_SOUND,0,false],[EN_MIX,1.2,true]];
 function englishPlay(text,style){
@@ -408,6 +424,7 @@ function englishPlay(text,style){
   for(const [table,score,whole] of EN_KINDS)for(const [k,en] of table){
    if(!text.startsWith(k,i)||!koreanLeft(i,k.length))continue;
    if(table!==EN_SOUND&&!start)continue;
+   if((table===EN_SLANG||table===EN_SOUND)&&enOff(text,i,k,start))continue;
    if(whole&&!EMO_PARTICLE.test(text.slice(i+k.length,wordAround(text,i,k.length)[1])))continue;
    spots.push({at:i,len:k.length,to:en,score:table===EN_SOUND?soundScore(k,start):score});
   }
@@ -524,7 +541,7 @@ function render(reroll=false){
  if(reroll)randomStyles=pickRandom(randomStyles.map(s=>s.id),nextTop,pool);
  else if(nextTop!==topIds)randomStyles=refill(randomStyles,nextTop,pool);
  topIds=nextTop;
- // Korean: phrases the page knows (생일 축하해 → 祝 生日) take the second row, so the 외계어 first row stays put.
+ // Korean: phrases the page knows (생일 축하해 → 🎂 · 생日 축하海 · BIRTHDAY 축하해) take the second row, so the 외계어 first row stays put.
  const said=ko&&!empty?SAY_STYLES.filter(s=>convert(text,s)!==text):[];
  const chosen=[...(EV?(ko?[PPAE_STYLE,EVENT_STYLE]:[EVENT_STYLE]):[]),...topIds.map(id=>byId[id]),...said,...randomStyles].slice(0,15);
  moodLabel.classList.toggle('mood',!!mood);
