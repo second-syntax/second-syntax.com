@@ -56,7 +56,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 <h2>글씨 뚝딱</h2>
 <p class="intro-lead">키보드로는 못 치는 글씨를 메신저에 써요. 영문은 22가지 유니코드 글씨체로, 한글은 외계어로 바꿔 주고, 마음에 드는 칸을 누르면 복사돼요.</p>
 <ol class="steps"><li><b>쓰기</b>아래 칸에 영문이나 한글을 입력해요</li><li><b>고르기</b>첫 줄은 글 분위기에 맞춘 추천, 15칸 중 골라요</li><li><b>복사</b>누르면 끝 — 소개글·닉네임·댓글에 붙여넣어요</li></ol>
-<ul class="facts"><li>설치·로그인 없음, 입력한 글자는 서버로 보내지 않아요 · 복사한 횟수를 글씨체별로 세요</li><li>✨ AI 추천은 원할 때만 켜요 — 페이지 안의 작은 분위기 모델(약 0.9MB)이 고르고, 글은 밖으로 나가지 않아요. 한글 글은 아는 낱말을 영어 낱말로 바꿔 같은 모델이 읽어요</li><li>AI 모델: potion-retrieval-32M(MIT)을 바탕으로 직접 학습</li><li>한글판은 외계어 — 자음·모음을 생김새가 닮은 외국 글자(라틴·가나·한자·기호)로 바꿔 써요. 진짜 글자라 어디에 붙여도 모양이 그대로예요</li><li>한자·영어 장난 — 한두 글자만 소리 같은 한자·영어로 바꿔요(있어要 · 오늘道 · 火이팅 · GO마워). 아는 말은 이모지로도(🎂), 영어 소리(saranghae)로도 적어 줘요</li><li>숫자는 일부 스타일만 바뀌어요</li><li>긴 문구도 전체가 복사돼요</li></ul>
+<ul class="facts"><li>설치·로그인 없음, 입력한 글자는 서버로 보내지 않아요 · 복사한 횟수를 글씨체별로, 방문 수를 쿠키 없이 세요</li><li>✨ AI 추천은 원할 때만 켜요 — 페이지 안의 작은 분위기 모델(약 0.9MB)이 고르고, 글은 밖으로 나가지 않아요. 한글 글은 아는 낱말을 영어 낱말로 바꿔 같은 모델이 읽어요</li><li>AI 모델: potion-retrieval-32M(MIT)을 바탕으로 직접 학습</li><li>한글판은 외계어 — 자음·모음을 생김새가 닮은 외국 글자(라틴·가나·한자·기호)로 바꿔 써요. 진짜 글자라 어디에 붙여도 모양이 그대로예요</li><li>한자·영어 장난 — 한두 글자만 소리 같은 한자·영어로 바꿔요(있어要 · 오늘道 · 火이팅 · GO마워). 아는 말은 이모지로도(🎂), 영어 소리(saranghae)로도 적어 줘요</li><li>숫자는 일부 스타일만 바뀌어요</li><li>긴 문구도 전체가 복사돼요</li></ul>
 <div class="intro-actions"><button class="btn primary" type="button" data-share><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v7h14v-7"/></svg>친구에게 공유</button><a class="btn" href="/">SECOND SYNTAX 홈</a></div>
 </aside>
 <main class="shell">
@@ -844,6 +844,35 @@ fitViewport();
 let savedLang=null;try{savedLang=localStorage.getItem('ts-lang');}catch(_){}
 if(location.hash==='#ko'||(savedLang==='ko'&&location.hash!=='#en')){setLang('ko');source.value=LANG.ko.start;}
 render();
+</script>
+<script>
+// 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views — 2026-11-17).
+// 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림).
+(function () {
+  var API = 'https://happyvarious-views.happyvarious.workers.dev/v1/view';
+  var K = 'hv:noview';
+  function flag() {
+    try {
+      if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+      if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+      return localStorage.getItem(K) === '1';
+    } catch (e) { return false; }
+  }
+  addEventListener('hashchange', flag);
+  if (flag()) return;
+  if (navigator.webdriver) return;
+  var sent = false;
+  function send() {
+    if (sent || document.visibilityState !== 'visible') return;
+    sent = true;
+    var r = '';
+    try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+    var body = JSON.stringify({ p: location.pathname, r: r });
+    try { if (!(navigator.sendBeacon && navigator.sendBeacon(API, body))) fetch(API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+  }
+  send();
+  document.addEventListener('visibilitychange', send);
+})();
 </script>
 </body>
 </html>
