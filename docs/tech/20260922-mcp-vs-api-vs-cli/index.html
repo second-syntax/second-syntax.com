@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>MCP vs API vs CLI 차이, 언제 무엇을 쓸지 한 표로</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260922-mcp-vs-api-vs-cli/"><meta name="description" content="AI 글에 늘 같이 나오는 MCP·API·CLI를 비개발자 눈높이로 가른다. CLI는 기계에 달린 버튼(사람이나 터미널을 쥔 AI가 명령으로), API는 기기별 리모컨(프로그램이 서비스마다 다른 양식으로), MCP는 통합 리모컨 규격(AI가 도구 목록을 받아 스스로 고름). 구글 드라이브에 파일 올리기를 세 방식으로 해 보고, 상황별로 무엇을 고를지 표로 정리했다. 공식 문서와 2026년 10월 7일 대조."><meta property="og:title" content="MCP vs API vs CLI 차이, 언제 무엇을 쓸지 한 표로"><meta property="og:description" content="AI 글에 늘 같이 나오는 MCP·API·CLI를 비개발자 눈높이로 가른다. CLI는 기계에 달린 버튼(사람이나 터미널을 쥔 AI가 명령으로), API는 기기별 리모컨(프로그램이 서비스마다 다른 양식으로), MCP는 통합 리모컨 규격(AI가 도구 목록을 받아 스스로 고름). 구글 드라이브에 파일 올리기를 세 방식으로 해 보고, 상황별로 무엇을 고를지 표로 정리했다. 공식 문서와 2026년 10월 7일 대조."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260922-mcp-vs-api-vs-cli/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DGIFWccx_1iQXH6.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260922-mcp-vs-api-vs-cli/" data-title="MCP vs API vs CLI 차이, 언제 무엇을 쓸지 한 표로" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-한-표로-보는-차이" data-toc="1-한-표로-보는-차이" data-astro-cid-f3qesd3f>1. 한 표로 보는 차이</a></li><li data-astro-cid-f3qesd3f><a href="#2-cli-기계에-달린-버튼" data-toc="2-cli-기계에-달린-버튼" data-astro-cid-f3qesd3f>2. CLI: 기계에 달린 버튼</a></li><li data-astro-cid-f3qesd3f><a href="#3-api-기기별-리모컨" data-toc="3-api-기기별-리모컨" data-astro-cid-f3qesd3f>3. API: 기기별 리모컨</a></li><li data-astro-cid-f3qesd3f><a href="#4-mcp-통합-리모컨-규격" data-toc="4-mcp-통합-리모컨-규격" data-astro-cid-f3qesd3f>4. MCP: 통합 리모컨 규격</a></li><li data-astro-cid-f3qesd3f><a href="#5-같은-일을-세-방식으로" data-toc="5-같은-일을-세-방식으로" data-astro-cid-f3qesd3f>5. 같은 일을 세 방식으로</a></li><li data-astro-cid-f3qesd3f><a href="#6-언제-무엇을-고르나" data-toc="6-언제-무엇을-고르나" data-astro-cid-f3qesd3f>6. 언제 무엇을 고르나</a></li><li data-astro-cid-f3qesd3f><a href="#7-통합-리모컨은-권한도-통합해요" data-toc="7-통합-리모컨은-권한도-통합해요" data-astro-cid-f3qesd3f>7. 통합 리모컨은 권한도 통합해요</a></li><li data-astro-cid-f3qesd3f><a href="#헷갈리기-쉬운-것" data-toc="헷갈리기-쉬운-것" data-astro-cid-f3qesd3f>헷갈리기 쉬운 것</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 9개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-한-표로-보는-차이" data-astro-cid-l6a6buid>1. 한 표로 보는 차이</a></li><li data-astro-cid-l6a6buid><a href="#2-cli-기계에-달린-버튼" data-astro-cid-l6a6buid>2. CLI: 기계에 달린 버튼</a></li><li data-astro-cid-l6a6buid><a href="#3-api-기기별-리모컨" data-astro-cid-l6a6buid>3. API: 기기별 리모컨</a></li><li data-astro-cid-l6a6buid><a href="#4-mcp-통합-리모컨-규격" data-astro-cid-l6a6buid>4. MCP: 통합 리모컨 규격</a></li><li data-astro-cid-l6a6buid><a href="#5-같은-일을-세-방식으로" data-astro-cid-l6a6buid>5. 같은 일을 세 방식으로</a></li><li data-astro-cid-l6a6buid><a href="#6-언제-무엇을-고르나" data-astro-cid-l6a6buid>6. 언제 무엇을 고르나</a></li><li data-astro-cid-l6a6buid><a href="#7-통합-리모컨은-권한도-통합해요" data-astro-cid-l6a6buid>7. 통합 리모컨은 권한도 통합해요</a></li><li data-astro-cid-l6a6buid><a href="#헷갈리기-쉬운-것" data-astro-cid-l6a6buid>헷갈리기 쉬운 것</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="mcp-vs-api-vs-cli-차이-언제-무엇을-쓸지-한-표로">MCP vs API vs CLI 차이, 언제 무엇을 쓸지 한 표로</h1>
+<p><img alt="MCP vs API vs CLI 차이 — 언제 무엇을 쓸지 한 표로 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DGIFWccx_ZcaFan.webp" ></p>
+<p class="cap">MCP vs API vs CLI 차이 — 언제 무엇을 쓸지 한 표로 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI 글을 읽다 보면 세 단어가 늘 같이 나와요. MCP, API, CLI. “MCP 서버를 연결하라는데, API랑 뭐가 다르지?” 하는 데서 멈추게 되죠.</p>
+<p>거실에 기계가 여럿 있다고 해 보세요. 몸체에 달린 버튼을 누르거나, 기기마다 딸린 리모컨을 쓰거나, 모든 기기의 기능이 한 화면에 뜨는 통합 리모컨을 쓸 수 있어요. 무엇이 제일 좋은지는 누가, 얼마나 자주, 무엇을 하려는지에 따라 달라요.<br>
+<strong>CLI는 몸체의 버튼, API는 기기별 리모컨, MCP는 통합 리모컨 규격이에요.</strong></p>
+<p><img alt="도구함, 리모컨 다발, 통합 리모컨 가운데 통합 리모컨을 가리키는 로봇 — MCP·API·CLI 비유 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-three-ways.D9KQAa8Z_1sK86V.webp" ></p>
+<p class="cap">도구함, 리모컨 다발, 통합 리모컨 가운데 통합 리모컨을 가리키는 로봇 — MCP·API·CLI 비유 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: MCP·API·CLI가 헷갈리는 분<br>① 세 방식을 한 표로 비교<br>② 같은 일을 세 방식으로 해 본 차이<br>③ 상황별로 무엇을 고를지<br>2026년 10월 기준 · MCP 사양 2026-07-28판</div>
+<hr>
+<h2 id="1-한-표로-보는-차이">1. 한 표로 보는 차이</h2>
+<p><strong>셋을 가르는 기준은 누가 부르고, 무엇을 부를지 누가 정하느냐예요.</strong> 공식 문서와 제 블로그 공장에서 쓰는 방식을 기준으로 한 줄씩 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>방식</th><th>누가 부르고 누가 고르나</th></tr></thead><tbody><tr><td>CLI (명령줄)</td><td>사람이나 터미널을 쥔 AI가 명령어를 쳐서 부른다</td></tr><tr><td>API (응용 프로그램 인터페이스)</td><td>프로그램이 정해진 양식으로 부른다 — 양식은 서비스마다 다르다</td></tr><tr><td>MCP (모델 컨텍스트 프로토콜)</td><td>AI 앱이 도구 목록을 받아 스스로 골라 부른다 — 공용 규격</td></tr></tbody></table>
+<p>표의 둘째 칸이 핵심이에요. 어느 도구를 쓸지 사람이 코드에 적어 두면 API, AI가 목록을 보고 고르면 MCP예요.</p>
+<h2 id="2-cli-기계에-달린-버튼">2. CLI: 기계에 달린 버튼</h2>
+<p><strong>CLI(Command Line Interface)는 검은 창(터미널)에 글자로 명령을 치는 방식이에요.</strong> 마우스 대신 글자로 누르는 버튼이라고 보면 돼요. 가장 쉽게 만져 보는 방법은 터미널에 이 한 줄을 치는 거예요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="powershell"><code><span class="line"><span style="color:#E1E4E8">git </span><span style="color:#F97583">--</span><span style="color:#E1E4E8">version</span></span></code></pre>
+<p>→ 검은 창이 git 버전으로 답하면 CLI를 쓴 거예요.</p>
+<p>CLI는 사람만 쓰는 게 아니에요. 클로드 코드는 그 자체가 CLI이면서, 작업 중에 다른 CLI를 불러요. 9월 22일 이 글을 쓸 때 세어 보니, 제 저장소의 자동화 코드 <strong>6개</strong> 파일이 git·Edge·npm을 명령으로 불렀어요. 릴스도 ffmpeg 명령 한 줄로 만들어요.</p>
+<p>대신 명령어를 알아야 해요. 버튼이 어디 있는지 모르면 못 누르죠. 그래서 AI도 CLI를 쓸 때는 사용법을 이미 알거나 문서를 먼저 읽어요.</p>
+<h2 id="3-api-기기별-리모컨">3. API: 기기별 리모컨</h2>
+<p><strong>API는 프로그램이 다른 프로그램(대개 인터넷 너머의 서비스)에 일을 시키는 약속이에요.</strong> ‘이 주소로, 이 항목을 채워, 이 열쇠(키)를 붙여 보내면 이런 답을 준다’가 정해져 있어요.</p>
+<p>제 블로그의 예를 들면, 이 글의 삽화는 파이썬 스크립트가 OpenAI 이미지 API에 정해진 양식으로 요청해서 받아 온 거예요. 여행 글 재료는 GitHub API로 이슈를 읽어 와요. 두 API는 주소도, 항목 이름도, 인증 방식도 달라요. 리모컨이 기기마다 다른 것과 같아요.</p>
+<p>그래서 API는 사람이 직접 누르지 않아요. <strong>개발자가 코드에 순서를 적어 두고, 프로그램이 그대로 눌러요.</strong></p>
+<h2 id="4-mcp-통합-리모컨-규격">4. MCP: 통합 리모컨 규격</h2>
+<p><strong>MCP는 AI 앱이 도구 목록을 받아, 필요한 것을 스스로 골라 부르게 하는 공용 규격이에요.</strong> MCP 공식 문서는 MCP를 ‘AI 애플리케이션을 외부 시스템에 연결하는 오픈소스 표준’이라고 정의하고, ‘AI 앱을 위한 USB-C 포트’에 빗대요.</p>
+<p>움직이는 순서는 세 단계예요.<br>
+① 호스트(클로드 코드 같은 AI 앱)가 서버(도구를 내놓는 프로그램)마다 연결을 하나씩 만들어요.<br>
+② AI 앱이 먼저 <code>tools/list</code>로 어떤 도구가 있는지 목록을 받아요.<br>
+③ 그중 하나를 골라 <code>tools/call</code>로 불러요. 메시지 형식은 JSON-RPC 2.0 하나라서, 같은 컴퓨터 안이든 인터넷 너머든 같아요.</p>
+<p><img alt="메뉴판(도구 목록)을 건네는 웨이터 로봇과 그중 하나를 고르는 손님 로봇 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-menu-for-robot.CL5-oG8K_1HQ9sH.webp" ></p>
+<p class="cap">메뉴판(도구 목록)을 건네는 웨이터 로봇과 그중 하나를 고르는 손님 로봇 (GPT 이미지 생성)</p>
+<p>9월 22일 이 글을 처음 쓸 때 제 클로드 코드 세션에는 MCP 서버 <strong>9개</strong>가 붙어 있었고, 그중 <strong>6개</strong>(Figma·Gmail·구글 캘린더·구글 드라이브·노션·슬랙)가 인증된 상태였어요. 제가 ‘이 파일 드라이브에 올려줘’라고만 하면, AI가 도구 목록에서 드라이브 서버의 파일 만들기 도구를 골라 불러요. <mark>어느 도구를 쓸지 사람이 코드에 적어 두지 않는다</mark>는 게 API와 가장 큰 차이예요.</p>
+<h2 id="5-같은-일을-세-방식으로">5. 같은 일을 세 방식으로</h2>
+<p><strong>말로만 가르면 헷갈리니, 보고서 파일 하나를 구글 드라이브에 올리는 일을 셋으로 해 볼게요.</strong></p>
+<p><strong>CLI로</strong> rclone이라는 프로그램(공식 소개는 ‘클라우드 저장소용 rsync’)을 설치하고, 터미널에 한 줄을 쳐요. 사람이 치거나, 터미널을 쥔 AI가 쳐요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="powershell"><code><span class="line"><span style="color:#E1E4E8">rclone copy .</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">report.pdf gdrive:backup</span></span></code></pre>
+<p><strong>API로</strong> 내 프로그램이 구글 드라이브 API 공식 문서대로 업로드 주소(upload/drive/v3/files)에 파일을 실어 보내요. 인증 토큰(Authorization: Bearer)과 파일 종류(Content-Type) 헤더가 필요하고, 이 단순 업로드 방식은 <strong>5MB 이하</strong> 파일용이에요. 사람은 직접 누르지 않아요.</p>
+<p><strong>MCP로</strong> AI에게 말로 시켜요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 파일을 구글 드라이브에 올려줘</span></span></code></pre>
+<p>AI 앱이 드라이브 MCP 서버의 도구 목록에서 파일 만들기 도구(create_file)를 찾아, 이름과 내용을 채워 불러요. 그리고 그 서버는 안에서 결국 드라이브 API를 불러요.</p>
+<p><img alt="구글 드라이브에 파일 올리기를 CLI·API·MCP로 — 누가 부르나, 양식은 누가 정하나, AI가 고르나 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="4660" src="/_astro/diagram-three-ways-drive.TPCnTDRn_15ostV.webp" ></p>
+<p class="cap">구글 드라이브에 파일 올리기를 CLI·API·MCP로 — 누가 부르나, 양식은 누가 정하나, AI가 고르나 (직접 제작)</p>
+<p>셋을 나란히 두면 경쟁처럼 보이지만, 실제로는 위아래로 쌓여 있어요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>셋은 경쟁이 아니라 층이에요. MCP 서버의 속은 대개 API나 CLI예요.</div>
+<h2 id="6-언제-무엇을-고르나">6. 언제 무엇을 고르나</h2>
+<p><strong>누가 누르느냐로 고르면 돼요. 상황별로 정리하면 이래요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>상황</th><th>고를 것과 이유</th></tr></thead><tbody><tr><td>한 번 하는 일 · 내 컴퓨터의 빌드·배포</td><td>CLI — 설치하면 바로 되고, 사람도 AI도 같은 명령을 쓴다</td></tr><tr><td>매일 정해진 순서로 도는 자동화</td><td>API(코드로) — 판단이 필요 없는 일에 AI를 끼우면 느리고 비싸다</td></tr><tr><td>상황을 봐 가며 도구를 골라야 하는 일</td><td>MCP — AI가 목록에서 고르니 순서를 적어 둘 필요가 없다</td></tr><tr><td>팀이 쓰는 AI 앱에 회사 도구 붙이기</td><td>MCP 서버 하나 — 한 번 만들면 MCP를 지원하는 앱 어디서나 쓴다</td></tr></tbody></table>
+<p>제 블로그 공장도 이 표대로 나뉘어 있어요. 매일 아침 6시 발행 큐는 정해진 순서대로 스크립트를 명령으로 돌려요. 사이트 배포도, 그날 글 내보내기도 순서가 정해져 있어서 AI의 판단이 끼지 않아요. 반면 글을 쓰는 세션은 MCP를 써요. 클로드 코드가 필요할 때 드라이브·메일·노션 도구를 스스로 골라요.</p>
+<p><strong>이런 분은 CLI와 API:</strong> 같은 일을 정해진 순서로 되풀이하는 분<br>
+<strong>이런 분은 MCP:</strong> ‘이거 해줘’ 한마디로 도구 고르기까지 AI에게 맡기고 싶은 분</p>
+<h2 id="7-통합-리모컨은-권한도-통합해요">7. 통합 리모컨은 권한도 통합해요</h2>
+<p><strong>MCP 서버를 붙이는 건 AI에게 권한을 주는 일이에요.</strong> 목록에 있는 도구는 AI가 고를 수 있어요. 메일 보내기·파일 삭제 같은 도구가 있다면, 언제 써도 되는지 규칙이 필요해요.</p>
+<p>CLI를 쥔 AI도 마찬가지예요. 명령으로 할 수 있는 일은 무엇이든 할 수 있어서, 실행 전 검사(훅)를 두는 거예요. 저는 클로드 코드를 자동 모드로 쓰고, 밖으로 내보내는 일은 규칙(하루 1편 큐·발행 전 검사)을 정해 맡겨요. 처음엔 매번 직접 승인했어요.</p>
+<p>API 키도 조심해야 해요. 제 공장은 키를 설정 파일 한 곳에서만 읽고 어디에도 출력하지 않아요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>API 키는 리모컨 배터리가 아니라 집 열쇠예요. 코드나 대화에 붙여 넣지 말고 설정 파일(.env)에만 두세요.</div>
+<h2 id="헷갈리기-쉬운-것">헷갈리기 쉬운 것</h2>
+<p><strong>MCP가 API를 대체하는 건 아니에요</strong> MCP 공식 문서는 도구를 ‘파일 작업, API 호출, 데이터베이스 조회 같은 동작을 수행하는 실행 가능한 함수’라고 정의해요. 드라이브 MCP 서버의 속은 드라이브 API이고, 파일시스템 MCP 서버의 속은 로컬 파일 명령이에요.</p>
+<p><strong>CLI는 개발자만 쓰는 게 아니에요</strong> 터미널을 쥔 AI도 CLI를 써요. 클로드 코드에 일을 시키면, 사람이 명령어를 몰라도 AI가 대신 명령을 쳐요.</p>
+<p><strong>API는 사람이 누르는 버튼이 아니에요</strong> API는 프로그램끼리 정한 약속이라, 사람은 코드를 통해서만 써요. 사람이 직접 치는 쪽은 CLI예요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① CLI는 버튼 — 사람이나 AI가 명령으로<br>② API는 기기별 리모컨 — 프로그램이 양식대로<br>③ MCP는 통합 리모컨 — AI가 목록에서 골라<br>④ 셋은 층 — MCP 서버의 속은 API·CLI</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 비개발자도 셋을 직접 만져 볼 수 있나요?</summary><p>네. 터미널에 git --version 한 줄이면 CLI예요. AI에게 ‘무료 공개 API로 데이터를 가져오는 파이썬 10줄을 써줘’라고 시켜 돌려 보면 API, 클로드 코드에 MCP 서버를 연결하고 ‘지금 쓸 수 있는 도구 목록 보여줘’라고 물으면 MCP를 만져 본 거예요.</p></details>
+<details class="faq"><summary>Q. 매일 도는 자동화는 왜 MCP 말고 API로 하나요?</summary><p>정해진 순서로 도는 일에는 AI의 판단이 필요 없어서요. 거기에 AI를 끼우면 느리고 비싸져요.</p></details>
+<details class="faq"><summary>Q. MCP 서버는 아무거나 연결해도 되나요?</summary><p>아니요. 목록에 있는 도구는 AI가 고를 수 있어서, 연결한 만큼 권한을 주는 셈이에요. 연결 전에 확인할 것은 MCP 서버 추천 글에 정리해 두었어요.</p></details>
+<details class="faq"><summary>Q. 같은 일을 셋 다로 할 수 있다면 무엇부터 해 보면 좋나요?</summary><p>파일 하나 올리기처럼 작은 일을 셋으로 한 번씩 해 보세요. 어느 쪽이 편했는지가 곧 내 상황의 답이에요.</p></details>
+<p>다음 글에서는 클로드 코드에 MCP 서버를 직접 연결하는 방법을 다뤄요. 연결 방법 세 가지와 연결 뒤 확인하는 법까지요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260907-claude-code-mcp/">Claude Code에 MCP 연결하기 — 개념부터 첫 연결까지 (실사용 기준)</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>MCP 공식 문서 — 아키텍처 · <a href="https://modelcontextprotocol.io/docs/learn/architecture">modelcontextprotocol.io/docs/learn/architecture</a></li>
+<li>Google Drive API — 파일 업로드 · <a href="https://developers.google.com/workspace/drive/api/guides/manage-uploads">developers.google.com/workspace/drive/api/guides/manage-uploads</a></li>
+<li>rclone 공식 문서 — Google Drive · <a href="https://rclone.org/drive">rclone.org/drive</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 9월 22일<br>다시 확인·수정 2026년 10월 7일<br>블로그 공장에서 셋을 쓰는 방식 + 공식 문서 대조<br>제휴 없음 · 캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p><strong>드라이브 API 단순 업로드 — 요청 원문</strong> (Google Drive API 공식 문서 ‘업로드 관리’, 2026년 10월 7일 확인)</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#F97583">POST</span><span style="color:#E1E4E8"> https://www.googleapis.com/upload/drive/v3/files?uploadType=media</span></span>
+<span class="line"><span style="color:#85E89D">Authorization</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> Bearer &#x3C;액세스 토큰></span></span>
+<span class="line"><span style="color:#85E89D">Content-Type</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> application/pdf</span></span>
+<span class="line"><span style="color:#85E89D">Content-Length</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> &#x3C;파일 크기(바이트)></span></span></code></pre>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260906-mcp-explained/">MCP 뜻</a> · <a href="/docs/tech/20260906-mcp-servers-guide/">MCP 서버 추천</a> · <a href="/docs/tech/20260907-claude-code-mcp/">Claude Code에 MCP 연결하기</a> · <a href="/docs/tech/20260908-ai-agent-intro/">AI 에이전트 만들기 입문</a> · <a href="/docs/tech/20260907-claude-code-hooks/">Claude Code 훅 활용법</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

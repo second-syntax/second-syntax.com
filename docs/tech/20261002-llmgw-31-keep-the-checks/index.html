@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>회귀 테스트와 품질 게이트, 검사를 지우지 않고 빠르게 돌리는 법 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261002-llmgw-31-keep-the-checks/"><meta name="description" content="LLM 중계기는 고장 하나를 고칠 때마다 같은 고장을 다시 잡는 자동 검사를 하나씩 세웠습니다. 첫 버전이 나오고 이틀이 채 안 돼 시험을 돌릴 때마다 먼저 도는 검사·시험이 13개가 됐고, 한 번 돌리는 데 18초쯤 걸리자 기록은 '매번 18초를 물리면 시험을 안 돌리게 된다'고 적었어요. 하나도 지우지 않고 커밋 전의 빠른 핵심 검사 5종과 새 판 전의 전체 검사로 나눈 이야기, 코드가 옮겨 가면 검사도 옮겨 단 사례, 검사가 정말 무는지 일부러 고장을 넣어 확인하는 방법을 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="회귀 테스트와 품질 게이트, 검사를 지우지 않고 빠르게 돌리는 법 (LLM 중계기 개발기)"><meta property="og:description" content="LLM 중계기는 고장 하나를 고칠 때마다 같은 고장을 다시 잡는 자동 검사를 하나씩 세웠습니다. 첫 버전이 나오고 이틀이 채 안 돼 시험을 돌릴 때마다 먼저 도는 검사·시험이 13개가 됐고, 한 번 돌리는 데 18초쯤 걸리자 기록은 '매번 18초를 물리면 시험을 안 돌리게 된다'고 적었어요. 하나도 지우지 않고 커밋 전의 빠른 핵심 검사 5종과 새 판 전의 전체 검사로 나눈 이야기, 코드가 옮겨 가면 검사도 옮겨 단 사례, 검사가 정말 무는지 일부러 고장을 넣어 확인하는 방법을 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261002-llmgw-31-keep-the-checks/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.vNm3I0pC_ZRBfhG.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261002-llmgw-31-keep-the-checks/" data-title="회귀 테스트와 품질 게이트, 검사를 지우지 않고 빠르게 돌리는 법 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-고장-하나에-검사-하나" data-toc="1-고장-하나에-검사-하나" data-astro-cid-f3qesd3f>1. 고장 하나에 검사 하나</a></li><li data-astro-cid-f3qesd3f><a href="#2-매번-18초면-안-돌린다" data-toc="2-매번-18초면-안-돌린다" data-astro-cid-f3qesd3f>2. 매번 18초면 안 돌린다</a></li><li data-astro-cid-f3qesd3f><a href="#3-핵심-5종과-전체-검사로-나누기" data-toc="3-핵심-5종과-전체-검사로-나누기" data-astro-cid-f3qesd3f>3. 핵심 5종과 전체 검사로 나누기</a></li><li data-astro-cid-f3qesd3f><a href="#4-지우지-않고-옮겨-단다" data-toc="4-지우지-않고-옮겨-단다" data-astro-cid-f3qesd3f>4. 지우지 않고 옮겨 단다</a></li><li data-astro-cid-f3qesd3f><a href="#5-검사가-정말-무는지-확인하기" data-toc="5-검사가-정말-무는지-확인하기" data-astro-cid-f3qesd3f>5. 검사가 정말 무는지 확인하기</a></li><li data-astro-cid-f3qesd3f><a href="#6-내-프로젝트에-적용해-보기" data-toc="6-내-프로젝트에-적용해-보기" data-astro-cid-f3qesd3f>6. 내 프로젝트에 적용해 보기</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>6부 · 31편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 2일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-고장-하나에-검사-하나" data-astro-cid-l6a6buid>1. 고장 하나에 검사 하나</a></li><li data-astro-cid-l6a6buid><a href="#2-매번-18초면-안-돌린다" data-astro-cid-l6a6buid>2. 매번 18초면 안 돌린다</a></li><li data-astro-cid-l6a6buid><a href="#3-핵심-5종과-전체-검사로-나누기" data-astro-cid-l6a6buid>3. 핵심 5종과 전체 검사로 나누기</a></li><li data-astro-cid-l6a6buid><a href="#4-지우지-않고-옮겨-단다" data-astro-cid-l6a6buid>4. 지우지 않고 옮겨 단다</a></li><li data-astro-cid-l6a6buid><a href="#5-검사가-정말-무는지-확인하기" data-astro-cid-l6a6buid>5. 검사가 정말 무는지 확인하기</a></li><li data-astro-cid-l6a6buid><a href="#6-내-프로젝트에-적용해-보기" data-astro-cid-l6a6buid>6. 내 프로젝트에 적용해 보기</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 글에 나오는 AI 서비스들(OpenAI·앤트로픽)과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="회귀-테스트와-품질-게이트-검사를-지우지-않고-빠르게-돌리는-법-llm-중계기-개발기">회귀 테스트와 품질 게이트, 검사를 지우지 않고 빠르게 돌리는 법 (LLM 중계기 개발기)</h1>
+<p><img alt="회귀 테스트와 품질 게이트 — 검사를 지우지 않고 빠르게 돌리는 법 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.vNm3I0pC_Z2nDTaa.webp" ></p>
+<p class="cap">회귀 테스트와 품질 게이트 — 검사를 지우지 않고 빠르게 돌리는 법 (캐릭터는 GPT 이미지 생성)</p>
+<p>버그를 고쳤는데 몇 주 뒤 같은 버그가 또 나온 적 있나요? “고친 걸 어떻게 계속 고친 상태로 지키지?” 제가 만든 LLM 중계기는 이 질문에 자동 검사로 답했어요.</p>
+<p>사고가 잦은 교차로를 떠올려 보세요. 사고가 날 때마다 신호등이 하나씩 늘고, 몇 달 동안 사고가 없었다고 신호등을 뽑는 사람은 없어요. 사고가 없는 게 신호등 덕분이니까요. 다만 빨간불이 몇 분씩 이어지면, 차가 없을 때 그냥 건너는 사람이 생기기 마련이에요.<br>
+<strong>고친 고장마다 검사를 세우고, 검사는 지우지 않되, 매번 기다리는 시간은 짧게. 이번 편의 결론이에요.</strong></p>
+<p>지난 30편에서는 AI가 사람의 허락을 기다리다 멈춰 선 이야기를 했어요. 4편에서 ‘검사를 지우지 않는 원칙은 31편에서’ 하겠다고 약속했는데, 오늘이 그 편이에요.</p>
+<p><img alt="북적이는 교차로에 새 신호등을 다는 로봇 — 고장 하나에 검사 하나 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-new-light.BDF6oG7t_2s6AD9.webp" ></p>
+<p class="cap">북적이는 교차로에 새 신호등을 다는 로봇 — 고장 하나에 검사 하나 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 31편 · 6부 중계기 위에서, 그리고 회고<br>대상: 고친 버그가 자꾸 돌아와 고민인 분<br>① 고장 하나에 검사 하나를 세우는 습관<br>② 18초 걸리던 검사를 둘로 나눈 방법<br>③ 검사를 지우지 않고 옮기고 확인하는 법<br>2026년 10월 2일 기준 · 개발 기록 대조</div>
+<hr>
+<h2 id="1-고장-하나에-검사-하나">1. 고장 하나에 검사 하나</h2>
+<p><strong>고장을 하나 고칠 때마다, 같은 고장을 다시 잡는 자동 검사를 함께 세웠어요.</strong> 고쳤던 고장이 다시 생기는 걸 회귀(regression)라고 하고, 그걸 잡는 시험을 회귀 테스트라고 불러요.</p>
+<p>이 글에서는 낱말 두 개를 나눠 쓸게요. <strong>시험</strong>(테스트)은 기능 하나가 정해진 대로 움직이는지 보는 작은 시험이에요. <strong>검사</strong>(게이트)는 컴퓨터 종류에 따라 달라지는 것, 켜고 끄는 과정, 기록에 남는 내용처럼 시험만으로 잡기 어려운 것을 지키는 관문이에요.</p>
+<p>첫날부터 새 검사와 시험은 모두 시험을 돌릴 때마다 맨 먼저 도는 자리에 줄줄이 붙었어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>언제</th><th>새로 세운 검사·시험</th></tr></thead><tbody><tr><td>7월 13일</td><td>경로 · 부품 목록 · 실행 통로 · 설정 파일 안내 · 종료 정리 · 압축판 부품 검사</td></tr><tr><td>7월 14일</td><td>‘영구 대기 금지’ 시험 · 오류 원문 검사 · 명령어 도구 버전 시험 · 화면 높이 검사 · 기록 검사 · 종료 경로 검사</td></tr><tr><td>7월 15일 새벽</td><td>위장 실패 시험(로그인 만료가 ‘성공’으로 위장)</td></tr></tbody></table>
+<p>첫 버전이 7월 13일 아침에 나오고 이틀이 채 안 돼, 시험을 한 번 돌릴 때마다 검사 10개와 시험 3개, <strong>모두 13개</strong>가 먼저 돌았어요. 하나하나가 실제로 겪은 사고, 또는 지키기로 한 원칙에서 나왔어요.</p>
+<h2 id="2-매번-18초면-안-돌린다">2. 매번 18초면 안 돌린다</h2>
+<p><strong>검사가 열세 개로 늘자, 시험 한 번에 18초쯤 걸리게 됐어요.</strong> 프로그램을 고치는 일은 조금 고치고, 시험을 돌리고, 다시 고치는 한 바퀴의 반복이에요. 그 한 바퀴마다 18초를 기다려야 했어요.</p>
+<p>중계기의 검사 목록 문서에는 이렇게 적혀 있어요.<br>
+<strong>“개발 반복 속도가 곧 품질이다. 매 저장마다 18초를 물리면 테스트를 안 돌리게 된다.”</strong></p>
+<p>빨간불이 너무 길면 무단횡단이 생기는 것과 같아요. 시험이 느리면 ‘이번엔 작은 수정이니까’ 하며 건너뛰고 싶어지고, 건너뛴 시험은 아무것도 지켜 주지 못해요.</p>
+<p><img alt="커다란 초시계를 든 로봇과 체크리스트를 빠르게 넘기는 작은 로봇 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-stopwatch.DZjfglx-_Z15sc7M.webp" ></p>
+<p class="cap">커다란 초시계를 든 로봇과 체크리스트를 빠르게 넘기는 작은 로봇 (GPT 이미지 생성)</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>매번 도는 시험이 느리면, 결국 아무도 돌리지 않아요.</div>
+<h2 id="3-핵심-5종과-전체-검사로-나누기">3. 핵심 5종과 전체 검사로 나누기</h2>
+<p><strong>7월 21일 아침, 검사를 하나도 지우지 않고 세 묶음으로 나눴어요.</strong><br>
+① 기본 시험 — 매번 도는 건 기능 시험만 남겼어요. 그날 시험 <strong>229개</strong>가 <strong>약 1.7초</strong>에 끝났어요<br>
+② 핵심 검사 5종 — 저장 기록(커밋)을 남기기 전에 돌리기를 권하는 묶음, 수 초<br>
+③ 전체 검사 — 새 판을 내거나 배포하기 전에는 반드시. 검사 10종과 시험 229개에 <strong>약 19.5초</strong></p>
+<p>전체를 다 돌리는 시간은 여전히 20초쯤이에요. 줄어든 건 검사의 양이 아니라 매번 기다리는 시간이에요. <mark>매번 도는 건 가볍게, 무거운 건 내놓기 전에 한 번 제대로</mark>가 이때 정한 방침이에요. 문서의 방침 제목은 ‘되돌리지 말 것’이에요.</p>
+<p>안쪽 고리(핵심 5종)는 실제 고장을 잡았고, 값싸고, 다시 생기기 쉬운 것이에요. 바깥 고리(전체 검사)는 여기에 종료 경로, 압축판 부품, 오류 원문, 설정 파일 안내, 화면 높이 검사를 더하고 시험 전부를 함께 돌려요. 8월 8일에는 배포판을 만들 때 자동으로 따라 도는 윈도 배포판 검사와 맥·리눅스 배포판 검사가 목록에 더해져, 지금 목록은 <strong>12종</strong>이에요.</p>
+<p><img alt="사고마다 세운 검사 12종 — 커밋 전에 도는 안쪽 고리 5종과 새 판 전에 도는 바깥 고리 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5190" src="/_astro/diagram-two-rings.DLNh6AVW_ZGrUyi.webp" ></p>
+<p class="cap">사고마다 세운 검사 12종 — 커밋 전에 도는 안쪽 고리 5종과 새 판 전에 도는 바깥 고리 (직접 제작)</p>
+<p>새 검사를 더하는 규칙도 문서에 있어요. 먼저 목록 표에 무엇을 막는지와 함께 적고, 값싸면 안쪽, 무겁거나 특정 환경이 필요하면 바깥에 넣어요. <strong>매번 도는 자리에는 넣지 않아요.</strong></p>
+<p>검사가 느는 동안 시험 항목도 늘었어요. 저장 기록에 적힌 숫자예요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>날짜</th><th>시험 수</th></tr></thead><tbody><tr><td>7월 13일 저녁</td><td>48개</td></tr><tr><td>7월 21일</td><td>229개 (묶음을 나눈 날)</td></tr><tr><td>8월 11일</td><td>490개</td></tr><tr><td>9월 1일</td><td>586개</td></tr><tr><td>9월 8일</td><td>631개</td></tr><tr><td>9월 22일</td><td>713개</td></tr><tr><td>9월 25일</td><td>799개 (798개 통과, 1개 건너뜀)</td></tr></tbody></table>
+<p>9월 25일 뒤로는 저장 기록에 숫자가 적혀 있지 않아서 여기까지만 적었어요. 첫날 저녁의 열여섯 배가 넘어요.</p>
+<h2 id="4-지우지-않고-옮겨-단다">4. 지우지 않고 옮겨 단다</h2>
+<p><strong>검사가 보던 코드가 사라지면, 검사를 지우는 대신 보는 곳을 옮겼어요.</strong> 검사 목록 문서의 방침은 이래요. “게이트는 삭제하지 않는다 — 격리·강등만.” 매번 도는 자리에서 빼 다른 묶음으로 옮길 수는 있어도, 지운다는 선택지는 없었어요.</p>
+<p>① 종료 경로 검사 — 7월에는 Electron 창 닫기를 봤어요. 8월 8일 Electron을 걷어낸 뒤엔 트레이용으로 다시 써서, 종료 창구와 <strong>11초</strong> 정리 상한과 마지막 수단이 연결돼 있는지 확인해요<br>
+② 경로 검사의 재현 시험 — 지키는 대상을 옛 시작 파일에서 새 시작 파일로 옮겼어요<br>
+③ 오류 원문 검사 — 기록 보관함도 자르고 있던 게 드러나자, 보관함과 본체 코드까지 읽게 넓혔어요<br>
+④ 압축판 부품 검사 — 윈도용 하나에서 배포 대상 네 가지(윈도, 맥 두 종류, 리눅스)로 넓혔어요<br>
+⑤ 매번 돌던 시험 셋 — 기능 시험 전체에도 들어 있어서 한 번만 돌게 했어요. 줄어든 건 중복이지 시험이 아니에요<br>
+⑥ 정답이 바뀐 검사 — 화면 규칙이 바뀌자 ‘워밍업 중’을 지키던 검사의 정답을 ‘준비 전’으로 고쳤어요</p>
+<p>10월 2일에 코드를 읽는 검사 여섯 개를 다시 돌려 봤더니 모두 통과했어요. 7월 13일 아침에 선 첫 신호등에도 여전히 불이 들어와 있는 셈이에요.</p>
+<p><img alt="낡은 신호등을 버리지 않고 새 길로 옮기는 로봇 — 검사는 지우지 않고 보는 곳을 옮긴다 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-move-light.B6S1xSwh_Z17cD9o.webp" ></p>
+<p class="cap">낡은 신호등을 버리지 않고 새 길로 옮기는 로봇 — 검사는 지우지 않고 보는 곳을 옮긴다 (GPT 이미지 생성)</p>
+<h2 id="5-검사가-정말-무는지-확인하기">5. 검사가 정말 무는지 확인하기</h2>
+<p><strong>가장 위험한 검사는 있는데 걸리지 않는 검사예요.</strong> 꺼진 신호등처럼, 있다는 이유로 마음을 놓게 하니까요. 그래서 검사를 세우면 고친 코드를 일부러 다시 망가뜨려 검사가 실패하는지 봐요.</p>
+<p>① 오류 원문 검사 — 지웠던 160자 자르기를 다시 넣었더니 실패했어요(18편)<br>
+② 종료 정리 검사 — 끄기 기능을 빈 껍데기로 바꿨더니 “자식이 아직 살아 있음”으로 실패했어요(21편)<br>
+③ 새로 붙인 AI의 전용 차선 검사 — 고치기 전 코드에서 실패하는 것까지 확인했어요(13편)</p>
+<p>종료 정리 검사는 정리 기능을 불렀다는 사실이 아니라, 프로그램이 정말 사라졌는지와 문 번호(포트)가 닫혔는지를 실제로 재요. 그래도 창 X로 닫는 길이 정리를 부르지 않은 빈틈이 있었고, 거기서 종료 경로 검사가 나왔어요. 크롬이 없는 컴퓨터에서 화면 높이 검사는 ‘건너뜀’ 경고를 남겨요. <strong>건너뛴 검사는 통과한 검사가 아니니까요.</strong> 중계기를 실제로 띄우는 검사는 늘 임시 폴더와 임시 문 번호에서 돌아요. 검사 때문에 진짜 설정이 바뀌면 그게 또 하나의 사고니까요.</p>
+<h2 id="6-내-프로젝트에-적용해-보기">6. 내 프로젝트에 적용해 보기</h2>
+<p><strong>AI 코딩 도우미에게 일을 맡길 때도 이 원칙을 그대로 요청에 넣을 수 있어요.</strong> 고칠 때 검사를 함께 만들고, 그 검사가 고치기 전 코드에서 실패하는지까지 보게 하는 거예요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 버그를 고치고, 같은 버그가 다시 생기면 실패하는 시험을 함께 만들어줘. 고치기 전 코드에서 그 시험이 실패하는지도 확인해줘</span></span></code></pre>
+<p>시험이 느려졌을 때는 지우지 말고 나누게 하세요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>시험이 오래 걸리면 지우지 말고, 매번 도는 빠른 묶음과 배포 전에 도는 전체 묶음으로 나눠줘. 어느 묶음에 넣었는지 이유와 함께 목록 문서에 적어줘</span></span></code></pre>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 고장 하나에 검사 하나 — 첫날 48개 시험이 799개로<br>② 검사는 지우지 않고 자리나 보는 곳을 옮긴다<br>③ 매번 도는 건 가볍게(약 1.7초), 무거운 건 내놓기 전에<br>④ 일부러 고장을 넣어 검사가 무는지 확인한다</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 검사가 많아지면 개발이 느려지지 않나요?</summary><p>그래서 묶음을 나눴어요. 매번 도는 기본 시험은 기능 시험만 남겨 7월 21일 기준 약 1.7초였고, 무거운 검사는 커밋 전과 새 판 전에 따로 돌려요. 전체를 다 돌리면 지금도 약 20초 걸려요.</p></details>
+<details class="faq"><summary>Q. 쓸모없어진 검사는 지워도 되지 않나요?</summary><p>중계기에서는 지우지 않았어요. 매번 도는 자리에서 빼거나, 보는 곳을 옮기거나, 바뀐 규칙에 맞게 정답을 고쳤어요. 문서에는 “게이트는 삭제하지 않는다 — 격리·강등만”이라고 적혀 있어요.</p></details>
+<details class="faq"><summary>Q. 시험(테스트)과 검사(게이트)는 뭐가 다른가요?</summary><p>시험은 기능 하나가 정해진 대로 움직이는지 봐요. 검사는 컴퓨터 종류, 켜고 끄는 과정, 기록 내용처럼 시험만으로 잡기 어려운 것을 지키고, 통과하지 못하면 다음 단계로 넘어가지 못하게 해요.</p></details>
+<p>다음 32편에서는 가짜와 진짜 이야기를 해요. 오늘 본 검사와 시험의 대부분은 흉내만 내는 가짜 AI로 돌아요. 가짜로 다 통과해도 새 판 전에 진짜 환경에서 한 번은 돌려 봐야 하는 이유를 다룰게요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 쓴 날 2026년 10월 2일<br>숫자 다시 대조 2026년 10월 7일<br>제가 만든 중계기의 개발 기록 바탕<br>저장 기록 · 검사 목록 문서와 대조<br>제휴 없음 · 언급한 서비스들과 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">연재 이어 보기: <a href="/docs/tech/20261002-llmgw-30-waiting-approval/">← 30편</a> · <a href="/docs/tech/20261002-llmgw-32-fake-vs-real/">32편 →</a> · 함께 보면 좋은 편: <a href="/docs/tech/20261001-llmgw-04-first-day/">4편(첫날 검사 6개)</a> · <a href="/docs/tech/20261001-llmgw-18-keep-errors/">18편(오류 원문)</a> · <a href="/docs/tech/20261001-llmgw-21-zombies/">21편(종료 정리)</a> · <a href="/docs/tech/20261002-llmgw-33-human-and-ai/">33편(연재 전체 목차)</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261002-llmgw-30-waiting-approval/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 30편</span> <span class="t" data-astro-cid-l6a6buid>코덱스·클로드 코드 승인 요청, AI가 허락을 기다리다 멈춘 이유</span> </a> <a class="next" href="/docs/tech/20261002-llmgw-32-fake-vs-real/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 32편 →</span> <span class="t" data-astro-cid-l6a6buid>목 테스트 한계, 가짜로 통과해도 스모크 테스트가 필요한 이유</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>챗GPT로 여행 앱 만들기, 일정부터 19명 가족여행 실전까지</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260904-codex-travel-app/"><meta name="description" content="5가족 19명 삼척 갈남항 2박 3일 여행. ChatGPT(Codex)에 요청 한 번으로 일정을 받고, 글자 위주 첫 앱은 버리고, 모든 페이지를 보물지도 그림으로 바꾼 두 번째 앱을 실제 여행에서 썼다. 요청 원문, 두 앱 비교, 내 일에 적용하는 세 가지까지."><meta property="og:title" content="챗GPT로 여행 앱 만들기, 일정부터 19명 가족여행 실전까지"><meta property="og:description" content="5가족 19명 삼척 갈남항 2박 3일 여행. ChatGPT(Codex)에 요청 한 번으로 일정을 받고, 글자 위주 첫 앱은 버리고, 모든 페이지를 보물지도 그림으로 바꾼 두 번째 앱을 실제 여행에서 썼다. 요청 원문, 두 앱 비교, 내 일에 적용하는 세 가지까지."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260904-codex-travel-app/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DVjSllsL_Z1Xx6qj.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260904-codex-travel-app/" data-title="챗GPT로 여행 앱 만들기, 일정부터 19명 가족여행 실전까지" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-요청-한-번으로-받은-일정" data-toc="1-요청-한-번으로-받은-일정" data-astro-cid-f3qesd3f>1. 요청 한 번으로 받은 일정</a></li><li data-astro-cid-f3qesd3f><a href="#2-첫-번째-앱은-버렸어요" data-toc="2-첫-번째-앱은-버렸어요" data-astro-cid-f3qesd3f>2. 첫 번째 앱은 버렸어요</a></li><li data-astro-cid-f3qesd3f><a href="#3-모든-페이지를-지도로-바꾸기" data-toc="3-모든-페이지를-지도로-바꾸기" data-astro-cid-f3qesd3f>3. 모든 페이지를 지도로 바꾸기</a></li><li data-astro-cid-f3qesd3f><a href="#4-결과-예보는-사흘-내내-비" data-toc="4-결과-예보는-사흘-내내-비" data-astro-cid-f3qesd3f>4. 결과: 예보는 사흘 내내 비</a></li><li data-astro-cid-f3qesd3f><a href="#5-내-일에-적용해-보기" data-toc="5-내-일에-적용해-보기" data-astro-cid-f3qesd3f>5. 내 일에 적용해 보기</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-요청-한-번으로-받은-일정" data-astro-cid-l6a6buid>1. 요청 한 번으로 받은 일정</a></li><li data-astro-cid-l6a6buid><a href="#2-첫-번째-앱은-버렸어요" data-astro-cid-l6a6buid>2. 첫 번째 앱은 버렸어요</a></li><li data-astro-cid-l6a6buid><a href="#3-모든-페이지를-지도로-바꾸기" data-astro-cid-l6a6buid>3. 모든 페이지를 지도로 바꾸기</a></li><li data-astro-cid-l6a6buid><a href="#4-결과-예보는-사흘-내내-비" data-astro-cid-l6a6buid>4. 결과: 예보는 사흘 내내 비</a></li><li data-astro-cid-l6a6buid><a href="#5-내-일에-적용해-보기" data-astro-cid-l6a6buid>5. 내 일에 적용해 보기</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다. 언급된 숙소·식당·서비스로부터 어떤 대가도 받지 않았습니다.</blockquote> <h1 id="챗gpt로-여행-앱-만들기-일정부터-19명-가족여행-실전까지">챗GPT로 여행 앱 만들기, 일정부터 19명 가족여행 실전까지</h1>
+<p><img alt="챗GPT로 여행 앱 만들기 — 일정부터 19명 가족여행 실전까지 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DVjSllsL_1ABnv9.webp" ></p>
+<p class="cap">챗GPT로 여행 앱 만들기 — 일정부터 19명 가족여행 실전까지 (캐릭터는 GPT 이미지 생성)</p>
+<p>다섯 가족이 함께 가는 여행을 준비해 본 적 있으세요? 어른 9명, 초등학생 10명, 모두 19명이에요. 일정·맛집·준비물·안전 수칙을 단톡방에 글로 올리면, 끝까지 읽는 사람이 거의 없어요. “AI로 앱을 만들면 좀 나을까?”</p>
+<p>바닷가 매점 메뉴판을 떠올려 보세요. 글씨만 빽빽한 메뉴판은 그냥 지나치는데, 사진 메뉴판 앞에는 아이들이 먼저 몰려들어요. 담긴 정보가 같아도, 보게 만드는 쪽이 이겨요.<br>
+<strong>AI로 만든 여행 앱도 기능이 아니라 ‘보게 만드는가’에서 갈렸어요.</strong></p>
+<p><img alt="글씨만 빽빽한 메뉴판은 지나치고 그림 메뉴판에 몰려든 아이들 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-menu-board.BIQPkQJ2_1PLa69.webp" ></p>
+<p class="cap">글씨만 빽빽한 메뉴판은 지나치고 그림 메뉴판에 몰려든 아이들 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: AI로 일정·앱을 만들어 보고 싶은 분<br>① 요청 한 번으로 받은 2박 3일 일정<br>② 첫 앱을 버리고 두 번째 앱이 성공한 이유<br>③ 내 일에 적용하는 세 가지<br>2026년 8월 여행 · ChatGPT Pro의 Codex로 제작</div>
+<hr>
+<h2 id="1-요청-한-번으로-받은-일정">1. 요청 한 번으로 받은 일정</h2>
+<p><strong>민박 정보가 담긴 사진 한 장과 요청 한 번으로 2박 3일 일정과 맛집 5곳이 나왔어요.</strong> 8월 말 삼척 갈남항 여행이었고, Codex(ChatGPT Pro)에 이렇게 요청했어요. 아래는 제 요청을 줄인 틀이고, 원문은 사이트판에 있어요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>[숙소 사진 첨부] 이 숙소로 [8월 말] 2박 3일 여행을 가. [다섯 가족]이고 아이들은 [초등학생 10명]이야. 점심은 근처 식당, 저녁은 바비큐나 회를 먹을 거야. 일정을 간단히 짜 주고 근처 맛집 5곳을 추천해줘</span></span></code></pre>
+<p>돌아온 답의 뼈대는 한 문장이었어요. <strong>“이동을 줄이고 갈남항 물놀이에 체력을 몰아준다.”</strong><br>
+<strong>1일 차</strong> 서울 출발 → 막국수 점심 → 입실 → 가벼운 물놀이 → 바비큐<br>
+<strong>2일 차</strong> 오전 스노클링 집중 → 오후는 체력 따라 2차 물놀이나 케이블카 → 회 저녁<br>
+<strong>3일 차</strong> 해안 산책 → 점심 → 귀가</p>
+<p>아이 전원 구명조끼, 가족별로 자기 아이 담당 같은 안전 수칙까지 들어 있었어요. 이 일정을 거의 그대로 뼈대로 썼어요. 다만 그대로 믿지는 않았어요. 인원은 ‘어른 약 10명’으로 가정했지만 실제는 <strong>9명</strong>이었고, 시설 운영시간은 따로 확인해야 했어요. <mark>AI 일정은 결정할 틀이지, 결정 자체가 아니에요.</mark></p>
+<h2 id="2-첫-번째-앱은-버렸어요">2. 첫 번째 앱은 버렸어요</h2>
+<p><strong>기능은 다 갖춘 앱이었는데, 아무도 읽지 않아서 버렸어요.</strong> 일정을 다섯 가족에게 나누려고 Codex에게 HTML 파일 하나짜리 앱을 만들어 달라고 했어요.</p>
+<p>첫 결과물은 <code>18KB</code> 파일 하나에 일정 3일 카드, 맛집 5곳(전화·지도 바로가기), 숙소 대여 가격표, 기기에 저장되는 준비물 체크리스트, 파일 공유 버튼까지 들어 있었어요.</p>
+<p><img alt="첫 번째 앱의 일정 화면 — 시간과 할 일이 글자로만 이어져요 (직접 캡처)" loading="lazy" decoding="async" fetchpriority="auto" width="780" height="920" src="/_astro/screenshot-v1-plan.DHs5oNfe_ZO5WuC.webp" ></p>
+<p class="cap">첫 번째 앱의 일정 화면 — 시간과 할 일이 글자로만 이어져요 (직접 캡처)</p>
+<p>그런데 스크롤을 내리며 읽어야 하는 글과 표 위주라 눈에 들어오지 않았고, 무엇보다 재미가 없었어요. 어른도 안 읽는데, 초등학생 10명이 볼 리가 없죠.<br>
+<strong>기능 점검표로는 만점인데, ‘쓰이는 물건’은 아니었어요.</strong></p>
+<h2 id="3-모든-페이지를-지도로-바꾸기">3. 모든 페이지를 지도로 바꾸기</h2>
+<p><strong>요청 하나를 바꿨어요. 정보를 글로 늘어놓지 말고, 모든 페이지를 지도·그림으로 만들어 달라고요.</strong> 실제로는 “전부 보물지도 그림으로 만들어줘”라고 했어요. 결과를 가른 건 요청에 담은 ‘누가 어떻게 볼 물건인가’였어요.</p>
+<p class="plabel">❌ 이렇게 말고</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>일정 앱을 만들어줘</span></span></code></pre>
+<p>누가 어디서 볼 물건인지가 빠져 있어요.</p>
+<p class="plabel">⭕ 이렇게</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>초등학생 10명도 들여다보게, 모든 페이지를 보물지도 그림으로 만들어줘</span></span></code></pre>
+<p><img alt="보물지도처럼 그린 여행 앱 화면에 모여든 아이들 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-map-app.BFUoenJG_Zxl5Af.webp" ></p>
+<p class="cap">보물지도처럼 그린 여행 앱 화면에 모여든 아이들 (GPT 이미지 생성)</p>
+<p>최종 앱 ‘갈남항 여행 보물지도’는 탭 6개를 옆으로 넘기는 구조예요. 탭마다 보물지도 모양의 포스터 그림이 한 장씩 들어 있어요. 포스터 6장은 다른 도구 없이 Codex 안에서 이미지 생성으로 만들었어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>탭</th><th>담은 것</th></tr></thead><tbody><tr><td>일정</td><td>3일 일정 + 숙소 이용 안내</td></tr><tr><td>날씨</td><td>3일 예보와 우비·방수팩 준비물</td></tr><tr><td>플랜B</td><td>비 오는 날 실내 체험시설 지도</td></tr><tr><td>액티비티</td><td>케이블카·레일바이크·동굴 지도</td></tr><tr><td>장보기</td><td>마트·수산시장 위치와 살 것</td></tr><tr><td>맛집</td><td>숙소 주변 가족 식당 5곳 지도</td></tr></tbody></table>
+<p>그림 속 장소마다 번호가 붙어 있고, 그림 아래 같은 번호를 누르면 네이버 지도가 열려요. <strong>그림으로 훑고, 번호로 이동하는</strong> 구조예요.</p>
+<p><img alt="최종 앱의 일정 탭 — 3일 일정을 포스터 한 장에 (직접 캡처, 포스터는 Codex 이미지 생성, 함께 간 가족 이름은 가림)" loading="lazy" decoding="async" fetchpriority="auto" width="780" height="1065" src="/_astro/screenshot-final-schedule-top.uhnFqClI_Z2fhVH4.webp" ></p>
+<p class="cap">최종 앱의 일정 탭 — 3일 일정을 포스터 한 장에 (직접 캡처, 포스터는 Codex 이미지 생성, 함께 간 가족 이름은 가림)</p>
+<p>이번엔 아이들이 먼저 들여다봤어요. 그림 밑에 지도 링크가 붙어 있어서 어른들이 내비게이션을 찍기도 편했어요.</p>
+<h2 id="4-결과-예보는-사흘-내내-비">4. 결과: 예보는 사흘 내내 비</h2>
+<p><strong>출발 전 예보는 8월 28·29·30일 모두 비, 강수확률 70~80%였어요.</strong> 보통이면 단톡방이 “취소해야 하나?”로 뒤덮일 상황이에요.</p>
+<p><img alt="최종 앱의 날씨 탭 — 사흘 모두 비 소식이 담긴 예보 포스터 (직접 캡처, 포스터는 Codex 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="780" height="1790" src="/_astro/screenshot-final-weather-poster.D-YqDqRT_Z285IJ1.webp" ></p>
+<p class="cap">최종 앱의 날씨 탭 — 사흘 모두 비 소식이 담긴 예보 포스터 (직접 캡처, 포스터는 Codex 이미지 생성)</p>
+<p>그런데 앱에는 이미 플랜B 탭이 있었어요. 비 강도별로 실내 체험시설을 지도로 정리해 둔 탭이에요. <mark>비 와도 갈 곳이 정해져 있다는 것</mark>만으로 19명의 불안이 잡혔어요.</p>
+<p>실제로는 첫날만 비가 왔고, 그마저 물놀이가 되는 비라 플랜B는 꺼내지도 않았어요. 남은 이틀은 물놀이하기 좋은 날씨였어요.</p>
+<p><img alt="첫날 저녁 숙소에서 내려다본 비 내리는 갈남항 (직접 촬영)" loading="lazy" decoding="async" fetchpriority="auto" width="2000" height="1500" src="/_astro/photo-galnam-rain-evening.TGqucLhn_Zr5tCB.webp" ></p>
+<p class="cap">첫날 저녁 숙소에서 내려다본 비 내리는 갈남항 (직접 촬영)</p>
+<p>앱은 여행 내내 손에 들려 있었어요. 액티비티 지도에 있던 대금굴에도 들렀어요. 두 앱을 숫자로 비교하면 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>첫 앱 → 최종 앱</th></tr></thead><tbody><tr><td>파일 크기</td><td>18KB → 22.2MB (포스터 6장 내장)</td></tr><tr><td>구성</td><td>스크롤 한 장 → 탭 6개 넘기기</td></tr><tr><td>정보 전달</td><td>글·표 → 지도 포스터 + 지도 링크</td></tr><tr><td>결과</td><td>폐기 → 여행 내내 사용</td></tr></tbody></table>
+<h2 id="5-내-일에-적용해-보기">5. 내 일에 적용해 보기</h2>
+<p><strong>이번 경험에서 다른 일에도 쓸 수 있는 건 세 가지예요.</strong></p>
+<p><strong>첫째, 첫 결과물은 ‘쓸 사람’ 눈으로 보세요.</strong> 기능이 다 들어 있어도 안 읽히면 버려야 해요. 평가 기준을 기능이 아니라 실제로 쓰이는지에 두세요.</p>
+<p><strong>둘째, 막히면 고치기보다 형식을 바꾸세요.</strong> 세부 수정을 여러 번 하는 것보다 “지도·그림으로” 같은 방향 전환 한 번이 효과가 컸어요. 형식을 바꿀 때는 이렇게 요청해 보세요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 결과물을 [보는 사람]이 [보는 곳]에서 본다고 생각하고, 글 대신 그림·지도 중심으로 다시 만들어줘</span></span></code></pre>
+<p><strong>셋째, 사실 정보는 사람이 확인하세요.</strong> 운영시간·요금·인원 같은 정보는 AI 답을 그대로 쓰지 말고 따로 확인하세요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>AI가 만든 결과물은 ‘완성’이어도 ‘채택’이 아닐 수 있어요.</div>
+<p>이건 우리 가족 여행 한 번의 사례예요. 누구나 된다는 일반화보다, 요청 → 첫 앱 → 방향 전환 → 실전이라는 순서로 읽어 주세요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 사진 한 장 + 요청 한 번으로 일정 뼈대<br>② 글자 위주 첫 앱은 안 읽혀서 폐기<br>③ 지도·그림으로 바꾸자 아이들이 먼저 봤어요<br>④ 사흘 비 예보에도 플랜B 탭이 불안을 잡았어요</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. Codex는 ChatGPT Pro에서만 쓸 수 있나요?</summary><p>아니요. OpenAI 요금 문서(2026년 10월 7일 확인) 기준으로 Plus에도 들어 있고, 무료·Go 플랜은 제한적으로 쓸 수 있어요. 저는 Pro 플랜에서 썼어요.</p></details>
+<details class="faq"><summary>Q. AI가 짜 준 일정을 그대로 믿어도 되나요?</summary><p>뼈대로는 좋았지만 그대로 믿지는 않았어요. 인원 가정이 1명 달랐고, 시설 운영시간은 따로 확인해야 했어요.</p></details>
+<details class="faq"><summary>Q. 앱 속 포스터 그림은 어떻게 만들었나요?</summary><p>다른 도구 없이 Codex 안에서 이미지 생성으로 6장을 만들었어요. 그림 아래 같은 번호를 누르면 네이버 지도가 열려요.</p></details>
+<p>챗GPT와 클로드를 어떤 일에 나눠 쓰는지는 다음 글에 정리했어요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260905-chatgpt-plus-vs-claude-pro/">챗GPT 플러스 vs 클로드 프로, 둘 다 쓰는 사람의 선택 기준</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>OpenAI 문서 — 요금(Codex 포함) · <a href="https://learn.chatgpt.com/docs/pricing">learn.chatgpt.com/docs/pricing</a></li>
+<li>챗GPT 공식 요금 페이지 — 요금제 비교 · <a href="https://chatgpt.com/pricing">chatgpt.com/pricing</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 9월 4일<br>다시 확인·수정 2026년 10월 7일<br>2026년 8월 가족 여행에서 직접 쓴 기록<br>사진·캡처는 직접, 가족 이름은 가림<br>앱 속 포스터와 캐릭터는 GPT 이미지 생성<br>제휴 없음 · 숙소·식당과 관계없음</div>
+<h3 id="첫-요청-원문">첫 요청 원문</h3>
+<p>사이트에서만 원문 전체를 싣습니다(네이버판은 150자 안으로 줄인 틀). 민박 정보가 담긴 사진 한 장을 첨부하고 보낸 요청입니다.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>첨부된 사진은 동해 갈남항이라는 관광지 근처에 있는 민박 정보야. 나는 8월 말에 여기를 예약해서 2박 3일 동안 여행을 가기로 했고, 총 다섯 가족이 가는 거야. 아이들은 한 열 명 정도 되고, 다 초등학생들이야. 점심에는 거기 갈남항 근처에서 간단하게 먹거나 아니면 식당을 갈 예정이고, 저녁에는 바베큐나 회를 먹을 예정이야. 2박 3일 일정을 간단하게 나에게 짜서 주고, 근처 맛집 다섯 군데를 추천해서 나에게 보내줘.</span></span></code></pre>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260905-chatgpt-plus-vs-claude-pro/">챗GPT 플러스 vs 클로드 프로</a> · <a href="/docs/tech/20260905-vibe-coding-guide/">바이브 코딩이 뭐길래</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>Electron 앱이 무거운 이유, 329MB를 61MB로 줄인 기록 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-25-lighter-shell/"><meta name="description" content="화면 구석의 작은 앱이던 LLM 중계기는 앱 껍데기(Electron) 안에 웹 브라우저 한 벌을 통째로 싣고 다녔습니다. 재 보니 329MB 가운데 274MB가 껍데기 몫이었어요. 서버는 다시 짜지 않고 브라우저만 걷어내 이미 깔린 브라우저의 '앱 모드'를 빌려 쓰고(61MB), 이틀 뒤 작은 트레이 프로그램으로 바꿔 윈도용 압축 파일을 112MB에서 41.6MB로 줄인 이야기. 브라우저를 빌려 쓰는 값, 그리고 끄는 방식과 검사를 그대로 옮긴 이유까지 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="Electron 앱이 무거운 이유, 329MB를 61MB로 줄인 기록 (LLM 중계기 개발기)"><meta property="og:description" content="화면 구석의 작은 앱이던 LLM 중계기는 앱 껍데기(Electron) 안에 웹 브라우저 한 벌을 통째로 싣고 다녔습니다. 재 보니 329MB 가운데 274MB가 껍데기 몫이었어요. 서버는 다시 짜지 않고 브라우저만 걷어내 이미 깔린 브라우저의 '앱 모드'를 빌려 쓰고(61MB), 이틀 뒤 작은 트레이 프로그램으로 바꿔 윈도용 압축 파일을 112MB에서 41.6MB로 줄인 이야기. 브라우저를 빌려 쓰는 값, 그리고 끄는 방식과 검사를 그대로 옮긴 이유까지 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-25-lighter-shell/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.CjFGWiKf_2533xh.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-25-lighter-shell/" data-title="Electron 앱이 무거운 이유, 329MB를 61MB로 줄인 기록 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-문제-앱-안에-실린-브라우저-한-벌" data-toc="1-문제-앱-안에-실린-브라우저-한-벌" data-astro-cid-f3qesd3f>1. 문제: 앱 안에 실린 브라우저 한 벌</a></li><li data-astro-cid-f3qesd3f><a href="#2-먼저-재-봤다-329mb-중-274mb" data-toc="2-먼저-재-봤다-329mb-중-274mb" data-astro-cid-f3qesd3f>2. 먼저 재 봤다: 329MB 중 274MB</a></li><li data-astro-cid-f3qesd3f><a href="#3-한-일-브라우저는-빌려-쓴다" data-toc="3-한-일-브라우저는-빌려-쓴다" data-astro-cid-f3qesd3f>3. 한 일: 브라우저는 빌려 쓴다</a></li><li data-astro-cid-f3qesd3f><a href="#4-빌려-쓰는-값-컴퓨터마다-다른-것" data-toc="4-빌려-쓰는-값-컴퓨터마다-다른-것" data-astro-cid-f3qesd3f>4. 빌려 쓰는 값: 컴퓨터마다 다른 것</a></li><li data-astro-cid-f3qesd3f><a href="#5-이틀-뒤-작은-트레이-프로그램으로" data-toc="5-이틀-뒤-작은-트레이-프로그램으로" data-astro-cid-f3qesd3f>5. 이틀 뒤, 작은 트레이 프로그램으로</a></li><li data-astro-cid-f3qesd3f><a href="#6-배운-점-재고-자르고-약속은-그대로" data-toc="6-배운-점-재고-자르고-약속은-그대로" data-astro-cid-f3qesd3f>6. 배운 점: 재고, 자르고, 약속은 그대로</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>5부 · 25편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-문제-앱-안에-실린-브라우저-한-벌" data-astro-cid-l6a6buid>1. 문제: 앱 안에 실린 브라우저 한 벌</a></li><li data-astro-cid-l6a6buid><a href="#2-먼저-재-봤다-329mb-중-274mb" data-astro-cid-l6a6buid>2. 먼저 재 봤다: 329MB 중 274MB</a></li><li data-astro-cid-l6a6buid><a href="#3-한-일-브라우저는-빌려-쓴다" data-astro-cid-l6a6buid>3. 한 일: 브라우저는 빌려 쓴다</a></li><li data-astro-cid-l6a6buid><a href="#4-빌려-쓰는-값-컴퓨터마다-다른-것" data-astro-cid-l6a6buid>4. 빌려 쓰는 값: 컴퓨터마다 다른 것</a></li><li data-astro-cid-l6a6buid><a href="#5-이틀-뒤-작은-트레이-프로그램으로" data-astro-cid-l6a6buid>5. 이틀 뒤, 작은 트레이 프로그램으로</a></li><li data-astro-cid-l6a6buid><a href="#6-배운-점-재고-자르고-약속은-그대로" data-astro-cid-l6a6buid>6. 배운 점: 재고, 자르고, 약속은 그대로</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 글에 나오는 제품을 만든 곳들(Electron 프로젝트·마이크로소프트·구글·앤트로픽)과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="electron-앱이-무거운-이유-329mb를-61mb로-줄인-기록-llm-중계기-개발기">Electron 앱이 무거운 이유, 329MB를 61MB로 줄인 기록 (LLM 중계기 개발기)</h1>
+<p><img alt="Electron 앱 경량화 — 329MB를 61MB로 줄인 기록 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.CjFGWiKf_z0oEN.webp" ></p>
+<p class="cap">Electron 앱 경량화 — 329MB를 61MB로 줄인 기록 (캐릭터는 GPT 이미지 생성)</p>
+<p>지난 편에서는 진행 창 없이 돌던 업데이트가 멈춘 것처럼 보여서 진행률 막대를 붙인 이야기를 했어요.</p>
+<p>화면 구석에 작게 떠 있는 앱 하나가 메모리를 300MB 넘게 쓴다면 이런 생각이 들어요. “하는 일도 별로 없는데 왜 이렇게 무겁지?”</p>
+<p>혼자 동네 마트에 가는데 7인승 대형 SUV를 몰고 간다고 해 볼게요. 장바구니 하나 실을 자리면 충분한데, 차는 빈 좌석 여섯 개와 넓은 짐칸까지 끌고 다녀요. 제 LLM 중계기의 겉껍데기가 꼭 그랬어요. 껍데기 안에 웹 브라우저 한 벌을 통째로 싣고 다녔거든요.<br>
+<strong>재 보니 메모리 329MB 가운데 274MB가 껍데기 몫이었고, 브라우저를 걷어내자 61MB가 됐어요.</strong></p>
+<p><img alt="커다란 SUV에서 작은 경차로 옮겨 타는 로봇 — 무거운 앱 껍데기를 걷어낸 비유 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-suv-to-compact.D0hpPqk9_Z1ITLUC.webp" ></p>
+<p class="cap">커다란 SUV에서 작은 경차로 옮겨 타는 로봇 — 무거운 앱 껍데기를 걷어낸 비유 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 25편 · 5부 만들고 나서가 더 어렵다<br>대상: 데스크톱 앱이 왜 무거운지 궁금한 분<br>① Electron 앱이 무거운 이유와 실측값<br>② 브라우저를 빌려 쓰는 방법과 그 값<br>③ 작은 트레이 앱으로 바꾼 결과<br>2026년 10월 1일 기준 · 개발 기록의 실측값</div>
+<hr>
+<h2 id="1-문제-앱-안에-실린-브라우저-한-벌">1. 문제: 앱 안에 실린 브라우저 한 벌</h2>
+<p><strong>Electron은 앱마다 자기 전용 웹 브라우저를 한 벌씩 싣고 다니는 앱 껍데기예요.</strong> 중계기의 관리 화면은 처음부터 웹 페이지였어요. 웹 페이지를 앱처럼 쓰려면 껍데기가 필요한데, 7월에 첫 버전을 만들 때 고른 것이 Electron(일렉트론)이었어요.</p>
+<p>Electron은 웹 기술로 만든 화면을 데스크톱 앱으로 포장해 주는 도구예요. 크롬·엣지와 뿌리가 같은 브라우저 엔진(Chromium)이 앱 안에 통째로 들어 있어서, 어느 컴퓨터에서 켜도 화면이 똑같이 그려져요.</p>
+<p>편한 대신 무거워요. 개발 폴더에서 Electron이 깔린 자리만 <code>242MB</code>(압축 전)였어요. 켜 두면 브라우저처럼 여러 프로세스로 나뉘어 돌아요. 중계기 앱은 도우미까지 합쳐 프로세스가 <strong>4개</strong>였어요.</p>
+<h2 id="2-먼저-재-봤다-329mb-중-274mb">2. 먼저 재 봤다: 329MB 중 274MB</h2>
+<p><strong>함께 쓰던 사람의 “네이티브가 성능이 좋다”는 말을 그대로 따르지 않고, 먼저 재 봤어요.</strong> 네이티브 앱은 브라우저를 빌리지 않고 운영체제의 기본 부품으로 직접 만든 앱이에요. 8월 6일 새벽의 저장 기록(커밋)에 잰 값이 남아 있어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>잰 것</th><th>값</th></tr></thead><tbody><tr><td>Electron 앱 전체 (프로세스 4개)</td><td><code>329MB</code></td></tr><tr><td>중계기 서버만 따로 켰을 때</td><td><code>55MB</code></td></tr><tr><td>껍데기만의 몫</td><td><code>274MB</code> — 서버의 약 6배</td></tr><tr><td>윈도용 압축 파일 (v0.1.31)</td><td><code>112MB</code> — 상당 부분이 Chromium</td></tr></tbody></table>
+<p>274MB를 쓰는 껍데기 코드는 <strong>302줄</strong>이었고, 하는 일은 네 가지뿐이었어요.<br>
+① 관리 화면을 가리키는 창 하나<br>
+② 화면 구석의 트레이 아이콘<br>
+③ 두 번 켜지지 않게 막는 잠금<br>
+④ 지난번에 남은 좀비 프로세스를 치우고 문 번호(포트)를 되찾는 일</p>
+<p>창 하나와 아이콘 하나를 띄우려고 브라우저 한 벌을 싣고 다닌 셈이에요.</p>
+<p><img alt="Electron 앱 메모리와 윈도용 압축 파일 크기, 상자 안에 든 것의 전과 후 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="6204" src="/_astro/diagram-shell-weight.BHp4pfY__GzWhq.webp" ></p>
+<p class="cap">Electron 앱 메모리와 윈도용 압축 파일 크기, 상자 안에 든 것의 전과 후 (직접 제작)</p>
+<p>반대로 서버는 병목이 아니었어요. <strong>55MB에 CPU 사용률 0.2%</strong>였어요. 그래서 기록은 “걷어낼 것은 껍데기이고, 서버는 다시 짜지 않는다”고 선을 그었어요. 1만 줄이 넘는 서버를 다른 언어로 다시 짜도 얻을 게 없었어요. Claude를 붙이는 공식 부품(Claude Agent SDK)이 자바스크립트용이라, 다시 짜면 Claude 연결을 통째로 잃기도 하고요. 진짜 무거운 건 서버가 띄우는 AI 프로그램들(Claude 쪽 실행 파일만 230MB)인데, 이건 어떤 껍데기로 가도 그대로예요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>“네이티브가 낫다”는 반만 맞았어요. 껍데기에는 맞고, 서버에는 아니었어요.</div>
+<h2 id="3-한-일-브라우저는-빌려-쓴다">3. 한 일: 브라우저는 빌려 쓴다</h2>
+<p><strong>Electron을 빼고, 이미 깔린 브라우저의 ‘앱 모드’ 창을 빌렸어요.</strong> Edge나 Chrome은 앱 모드로 부르면 주소창도 탭도 없는 독립된 창을 하나 열어 줘요. 쓰는 사람 눈에는 앱 창과 다르지 않은데, 중계기가 싣고 다니는 브라우저는 <strong>0바이트</strong>가 돼요.</p>
+<p>집을 지고 다니는 대신, 이미 서 있는 집의 창문 하나를 여는 셈이에요.</p>
+<p><img alt="이동식 집 대신 이미 서 있는 집의 창문을 여는 로봇 — 브라우저 앱 모드를 빌린 비유 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-borrow-window.DTXAhUO4_Z1Iuftq.webp" ></p>
+<p class="cap">이동식 집 대신 이미 서 있는 집의 창문을 여는 로봇 — 브라우저 앱 모드를 빌린 비유 (GPT 이미지 생성)</p>
+<p>창을 여는 순서도 정해 두었어요. ‘아무것도 안 열린 채 이유도 모르는’ 상태를 남기지 않으려고요.<br>
+① 앱 모드를 지원하는 브라우저(Edge·Chrome 등)가 있으면 앱 모드 창으로 열어요<br>
+② 없으면 기본 브라우저의 탭으로 열어요. Firefox·Safari처럼 앱 모드가 없을 때예요<br>
+③ 그것도 안 되면 주소를 알려 주고 직접 열어 달라고 안내해요</p>
+<p>일부러 하지 않은 일도 있어요. 전용 창에 브라우저 프로필을 따로 주면 깔끔하지만, 그러면 브라우저가 통째로 하나 더 떠요. 가벼워지려고 Electron을 걷어냈는데 같은 비용을 다시 내는 꼴이라, 이미 켜진 브라우저에 창만 하나 붙게 했어요.</p>
+<p><strong>결과는 런처 61MB, Electron 329MB 대비 81% 감소예요.</strong> 기록은 이 길을 ‘서버 하나 + 브라우저 창 하나’로 적었어요. 창 몫은 이미 켜져 있던 브라우저 쪽에 잡힌다는 뜻이에요.</p>
+<h2 id="4-빌려-쓰는-값-컴퓨터마다-다른-것">4. 빌려 쓰는 값: 컴퓨터마다 다른 것</h2>
+<p><strong>브라우저를 빌리면 그 브라우저의 사정을 따라야 해요. 값을 네 가지 치렀어요.</strong></p>
+<p><strong>어떤 브라우저가 깔려 있는지 컴퓨터마다 달라요</strong> 윈도에는 대개 Edge가 있지만 다른 컴퓨터는 제각각이라, 3번의 여는 순서가 필요했어요.</p>
+<p><strong>브라우저의 버릇을 따라야 해요</strong> 런처를 저장하고 7분 뒤의 기록에 맥에서 찾은 고장이 적혀 있어요. 브라우저가 이미 켜져 있으면 맥은 “앱 모드로 열어 달라”는 부탁을 조용히 버렸고, 런처는 창을 열었다고 기록했지만 창은 없었어요.</p>
+<p>기록은 이걸 ‘성공을 위장하는 실패’라고 불렀어요. 브라우저 안의 실행 파일을 직접 부르게 바꿔 고쳤어요.</p>
+<p><strong>창이 닫혀도 런처는 몰라요</strong> 창은 브라우저의 것이라, 닫혀도 런처에게 소식이 오지 않아요. 창만 닫고 AI 프로그램을 남기는 좀비 사고가 다시 생길 수 있었어요.</p>
+<p>그래서 20분 남짓 뒤 관리 화면에 종료 버튼과 중계기의 ‘종료 창구’를 만들었어요. 정리가 매달려도 11초 뒤에는 끝내요.</p>
+<p><strong>Electron이 잠가 둔 열쇠</strong> 중계기는 API 키 같은 열쇠를 Electron의 잠금 기능으로 잠가 두었어요. Electron을 빼면 그 금고를 여는 손잡이도 함께 사라져요.</p>
+<p>예전 코드는 열지 못하면 조용히 ‘빈 금고’를 보여 줬고, 다시 입력하면 원래 파일을 덮어써 영영 사라지는 길이었어요. 그래서 잠긴 이유를 화면에 알리고, 덮어쓰기 전에 원본을 따로 보관했어요. Electron판이 켜질 때 한 번 새 방식으로 옮겨 담고, 못 읽는 파일은 건드리지 않게 했어요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>앱 껍데기를 바꿀 때 저장된 열쇠를 못 읽으면, 조용히 비우지 말고 이유를 알리세요. 다시 입력하는 순간 원본이 덮어써져요.</div>
+<h2 id="5-이틀-뒤-작은-트레이-프로그램으로">5. 이틀 뒤, 작은 트레이 프로그램으로</h2>
+<p><strong>8월 8일 새벽, Electron을 지우면서 전용 창마저 내려놓았어요.</strong> 윈도에서는 윈도에 들어 있는 .NET Framework 위에서 도는 작은 트레이 프로그램이 앱이 됐어요. 세 시간 뒤 나온 v0.1.57에는 맥판과 리눅스판 트레이도 함께 나왔어요.</p>
+<p>트레이가 공식 Node.js로 중계기 서버를 켜고 끝까지 책임져요. 압축 파일 안에는 브라우저도, AI 프로그램 실행 파일도 없어요. 관리 화면은 트레이 메뉴에서 ‘설정 열기’를 누를 때만 평소 쓰는 브라우저 탭으로 열려요.</p>
+<p>트레이 코드는 업데이트 도우미까지 들어 있어 첫날 <strong>889줄</strong>로, Electron 껍데기(302줄)보다 길어요. 그래도 <mark>가벼움은 줄 수가 아니라 싣고 다니는 짐에서 와요</mark>.</p>
+<p>쓰는 사람에게 달라진 점을 표로 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>바뀐 뒤</th></tr></thead><tbody><tr><td>윈도용 압축 파일</td><td>112MB(v0.1.31) → <code>41.6MB</code>(v0.1.57), 약 63% 감소</td></tr><tr><td>켜 두는 동안 메모리</td><td>쉬는 서버 50.1MiB 옆에 트레이 <code>6.4MiB</code></td></tr><tr><td>끄는 법</td><td>탭을 닫아도 계속 일함 — 트레이 ‘종료’나 종료 버튼으로</td></tr><tr><td>로그인할 때 자동 시작</td><td>기본은 꺼짐, 원하면 켜기</td></tr><tr><td>AI 프로그램</td><td>요청이 올 때 켜고, 5분 쉬면 내려놓기</td></tr></tbody></table>
+<p>v0.1.63부터 윈도용 압축 파일은 40MB 남짓을 유지했어요. 메모리는 윈도에서 잰 값이고, MiB는 MB와 거의 같은 크기 단위예요. 대신 내려놓은 편리함도 있어요. Electron은 코드 하나로 세 운영체제를 덮었지만, 이제는 트레이 프로그램을 운영체제마다 따로 만들어야 해요.</p>
+<h2 id="6-배운-점-재고-자르고-약속은-그대로">6. 배운 점: 재고, 자르고, 약속은 그대로</h2>
+<p><strong>껍데기를 바꾸면서 규칙 네 가지를 남겼어요.</strong></p>
+<p><strong>자르기 전에 잰다</strong> 숫자 네 개(329·55·274·112)가 어디를 잘라야 하는지 먼저 알려 줬어요.</p>
+<p><strong>탓하기 쉬운 곳이 아니라 무거운 곳을 자른다</strong> 1만 줄이 넘는 서버는 가장 큰 덩어리라 탓하기 쉬웠어요. 하지만 무거운 건 브라우저를 품은 302줄짜리 껍데기였어요.</p>
+<p><strong>약속은 그대로 옮긴다</strong> 첫 런처부터 “Electron판과 동일한 종료 계약”을 지켰어요. 끄는 경로를 확인하는 검사도 지우지 않고, 새 트레이를 보도록 다시 썼어요.</p>
+<p><strong>다시 무거워지지 않게 문 앞에 체중계를 둔다</strong> 윈도용 배포판에 Electron이나 Chromium이 들어 있거나, 압축 파일이 60MiB를 넘으면 실패하는 검사를 새로 만들었어요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 329MB 중 274MB가 브라우저를 품은 껍데기 몫<br>② 서버는 그대로, 브라우저는 빌려 써서 61MB<br>③ 트레이 앱으로 바꿔 압축 파일 112MB → 41.6MB<br>④ 재고, 무거운 곳을 자르고, 약속은 그대로</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. Electron 앱은 다 무겁나요?</summary><p>앱마다 브라우저 엔진을 한 벌씩 싣는 구조라 기본 몫이 커요. 제 중계기에서는 서버 55MB에 껍데기 몫이 274MB였어요. 다른 앱의 값은 앱마다 달라요.</p></details>
+<details class="faq"><summary>Q. 브라우저 앱 모드 창은 일반 앱 창과 뭐가 다른가요?</summary><p>주소창과 탭이 없는 독립 창이라 보기에는 거의 같아요. 다만 창이 브라우저의 것이라, 창이 닫혀도 앱이 알 수 없어서 종료 버튼을 따로 만들었어요.</p></details>
+<details class="faq"><summary>Q. 왜 서버까지 다시 짜지 않았나요?</summary><p>서버는 55MB에 CPU 0.2%로 병목이 아니었어요. Claude를 붙이는 공식 부품이 자바스크립트용이라, 다시 짜면 Claude 연결도 잃었어요.</p></details>
+<details class="faq"><summary>Q. 맥판과 리눅스판도 바로 쓸 수 있었나요?</summary><p>v0.1.57 기록에는 맥판·리눅스판을 윈도에서 묶어 구조만 검증했고, 그 운영체제에서 실제로 켜 보는 확인이 아직 필요하다고 적혀 있어요.</p></details>
+<p>이 글로 5부 ‘만들고 나서가 더 어렵다’를 마쳐요. 다음 26편은 6부 ‘중계기 위에서, 그리고 회고’를 시작하며, 같은 질문을 여러 AI에게 한꺼번에 던지는 이야기를 할게요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 1일<br>다시 확인·수정 2026년 10월 7일<br>직접 만든 중계기의 개발 기록 기준<br>숫자는 저장 기록·릴리스 노트와 대조<br>Electron·MS·구글·앤트로픽과 관계없음 · 제휴 없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-24-silent-update/">← 지난 편(24편)</a> · <a href="/docs/tech/20261001-llmgw-26-parallel-answers/">다음 편(26편) →</a> · 함께 보면 좋은 편: <a href="/docs/tech/20261001-llmgw-20-mac-vs-windows/">20편 맥과 윈도</a> · <a href="/docs/tech/20261001-llmgw-21-zombies/">21편 좀비 프로세스</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-24-silent-update/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 24편</span> <span class="t" data-astro-cid-l6a6buid>진행률 표시, 조용한 업데이트가 멈춘 줄 알았던 이유</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-26-parallel-answers/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 26편 →</span> <span class="t" data-astro-cid-l6a6buid>여러 AI 답 비교하는 병렬 채팅, 429 거절이 끝나지 않던 이유</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

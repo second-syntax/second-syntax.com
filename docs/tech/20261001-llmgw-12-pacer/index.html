@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>RPM·TPM 뜻과 429, 거절당하기 전에 간격을 두는 페이서 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-12-pacer/"><meta name="description" content="AI 서비스에는 '동시에 몇 건' 말고도 '1분에 몇 번(RPM)', '1분에 토큰 몇 개(TPM)'라는 한도가 있습니다. 넘으면 429라는 거절 번호와 함께 '이만큼 뒤에 다시 오라(Retry-After)'는 안내가 오죠. 제가 만든 LLM 중계기에는 거절당하고 다시 보내는 대신 처음부터 간격을 두고 보내는 '페이서'가 있어요. 최근 1분의 기록을 보며 요청 시작 시각을 고르게 띄우는 방법, 토큰을 미리 잡아 두고 끝나면 고쳐 적는 장부, NVIDIA에는 페이서를 붙이지 않은 이유, 그리고 Gemini API로 본 '잠깐 붐빔'과 '오늘 몫을 다 씀'의 차이를 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="RPM·TPM 뜻과 429, 거절당하기 전에 간격을 두는 페이서 (LLM 중계기 개발기)"><meta property="og:description" content="AI 서비스에는 '동시에 몇 건' 말고도 '1분에 몇 번(RPM)', '1분에 토큰 몇 개(TPM)'라는 한도가 있습니다. 넘으면 429라는 거절 번호와 함께 '이만큼 뒤에 다시 오라(Retry-After)'는 안내가 오죠. 제가 만든 LLM 중계기에는 거절당하고 다시 보내는 대신 처음부터 간격을 두고 보내는 '페이서'가 있어요. 최근 1분의 기록을 보며 요청 시작 시각을 고르게 띄우는 방법, 토큰을 미리 잡아 두고 끝나면 고쳐 적는 장부, NVIDIA에는 페이서를 붙이지 않은 이유, 그리고 Gemini API로 본 '잠깐 붐빔'과 '오늘 몫을 다 씀'의 차이를 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-12-pacer/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BAmXgjJA_2wUMNF.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-12-pacer/" data-title="RPM·TPM 뜻과 429, 거절당하기 전에 간격을 두는 페이서 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-rpmtpm-뜻-1분-한도-두-가지" data-toc="1-rpmtpm-뜻-1분-한도-두-가지" data-astro-cid-f3qesd3f>1. RPM·TPM 뜻: 1분 한도 두 가지</a></li><li data-astro-cid-f3qesd3f><a href="#2-동시-한도와-1분-한도의-차이" data-toc="2-동시-한도와-1분-한도의-차이" data-astro-cid-f3qesd3f>2. 동시 한도와 1분 한도의 차이</a></li><li data-astro-cid-f3qesd3f><a href="#3-429와-다시-올-시간" data-toc="3-429와-다시-올-시간" data-astro-cid-f3qesd3f>3. 429와 다시 올 시간</a></li><li data-astro-cid-f3qesd3f><a href="#4-페이서-미끄러지는-창과-간격" data-toc="4-페이서-미끄러지는-창과-간격" data-astro-cid-f3qesd3f>4. 페이서: 미끄러지는 창과 간격</a></li><li data-astro-cid-f3qesd3f><a href="#5-토큰-장부는-가승인처럼" data-toc="5-토큰-장부는-가승인처럼" data-astro-cid-f3qesd3f>5. 토큰 장부는 가승인처럼</a></li><li data-astro-cid-f3qesd3f><a href="#6-잠깐-붐빔과-다-씀" data-toc="6-잠깐-붐빔과-다-씀" data-astro-cid-f3qesd3f>6. ‘잠깐 붐빔’과 ‘다 씀’</a></li><li data-astro-cid-f3qesd3f><a href="#배운-점" data-toc="배운-점" data-astro-cid-f3qesd3f>배운 점</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>3부 · 12편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-rpmtpm-뜻-1분-한도-두-가지" data-astro-cid-l6a6buid>1. RPM·TPM 뜻: 1분 한도 두 가지</a></li><li data-astro-cid-l6a6buid><a href="#2-동시-한도와-1분-한도의-차이" data-astro-cid-l6a6buid>2. 동시 한도와 1분 한도의 차이</a></li><li data-astro-cid-l6a6buid><a href="#3-429와-다시-올-시간" data-astro-cid-l6a6buid>3. 429와 다시 올 시간</a></li><li data-astro-cid-l6a6buid><a href="#4-페이서-미끄러지는-창과-간격" data-astro-cid-l6a6buid>4. 페이서: 미끄러지는 창과 간격</a></li><li data-astro-cid-l6a6buid><a href="#5-토큰-장부는-가승인처럼" data-astro-cid-l6a6buid>5. 토큰 장부는 가승인처럼</a></li><li data-astro-cid-l6a6buid><a href="#6-잠깐-붐빔과-다-씀" data-astro-cid-l6a6buid>6. ‘잠깐 붐빔’과 ‘다 씀’</a></li><li data-astro-cid-l6a6buid><a href="#배운-점" data-astro-cid-l6a6buid>배운 점</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽·구글·NVIDIA·fal과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="rpmtpm-뜻과-429-거절당하기-전에-간격을-두는-페이서-llm-중계기-개발기">RPM·TPM 뜻과 429, 거절당하기 전에 간격을 두는 페이서 (LLM 중계기 개발기)</h1>
+<p><img alt="RPM·TPM 뜻과 429 대처 — 거절당하기 전에 간격을 두는 페이서 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BAmXgjJA_11S8Vc.webp" ></p>
+<p class="cap">RPM·TPM 뜻과 429 대처 — 거절당하기 전에 간격을 두는 페이서 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI API를 쓰다 보면 429와 함께 RPM, TPM이라는 말을 보게 돼요. “1분에 몇 번까지 부를 수 있다는 거지?” 지난 11편에서는 ‘그만’ 신호를 끝까지 전해야 차선이 막히지 않는다는 이야기를 했어요. 10편의 차선이 ‘동시에 몇 건’을 지키는 장치였다면, 오늘은 ‘1분에 몇 번’을 지키는 장치 이야기예요.</p>
+<p>창구가 하나뿐인 작은 은행이 한 시간에 손님을 여섯 명까지만 받는다고 해 봐요(가상의 예예요). 9시 정각에 여덟 명이 몰려가면 일곱째와 여덟째는 “10시에 다시 오세요”를 듣고 돌아서요. 눈치 빠른 안내원은 번호표를 나눠 주며 10분 간격으로 한 분씩 불러요. 끝나는 시각은 비슷한데 헛걸음이 사라져요.<br>
+<strong>제 LLM 중계기에서 이 안내원 역할을 하는 부품이 페이서(pacer)예요. 거절당하고 다시 보내는 대신, 처음부터 거절당하지 않을 시각에 보내요.</strong></p>
+<p><img alt="빈 번호표를 건네는 은행 창구 로봇 — 요청 간격을 두는 페이서 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-number-ticket.CPZzy-Nq_pT3ET.webp" ></p>
+<p class="cap">빈 번호표를 건네는 은행 창구 로봇 — 요청 간격을 두는 페이서 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 12편 · 3부 교통정리 — 중앙 조율<br>대상: AI API의 한도와 429가 궁금한 분<br>① RPM·TPM 뜻과 429·Retry-After<br>② 간격을 두는 페이서와 토큰 장부<br>③ '잠깐 붐빔'과 '다 씀'을 나누는 법<br>기본 설정값 · 2026년 10월 1일 기준</div>
+<hr>
+<h2 id="1-rpmtpm-뜻-1분-한도-두-가지">1. RPM·TPM 뜻: 1분 한도 두 가지</h2>
+<p><strong>AI 서비스에는 ‘동시에 몇 건’ 말고도 1분에 몇 번(RPM), 1분에 토큰 몇 개(TPM) 한도가 있어요.</strong> 자주 보는 이름을 은행에 빗대 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>이름</th><th>뜻</th></tr></thead><tbody><tr><td><code>RPM (Requests Per Minute)</code></td><td>1분에 보낼 수 있는 요청 수 — 시간당 받는 손님 수</td></tr><tr><td><code>TPM (Tokens Per Minute)</code></td><td>1분에 주고받을 수 있는 글의 양 — 시간당 서류 장수</td></tr><tr><td>토큰 (token)</td><td>AI가 글을 세는 단위 — 질문도 답도 토큰으로 세요</td></tr></tbody></table>
+<p>구글 Gemini API 공식 문서도 한도를 1분 요청 수(RPM), 1분 토큰 수(TPM), 하루 요청 수(RPD)로 나눠 적어요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>이 글의 한도 숫자(1분 6번, 1분 토큰 10만 개)는 설명용 가상의 값이에요. 실제 한도는 서비스와 등급마다 다르니 그 서비스 안내에서 확인하세요.</div>
+<h2 id="2-동시-한도와-1분-한도의-차이">2. 동시 한도와 1분 한도의 차이</h2>
+<p><strong>짧은 요청은 1분 횟수에, 오래 걸리는 큰 요청은 동시 차선에 먼저 걸려요.</strong> 답이 빨리 오는 짧은 요청은 차선 하나로도 1분에 수십 번을 보낼 수 있어서 1분 횟수 한도에 먼저 닿아요. 답이 몇 분씩 걸리는 큰 요청은 1분 횟수를 채울 틈도 없이 차선이 먼저 차요.</p>
+<p>10편에서 NVIDIA의 차선을 늘린 이유가 두 번째였어요. 중계기 기록에는 NVIDIA 클라우드 API 한도가 열쇠 하나당 <strong>1분에 40번</strong>으로 적혀 있는데, 큰 코드 검토를 몇 건씩 동시에 보내는 쓰임에서는 그 전에 차선이 먼저 찼어요. 그래서 NVIDIA에는 페이서가 없어요. 혹시 한도를 넘으면 NVIDIA가 보낸 429와 다시 올 시간을 그대로 전해요. 페이서는 1분 횟수가 정말 귀한 AI를 위해 만든 부품이에요.</p>
+<p>작은 고백도 하나 있어요. 7월 21일부터 8월 8일까지 중계기 개발 문서에는 ‘NVIDIA에도 열쇠당 1분 40번짜리 페이서가 있다’고 적혀 있었어요. 8월 8일 코드와 맞춰 보니 그런 페이서는 만든 적이 없었어요. 문서를 사실대로 고쳤어요.</p>
+<h2 id="3-429와-다시-올-시간">3. 429와 다시 올 시간</h2>
+<p><strong>한도를 넘으면 보통 429가 오고, 친절한 서비스는 “이만큼 뒤에 다시 오라(Retry-After)“를 붙여 줘요.</strong> 중계기는 이 안내를 버리지 않고 읽어요. “30초 뒤”처럼 초로 오든 “몇 시 몇 분 이후”처럼 시각으로 오든 기다릴 시간으로 바꾸고, 따로 적힌 칸이 없으면 오류 문장 안의 “retry after 몇 초” 같은 문구를 찾아봐요.</p>
+<p>그리고 쓰는 쪽 프로그램에 그대로 전해요. 중계기가 돌려주는 429에는 언제나 다시 올 시간이 머리말(Retry-After)과 본문(retry_after_ms) 두 군데에 들어 있어요. AI가 아무 안내도 주지 않았으면 기본 <strong>1초</strong>를 채우고, Gemini API의 1분 한도처럼 <strong>10초</strong>로 따로 정해 둔 곳도 있어요.</p>
+<p>중계기가 내어 주는 개발 안내서의 ‘안정성 규칙’에도 <mark>429면 다시 올 시간만큼 기다렸다 재시도</mark>하고, 기다리는 중이라고 화면에 표시하라고 적어 뒀어요. 기다릴 시간에 조금씩 다른 여유(지터, jitter)를 더하라는 말도 있어요. 모두가 똑같이 “정확히 1초 뒤”를 지키면 1초 뒤에 또 한꺼번에 몰리니까요.</p>
+<h2 id="4-페이서-미끄러지는-창과-간격">4. 페이서: 미끄러지는 창과 간격</h2>
+<p><strong>페이서는 최근 1분 장부를 지키고, 요청 출발 사이에 ‘1분 ÷ 한도’만큼 간격을 둬요.</strong><br>
+① 최근 1분 장부 — 요청을 보낼 때마다 시각을 적고, 지금부터 거꾸로 1분 안의 기록만 세요. 매 순간 ‘방금 전 1분’을 다시 잡아서 흔히 미끄러지는 창(sliding window)이라고 불러요. 정각마다 장부를 비우면 0분 59초와 1분 00초 사이 1초 동안 한도의 두 배가 나갈 수 있지만, 미끄러지는 창에서는 어느 1분을 잘라 봐도 한도를 넘지 않아요.</p>
+<p>② 균등 간격 — 7월 13일 처음 만들었을 때는 장부만 봤어요. 한동안 조용하다 요청이 몰리면 한도만큼이 한꺼번에 나가, 서비스 쪽의 더 짧은 ‘순간 제한’에 걸릴 수 있었어요. 그래서 이틀 뒤인 7월 15일, 10편의 교통정리 칸이 들어온 v0.1.31에서 출발 사이를 ‘1분 ÷ 한도’만큼 띄우게 했어요. 1분에 6번까지인 서비스라면 <strong>10초</strong> 간격이에요.</p>
+<p><img alt="같은 8건, 한꺼번에 보내면 7·8번이 429로 거절되고 10초 간격이면 모두 통과 — 1분에 6번인 가상의 예 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="4000" src="/_astro/diagram-pacer.DSGpuOSJ_ZpOhqB.webp" ></p>
+<p class="cap">같은 8건, 한꺼번에 보내면 7·8번이 429로 거절되고 10초 간격이면 모두 통과 — 1분에 6번인 가상의 예 (직접 제작)</p>
+<p>요청 하나를 보내기 전에 페이서는 세 가지를 봐요. 직전 출발 뒤 간격만큼 지났는지, 최근 1분 요청 수가 한도보다 적은지, 최근 1분 토큰 합에 이번 몫을 더해도 한도 안인지예요. 셋 중 가장 늦은 시각까지 기다렸다 출발하고, 기다리는 요청은 온 순서대로 서요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>페이서는 더 빨리 보내는 장치가 아니에요. 거절이 없고, 언제 출발할지 미리 알 수 있게 하는 장치예요.</div>
+<p>기다리는 동안 관리 화면의 시험 호출에는 “대기 중… 다음 요청까지 N초”가 1초마다 새로 떠요. 아무 표시 없이 멈춰 있으면 사람은 고장 난 줄 알거든요. 기다리던 요청이 11편의 ‘그만’ 신호로 취소되면 바로 줄에서 빠지고, 장부에는 아무것도 적지 않아요.</p>
+<h2 id="5-토큰-장부는-가승인처럼">5. 토큰 장부는 가승인처럼</h2>
+<p><strong>답이 얼마나 길지는 끝나야 알아서, 토큰 장부는 호텔 카드 가승인처럼 미리 잡았다가 고쳐 적어요.</strong><br>
+① 보내기 전 — 질문 길이로 어림한 토큰에 이번 답의 최대 길이를 더해 미리 적어요. 어림은 글자 4개를 1토큰으로 쳐서, 한국어처럼 토큰을 더 먹는 글에서는 빗나갈 수 있어요(19편에서 다뤄요)<br>
+② 끝난 뒤 — 질문과 실제로 받은 답의 길이로 다시 어림해 그 요청의 칸만 고쳐요<br>
+③ 답을 못 받은 요청 — 1분 횟수로는 한 번이지만 토큰은 0으로 적어요<br>
+④ 혼자서도 한도를 넘는 요청 — 아무리 기다려도 못 들어가니 줄에 세우지 않고 바로 돌려보내요</p>
+<p>예를 들어 1분에 토큰 10만 개까지인 서비스에 2만5천 토큰짜리 요청을 보내면, 횟수가 넉넉해도 네 건이면 장부가 차요. 다섯째는 첫째 기록이 1분 밖으로 빠질 때까지 기다려요. 이걸 진짜 1분씩 기다리며 시험하면 몇 분씩 걸려서, 시계를 갈아 끼울 수 있게 만들었어요. 시험에서는 가짜 시계의 바늘만 앞으로 돌려 순식간에 확인해요.</p>
+<h2 id="6-잠깐-붐빔과-다-씀">6. ‘잠깐 붐빔’과 ‘다 씀’</h2>
+<p><strong>같은 429라도 몇 초면 풀리는 ‘잠깐 붐빔’과 금방 안 풀리는 ‘다 씀’은 다시 올 시간을 다르게 알려요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>구분</th><th>걸린 한도와 다시 올 시간</th></tr></thead><tbody><tr><td>잠깐 붐빔</td><td>1분 한도 — 몇 초~1분이면 풀려서 짧게</td></tr><tr><td>다 씀</td><td>하루 한도 · 계정 사용 한도 · 선불 잔액 — 길게</td></tr></tbody></table>
+<p>은행으로 치면 앞은 “번호표 뽑고 잠시만요”, 뒤는 “오늘 창구 업무는 끝났어요”예요. 다 쓴 걸 잠깐 붐빈 것처럼 알리면, 쓰는 쪽은 1초마다 닫힌 창구를 두드리게 돼요.</p>
+<p><img alt="잠깐이면 열리는 문과 오늘은 닫힌 문 사이의 안내 로봇 — 잠깐 붐빔과 다 씀 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-two-doors.FLbUYPU7_6NOoD.webp" ></p>
+<p class="cap">잠깐이면 열리는 문과 오늘은 닫힌 문 사이의 안내 로봇 — 잠깐 붐빔과 다 씀 (GPT 이미지 생성)</p>
+<p>9월 말에 붙인 구글 Gemini API가 이 차이를 잘 보여 줘요. 무료 등급에도 1분 한도와 하루 한도가 따로 있고, 구글은 거절할 때 어느 한도에 걸렸는지 이름을 적어 보내요. 1분 한도면 구글이 알려 준 시간만큼(없으면 10초) 뒤에 다시 오라고 전해요. 하루 한도면 그 모델만 ‘지금은 쓸 수 없음’으로 표시하고, 다시 올 시간을 미국 태평양 시간 자정(한국 시간 오후 4시나 5시쯤)으로 잡아요. 구글 문서에도 하루 요청 한도는 태평양 시간 자정에 초기화된다고 적혀 있어요. 모델별 한도는 AI Studio 화면에서 보는 값이라, 중계기는 추정값으로 어림만 하고 진짜 기준은 구글이 보내는 429로 삼아요.</p>
+<p>Codex·Claude 계정의 사용 한도를 다 쓰면 다시 올 시간을 기본 <strong>10분</strong>으로 길게 알려요. 영상을 만드는 fal의 선불 잔액이 바닥나면 연결 고장이 아니라 ‘다 씀’으로 분류해 충전 안내와 함께 돌려줘요. 9월 말 버전(v0.1.105)부터는 ‘빠른 채팅용’ 같은 역할 이름으로 부르면, 중계기가 다 쓴 모델을 후보에서 빼고 다음 요청을 곧장 다른 모델로 보내요.</p>
+<h2 id="배운-점">배운 점</h2>
+<p><strong>페이서를 만들고 고치며 남은 것은 세 가지예요.</strong><br>
+① <strong>거절당하기 전에 간격을 둬요.</strong> 다시 보내는 궁리보다 처음부터 거절당하지 않을 시각에 보내는 편이 쓰는 쪽에 편해요.<br>
+② <strong>다시 올 시간은 버리지 않고 전해요.</strong> 서비스가 알려 준 시간을 읽어, 쓰는 쪽에 두 군데로 그대로 넘겨요.<br>
+③ <strong>문서와 코드가 다르면 코드를 믿어요.</strong> 만든 적 없는 페이서가 문서에 보름 넘게 남아 있었고, 알게 된 날 고쳤어요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① RPM은 1분 요청 수, TPM은 1분 토큰 수<br>② 429에는 다시 올 시간을 담아 전해요<br>③ 페이서는 1분 ÷ 한도 간격으로 출발<br>④ 잠깐 붐빔은 짧게, 다 씀은 길게</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. RPM과 TPM 중 무엇에 먼저 걸리나요?</summary><p>짧은 요청을 자주 보내면 RPM, 긴 글을 주고받으면 TPM에 먼저 걸리기 쉬워요. 답이 몇 분씩 걸리는 큰 요청은 둘보다 동시 차선이 먼저 찰 수도 있어요.</p></details>
+<details class="faq"><summary>Q. 429를 받으면 바로 다시 보내도 되나요?</summary><p>다시 올 시간(Retry-After)만큼 기다렸다 보내세요. 여러 프로그램이 함께 쓴다면 조금씩 다른 여유(지터)를 더하는 게 좋아요.</p></details>
+<details class="faq"><summary>Q. 페이서를 쓰면 일이 더 빨리 끝나나요?</summary><p>아니요. 끝나는 시각은 비슷하거나 조금 늦어요. 대신 거절이 없고, 언제 출발할지 미리 알 수 있어요.</p></details>
+<details class="faq"><summary>Q. Gemini API 하루 한도는 언제 풀리나요?</summary><p>구글 문서 기준으로 하루 요청 한도는 태평양 시간 자정에 초기화돼요. 한국 시간으로는 서머타임 여부에 따라 오후 4시나 5시쯤이에요.</p></details>
+<p>다음 편에서는 새 AI를 붙이면서 설정 한 줄을 빠뜨렸더니, ‘연결 성공’인데 호출이 전멸한 일을 다뤄요.</p>
+<p><strong>참고 자료</strong> Gemini API 공식 문서 — 사용량 한도 · <a href="https://ai.google.dev/gemini-api/docs/rate-limits">ai.google.dev/gemini-api/docs/rate-limits</a></p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 1일<br>저장소 기록 다시 대조 2026년 10월 7일<br>직접 만든 중계기의 개발 기록 + 구글 문서<br>제휴 없음 · 언급한 서비스와 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-11-hang-up/">지난 편(11편) 요청 취소</a> · <a href="/docs/tech/20261001-llmgw-13-missing-lane/">다음 편(13편) 빠진 설정 한 줄</a> · <a href="/docs/tech/20261001-llmgw-10-tollgate/">차선과 대기 줄(10편)</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-11-hang-up/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 11편</span> <span class="t" data-astro-cid-l6a6buid>AI 요청 취소, &#39;그만&#39; 신호를 끝까지 전해야 하는 이유</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-13-missing-lane/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 13편 →</span> <span class="t" data-astro-cid-l6a6buid>설정 누락 장애, &#39;연결 성공&#39;인데 호출이 전멸한 이유</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

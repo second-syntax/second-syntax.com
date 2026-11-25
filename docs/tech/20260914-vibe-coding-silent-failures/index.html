@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>바이브 코딩 한계, ‘됐다’던 AI 자동화가 깨진 실패 사례 5가지</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260914-vibe-coding-silent-failures/"><meta name="description" content="AI에게 짜게 한 자동화가 닷새 사이 다섯 번 깨졌다. 공통점은 하나 — 코드가 확인한 것은 매번 '성공'이었는데, 실제 결과는 달랐다. 이 블로그의 발행 시스템에서 실제로 일어난 사건 다섯 개를 날짜·원인·고친 코드와 함께 적고, 바이브 코딩이 잘 못 하는 것과 그걸 메우는 원칙 세 가지를 정리했다."><meta property="og:title" content="바이브 코딩 한계, ‘됐다’던 AI 자동화가 깨진 실패 사례 5가지"><meta property="og:description" content="AI에게 짜게 한 자동화가 닷새 사이 다섯 번 깨졌다. 공통점은 하나 — 코드가 확인한 것은 매번 '성공'이었는데, 실제 결과는 달랐다. 이 블로그의 발행 시스템에서 실제로 일어난 사건 다섯 개를 날짜·원인·고친 코드와 함께 적고, 바이브 코딩이 잘 못 하는 것과 그걸 메우는 원칙 세 가지를 정리했다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260914-vibe-coding-silent-failures/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.Lq_dBZfp_1zQA0E.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260914-vibe-coding-silent-failures/" data-title="바이브 코딩 한계, ‘됐다’던 AI 자동화가 깨진 실패 사례 5가지" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-카드뉴스-5장-완료-그린-건-0장" data-toc="1-카드뉴스-5장-완료-그린-건-0장" data-astro-cid-f3qesd3f>1. 카드뉴스 5장 완료, 그린 건 0장</a></li><li data-astro-cid-f3qesd3f><a href="#2-실패한-글이-다시-시도되지-않음" data-toc="2-실패한-글이-다시-시도되지-않음" data-astro-cid-f3qesd3f>2. 실패한 글이 다시 시도되지 않음</a></li><li data-astro-cid-f3qesd3f><a href="#3-어제-열어-둔-탭이-오늘-글을-막음" data-toc="3-어제-열어-둔-탭이-오늘-글을-막음" data-astro-cid-f3qesd3f>3. 어제 열어 둔 탭이 오늘 글을 막음</a></li><li data-astro-cid-f3qesd3f><a href="#4-같은-사진을-두-번-받음" data-toc="4-같은-사진을-두-번-받음" data-astro-cid-f3qesd3f>4. 같은 사진을 두 번 받음</a></li><li data-astro-cid-f3qesd3f><a href="#5-눌린-아이콘-열리지-않은-메뉴" data-toc="5-눌린-아이콘-열리지-않은-메뉴" data-astro-cid-f3qesd3f>5. 눌린 아이콘, 열리지 않은 메뉴</a></li><li data-astro-cid-f3qesd3f><a href="#6-다섯-장면의-공통점" data-toc="6-다섯-장면의-공통점" data-astro-cid-f3qesd3f>6. 다섯 장면의 공통점</a></li><li data-astro-cid-f3qesd3f><a href="#7-ai에게-같이-시킬-세-문장" data-toc="7-ai에게-같이-시킬-세-문장" data-astro-cid-f3qesd3f>7. AI에게 같이 시킬 세 문장</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li><li data-astro-cid-f3qesd3f><a href="#고친-코드-다섯-조각" data-toc="고친-코드-다섯-조각" data-astro-cid-f3qesd3f>고친 코드 다섯 조각</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 9개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-카드뉴스-5장-완료-그린-건-0장" data-astro-cid-l6a6buid>1. 카드뉴스 5장 완료, 그린 건 0장</a></li><li data-astro-cid-l6a6buid><a href="#2-실패한-글이-다시-시도되지-않음" data-astro-cid-l6a6buid>2. 실패한 글이 다시 시도되지 않음</a></li><li data-astro-cid-l6a6buid><a href="#3-어제-열어-둔-탭이-오늘-글을-막음" data-astro-cid-l6a6buid>3. 어제 열어 둔 탭이 오늘 글을 막음</a></li><li data-astro-cid-l6a6buid><a href="#4-같은-사진을-두-번-받음" data-astro-cid-l6a6buid>4. 같은 사진을 두 번 받음</a></li><li data-astro-cid-l6a6buid><a href="#5-눌린-아이콘-열리지-않은-메뉴" data-astro-cid-l6a6buid>5. 눌린 아이콘, 열리지 않은 메뉴</a></li><li data-astro-cid-l6a6buid><a href="#6-다섯-장면의-공통점" data-astro-cid-l6a6buid>6. 다섯 장면의 공통점</a></li><li data-astro-cid-l6a6buid><a href="#7-ai에게-같이-시킬-세-문장" data-astro-cid-l6a6buid>7. AI에게 같이 시킬 세 문장</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li><li data-astro-cid-l6a6buid><a href="#고친-코드-다섯-조각" data-astro-cid-l6a6buid>고친 코드 다섯 조각</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="바이브-코딩-한계-됐다던-ai-자동화가-깨진-실패-사례-5가지">바이브 코딩 한계, ‘됐다’던 AI 자동화가 깨진 실패 사례 5가지</h1>
+<p><img alt="바이브 코딩 한계 — ‘됐다’던 AI 자동화가 깨진 실패 사례 5가지 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.Lq_dBZfp_4NV8b.webp" ></p>
+<p class="cap">바이브 코딩 한계 — ‘됐다’던 AI 자동화가 깨진 실패 사례 5가지 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI가 짠 자동화를 돌리다 보면 이런 순간이 와요. “분명 완료라고 했는데, 결과물은 어디 있지?” 제 블로그 자동화도 2026년 9월 10일부터 14일까지 이렇게 다섯 번 깨졌어요.</p>
+<p>택배 앱에 ‘배송 완료’ 문자가 왔는데 현관에 상자가 없는 것과 같아요. 기사님 화면에서는 완료였으니 거짓말은 아니에요. 문제는 그 화면과 내 현관 사이에 아무도 서 있지 않았다는 거예요.<br>
+<strong>바이브 코딩의 한계는 ‘안 돌아간다’가 아니라 ‘돌아가는 것처럼 보인다’예요.</strong></p>
+<p><img alt="‘완료’라며 엄지를 든 로봇과 비어 있는 상자 — 바이브 코딩이 조용히 실패하는 모습 비유 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-thumbs-up-empty-box.CwK-avBJ_4mDzo.webp" ></p>
+<p class="cap">‘완료’라며 엄지를 든 로봇과 비어 있는 상자 — 바이브 코딩이 조용히 실패하는 모습 비유 (GPT 이미지 생성)</p>
+<p>이 시스템은 전부 AI(클로드 코드)에게 짜게 한 바이브 코딩 결과물이에요. 다섯 장면을 날짜와 커밋 기록 그대로 적을게요.</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: AI에게 자동화를 짜게 하는 분<br>① 실제로 깨진 다섯 장면과 원인<br>② 깨지는 자리 세 곳<br>③ AI에게 같이 시킬 세 문장<br>2026년 9월 10~14일 저장소 기록 기준</div>
+<hr>
+<h2 id="1-카드뉴스-5장-완료-그린-건-0장">1. 카드뉴스 5장 완료, 그린 건 0장</h2>
+<p><strong>9월 10일, 카드뉴스 스크립트가 ‘완료: 5장’을 보고했는데 카드는 지난번 글 것이었어요.</strong> 이 스크립트는 HTML로 카드를 그리고 브라우저로 스크린샷을 찍어요.</p>
+<p>원인은 두 겹이었어요. 브라우저 창이 이미 떠 있으면 스크린샷 명령이 그 창에 주소만 넘기고 조용히 끝나요. 오류 코드는 0이었어요. 그리고 스크립트는 ‘PNG 파일이 있으면 성공’으로 봤는데, 지난번 실행의 PNG가 그대로 남아 있었어요.</p>
+<p>렌더 방식을 바꾸고, 찍기 전에 기존 파일을 지우게 했어요. 핵심은 이 한 줄이에요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">out.unlink(</span><span style="color:#FFAB70">missing_ok</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><strong>‘파일이 있다’와 ‘이번에 만들었다’는 다른 말이에요.</strong> AI는 앞의 것을 검사했고, 제가 원한 건 뒤의 것이었어요.</p>
+<h2 id="2-실패한-글이-다시-시도되지-않음">2. 실패한 글이 다시 시도되지 않음</h2>
+<p><strong>9월 11일, 한 번 실패한 글이 다음 날에도 다시 시도되지 않는 걸 알았어요.</strong> 매일 아침 예약 글을 내보내는 발행 큐가 있어요. 문서에는 ‘실패한 항목은 다음 날 다시 시도한다’고 적혀 있었어요.</p>
+<p>코드는 반대였어요. 예정일이 오늘과 같은지만 비교하고 있었거든요. 어제 실패한 글은 예정일이 어제라서 오늘도, 내일도 대상이 아니에요. 9월 10일 예정이던 인스타 게시 하나가 실제로 그렇게 묶여 있었어요.</p>
+<p>‘오늘과 같은가’를 ‘오늘이거나 이미 지났는가’로 바꿨어요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">d </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> today   </span><span style="color:#6A737D"># before</span></span>
+<span class="line"><span style="color:#E1E4E8">d </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> today   </span><span style="color:#6A737D"># after</span></span></code></pre>
+<p><strong>문서와 코드가 다를 때 믿어야 하는 건 코드예요.</strong> AI가 쓴 문서는 의도를 적고, AI가 쓴 코드는 정상 경로를 적어요.</p>
+<h2 id="3-어제-열어-둔-탭이-오늘-글을-막음">3. 어제 열어 둔 탭이 오늘 글을 막음</h2>
+<p><strong>9월 12일, 어제 열어 둔 에디터 탭 때문에 오늘 글이 하루 밀렸어요.</strong> 네이버 발행은 브라우저 에디터 탭에 글을 입력하는 방식이에요. 스크립트는 ‘이미 열린 에디터 탭이 있으면 그걸 쓴다’고 돼 있었어요.</p>
+<p>그런데 그 탭은 어제부터 로딩 중에 멈춰 있었고, 그 위에 네트워크 오류 알림까지 떠 있었어요. 스크립트는 탭이 있다는 것만 보고 집었다가, 문단이 하나도 없는 화면에서 첫 문단을 찾다 오류로 멈췄어요.</p>
+<p>‘열려 있는가’가 아니라 ‘쓸 수 있는가’를 보게 고쳤어요. 문단이 보이고 클릭을 가로채는 반투명 막이 없을 때만 준비 완료로 쳐요. 아니면 새로고침하고, 그래도 안 되면 닫고 새로 열어요.</p>
+<h2 id="4-같은-사진을-두-번-받음">4. 같은 사진을 두 번 받음</h2>
+<p><strong>9월 13일, 구글 포토 수집기를 처음 돌렸더니 여섯 장 중 두 장이 앞 사진과 똑같은 파일이었어요.</strong> 사진 주소로 이동한 뒤 화면에 뜬 이미지를 받는 구조예요.</p>
+<p>구글 포토는 주소를 바꿔도 이전 사진이 화면에 잠깐 남아 있어요. 그 틈에 읽으면 앞 사진을 그대로 집어요. 주소는 바뀌었으니 코드 입장에서는 ‘이동 완료’였어요.</p>
+<p>이전과 다른 이미지가 나타날 때까지 기다리게 고쳤어요.<br>
+<strong>주소가 바뀌었다고 화면이 바뀐 건 아니에요.</strong> 화면이 바뀌었는지는 내용으로 확인해야 했어요.</p>
+<h2 id="5-눌린-아이콘-열리지-않은-메뉴">5. 눌린 아이콘, 열리지 않은 메뉴</h2>
+<p><strong>9월 14일, 인스타 계정 전환 아이콘은 눌렸는데 메뉴가 열리지 않았어요.</strong> 인스타 게시 스크립트는 계정을 바꿀 때 설정 아이콘을 누르고 ‘계정 전환’을 찾아요.</p>
+<p>클릭 명령은 성공했어요. 그런데 화면이 바뀌어서 그 아이콘으로는 메뉴가 열리지 않았어요. 스크립트는 열리지 않은 메뉴에서 ‘계정 전환’을 찾다가 시간을 다 썼어요.</p>
+<p>‘눌렀는가’가 아니라 ‘열렸는가’를 확인하게 고쳤어요. 대화상자가 실제로 화면에 떴는지 보고, 없으면 다른 경로로 한 번 더 시도해요.</p>
+<h2 id="6-다섯-장면의-공통점">6. 다섯 장면의 공통점</h2>
+<p><strong>다섯 번 모두, 코드가 확인한 것은 ‘성공’이었어요.</strong> 코드가 확인한 것과 실제로 있던 것을 나란히 놓으면 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>코드가 확인한 것</th><th>실제로 있던 것</th></tr></thead><tbody><tr><td>9/10 · 카드 5장 완료</td><td>지난번 실행의 카드 5장</td></tr><tr><td>9/11 · 오늘 내보낼 글 없음</td><td>어제 실패한 글 1건</td></tr><tr><td>9/12 · 에디터 탭 있음</td><td>멈춘 탭 + 오류 알림</td></tr><tr><td>9/13 · 사진 6장 저장</td><td>4장 + 같은 사진 2장</td></tr><tr><td>9/14 · 아이콘 클릭 성공</td><td>열리지 않은 메뉴</td></tr></tbody></table>
+<p>세 번은 결과물이 없거나 틀린 걸 나중에 알았고, 두 번은 엉뚱한 자리에서 멈춘 뒤에야 원인을 찾았어요. 오류가 바로 나면 바로 고치면 되는데, 확인이 통과하면 아무도 의심하지 않아요.</p>
+<p>깨진 자리도 세 곳으로 같았어요. AI는 ‘처음 실행, 깨끗한 상태, 화면은 그대로’를 전제로 코드를 짜요. 그 전제가 무너지는 건 둘째 날부터예요.</p>
+<p><img alt="바이브 코딩이 깨지는 자리 — AI가 전제한 것과 둘째 날 실제로 생긴 것 세 쌍 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="3000" src="/_astro/diagram-assumption-vs-day2.Bx-TKhSn_ZLioJc.webp" ></p>
+<p class="cap">바이브 코딩이 깨지는 자리 — AI가 전제한 것과 둘째 날 실제로 생긴 것 세 쌍 (직접 제작)</p>
+<p><mark>어제의 잔재, 바뀐 화면, 한 번의 실패 이후</mark>. 이 세 곳이 AI가 비워 두는 자리예요.</p>
+<h2 id="7-ai에게-같이-시킬-세-문장">7. AI에게 같이 시킬 세 문장</h2>
+<p><strong>AI에게 자동화를 시킬 때 아래 세 문장을 같이 넣으세요.</strong> 다섯 장면이 전부 이 셋 중 하나로 막혀요. 코드를 읽을 줄 몰라도 시킬 수 있는 말이에요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>결과물이 실제로 생겼는지 확인하고 나서 성공으로 처리해줘</span></span></code></pre>
+<p>명령이 성공했는지가 아니라 파일이 새로 생겼는지, 대화상자가 떴는지, 게시 주소가 돌아왔는지를 보게 하는 문장이에요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>시작하기 전에 지난번 실행이 남긴 파일, 열린 탭, 이전 상태를 정리해줘</span></span></code></pre>
+<p>매번 처음처럼 시작하게 하는 문장이에요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>실패한 일은 버리지 말고 다음 실행에서 다시 시도하게 해줘</span></span></code></pre>
+<p>오늘 못 한 일은 내일의 일이에요. 예정일이 지났다고 사라지면 안 돼요.</p>
+<p><img alt="체크리스트 대신 선반을 직접 만져 확인하는 사람과 로봇 — AI 자동화는 결과물로 검증하기 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-check-the-shelf.BQdU8arh_16Az3r.webp" ></p>
+<p class="cap">체크리스트 대신 선반을 직접 만져 확인하는 사람과 로봇 — AI 자동화는 결과물로 검증하기 (GPT 이미지 생성)</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>AI는 이런 요구를 받으면 꽤 잘 넣어요. 문제는 시키지 않으면 넣지 않는다는 것뿐이에요.</div>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 바이브 코딩의 실패는 조용히 와요<br>② 깨지는 자리는 잔재·바뀐 화면·실패 이후<br>③ 결과물 확인·시작 전 정리·재시도를 시켜요</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 그럼 바이브 코딩은 쓰면 안 되나요?</summary><p>아니요. 이 다섯 건이 깨진 시스템 자체가 전부 바이브 코딩으로 만든 거예요. 네이버·인스타 발행, 사진 수집, 매일 아침 발행 큐까지 제가 코드를 한 줄도 안 쳤고, 그게 돌아가요. 한계는 ‘못 만든다’가 아니라 깨지는 방식이 다르다는 데 있어요.</p></details>
+<details class="faq"><summary>Q. 왜 AI는 방어 코드를 먼저 넣지 않나요?</summary><p>사람은 삽질을 겪은 자리에 방어 코드를 넣어요. AI는 그 삽질을 겪지 않았으니 넣을 이유가 없어서, 정상 경로를 낙관적으로 짜요. 그 낙관을 메우는 게 쓰는 사람 몫이에요.</p></details>
+<details class="faq"><summary>Q. 코드를 못 읽어도 막을 수 있나요?</summary><p>네. 7번의 세 문장은 코드를 몰라도 시킬 수 있는 말이에요. 받은 뒤에는 결과물이 실제로 생겼는지 직접 열어 보세요.</p></details>
+<p>이 시스템에 검증을 넣게 된 첫 사고는 따로 적어 뒀어요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260907-ai-review-automation/">AI 검증 자동화 — 사고 한 번 나고 배운 것 (코드리뷰부터 산출물 검증까지)</a></p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 발행 2026년 9월 14일<br>다시 확인·수정 2026년 10월 7일<br>이 블로그 저장소의 커밋 기록 그대로<br>코드는 실제로 고친 부분에서 요지만<br>제휴 없음 · 캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<h2 id="고친-코드-다섯-조각">고친 코드 다섯 조각</h2>
+<p>실제 커밋에서 요지만 남긴 조각이에요. 네이버판에는 짧은 두 조각만 실었어요.</p>
+<p><strong>9월 10일 · 카드뉴스</strong> — 찍기 전에 지난번 파일을 지운다</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">out.unlink(</span><span style="color:#FFAB70">missing_ok</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># 이전 실행의 PNG를 남겨두면 실패가 성공으로 보인다</span></span></code></pre>
+<p><strong>9월 11일 · 발행 큐</strong> — 예정일이 오늘이거나 이미 지났으면 대상</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># 전: str(sched.get("instagram", ""))[:10] == today</span></span>
+<span class="line"><span style="color:#6A737D"># 후: 예정일이 오늘이거나 이미 지났으면 대상</span></span>
+<span class="line"><span style="color:#F97583">return</span><span style="color:#79B8FF"> bool</span><span style="color:#E1E4E8">(d) </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> d </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> today</span></span></code></pre>
+<p><strong>9월 12일 · 네이버 에디터</strong> — 열려 있는가가 아니라 쓸 수 있는가</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">page.wait_for_selector(</span><span style="color:#9ECBFF">".se-text-paragraph"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">timeout</span><span style="color:#F97583">=</span><span style="color:#79B8FF">15000</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># 문단이 실제로 보일 때까지</span></span>
+<span class="line"><span style="color:#F97583">return</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> page.query_selector(</span><span style="color:#9ECBFF">".se-popup-dim"</span><span style="color:#E1E4E8">)               </span><span style="color:#6A737D"># 막이 덮여 있으면 아직 아니다</span></span></code></pre>
+<p><strong>9월 13일 · 구글 포토</strong> — 이전과 다른 이미지가 나타날 때까지</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">):                      </span><span style="color:#6A737D"># 이전과 다른 이미지가 나타날 때까지 기다린다</span></span>
+<span class="line"><span style="color:#E1E4E8">    fife </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> page.evaluate(</span><span style="color:#79B8FF">BIGGEST_FIFE</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> fife </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> fife.split(</span><span style="color:#9ECBFF">"="</span><span style="color:#E1E4E8">)[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> prev_base:</span></span>
+<span class="line"><span style="color:#F97583">        break</span></span>
+<span class="line"><span style="color:#E1E4E8">    page.wait_for_timeout(</span><span style="color:#79B8FF">600</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><strong>9월 14일 · 인스타 계정 전환</strong> — 눌렀는가가 아니라 열렸는가</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">page.get_by_role(</span><span style="color:#9ECBFF">"button"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"전환"</span><span style="color:#E1E4E8">).first.click()</span></span>
+<span class="line"><span style="color:#E1E4E8">page.wait_for_timeout(</span><span style="color:#79B8FF">3500</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> page.locator(</span><span style="color:#9ECBFF">'div[role="dialog"]'</span><span style="color:#E1E4E8">).count():   </span><span style="color:#6A737D"># 대화상자가 떴을 때만 성공</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> True</span></span></code></pre>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260905-vibe-coding-guide/">바이브 코딩이 뭐길래</a> · <a href="/docs/tech/20260907-ai-review-automation/">AI 검증 자동화</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

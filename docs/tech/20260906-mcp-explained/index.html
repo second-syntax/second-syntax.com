@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>MCP 뜻, AI에게 손발을 달아 주는 표준과 MCP 서버 정리</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260906-mcp-explained/"><meta name="description" content="MCP(Model Context Protocol)가 무엇인지 USB-C 비유로 설명한다. 왜 나왔는지, 호스트·서버 구조와 용어, 연결하면 달라지는 일, 연결 전 주의점까지 — 공식 문서와 대조해 개발 지식 없이 읽을 수 있게 정리했다."><meta property="og:title" content="MCP 뜻, AI에게 손발을 달아 주는 표준과 MCP 서버 정리"><meta property="og:description" content="MCP(Model Context Protocol)가 무엇인지 USB-C 비유로 설명한다. 왜 나왔는지, 호스트·서버 구조와 용어, 연결하면 달라지는 일, 연결 전 주의점까지 — 공식 문서와 대조해 개발 지식 없이 읽을 수 있게 정리했다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260906-mcp-explained/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.fGLvSqIO_2frxoc.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260906-mcp-explained/" data-title="MCP 뜻, AI에게 손발을 달아 주는 표준과 MCP 서버 정리" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-뜻-ai와-도구-사이의-공용-규격" data-toc="1-뜻-ai와-도구-사이의-공용-규격" data-astro-cid-f3qesd3f>1. 뜻: AI와 도구 사이의 공용 규격</a></li><li data-astro-cid-f3qesd3f><a href="#2-왜-나왔나-어댑터-지옥-문제" data-toc="2-왜-나왔나-어댑터-지옥-문제" data-astro-cid-f3qesd3f>2. 왜 나왔나: 어댑터 지옥 문제</a></li><li data-astro-cid-f3qesd3f><a href="#3-구조-호스트와-서버-두-쪽" data-toc="3-구조-호스트와-서버-두-쪽" data-astro-cid-f3qesd3f>3. 구조: 호스트와 서버 두 쪽</a></li><li data-astro-cid-f3qesd3f><a href="#4-연결하면-실제로-달라지는-것" data-toc="4-연결하면-실제로-달라지는-것" data-astro-cid-f3qesd3f>4. 연결하면 실제로 달라지는 것</a></li><li data-astro-cid-f3qesd3f><a href="#5-한-회사의-기능이-아닌-이유" data-toc="5-한-회사의-기능이-아닌-이유" data-astro-cid-f3qesd3f>5. 한 회사의 기능이 아닌 이유</a></li><li data-astro-cid-f3qesd3f><a href="#6-연결-전에-알아-둘-주의점" data-toc="6-연결-전에-알아-둘-주의점" data-astro-cid-f3qesd3f>6. 연결 전에 알아 둘 주의점</a></li><li data-astro-cid-f3qesd3f><a href="#헷갈리기-쉬운-것" data-toc="헷갈리기-쉬운-것" data-astro-cid-f3qesd3f>헷갈리기 쉬운 것</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 6일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-뜻-ai와-도구-사이의-공용-규격" data-astro-cid-l6a6buid>1. 뜻: AI와 도구 사이의 공용 규격</a></li><li data-astro-cid-l6a6buid><a href="#2-왜-나왔나-어댑터-지옥-문제" data-astro-cid-l6a6buid>2. 왜 나왔나: 어댑터 지옥 문제</a></li><li data-astro-cid-l6a6buid><a href="#3-구조-호스트와-서버-두-쪽" data-astro-cid-l6a6buid>3. 구조: 호스트와 서버 두 쪽</a></li><li data-astro-cid-l6a6buid><a href="#4-연결하면-실제로-달라지는-것" data-astro-cid-l6a6buid>4. 연결하면 실제로 달라지는 것</a></li><li data-astro-cid-l6a6buid><a href="#5-한-회사의-기능이-아닌-이유" data-astro-cid-l6a6buid>5. 한 회사의 기능이 아닌 이유</a></li><li data-astro-cid-l6a6buid><a href="#6-연결-전에-알아-둘-주의점" data-astro-cid-l6a6buid>6. 연결 전에 알아 둘 주의점</a></li><li data-astro-cid-l6a6buid><a href="#헷갈리기-쉬운-것" data-astro-cid-l6a6buid>헷갈리기 쉬운 것</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다.</blockquote> <h1 id="mcp-뜻-ai에게-손발을-달아-주는-표준과-mcp-서버-정리">MCP 뜻, AI에게 손발을 달아 주는 표준과 MCP 서버 정리</h1>
+<p><img alt="MCP 뜻과 MCP 서버 — AI에게 손발을 달아 주는 표준 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.fGLvSqIO_JoSvI.webp" ></p>
+<p class="cap">MCP 뜻과 MCP 서버 — AI에게 손발을 달아 주는 표준 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI 관련 글을 읽다 보면 MCP라는 세 글자가 자꾸 나와요. “MCP 서버를 연결하세요”라는 문장에서 이런 생각이 들죠. “그래서 MCP가 뭔데?” 개발자 용어 같아서 넘기기 쉽지만, 개념은 놀랄 만큼 단순해요.</p>
+<p>충전 케이블을 떠올려 보세요. 기기마다 단자 모양이 다르면 케이블을 따로 챙겨야 하지만, USB-C처럼 단자를 하나로 맞추면 케이블 하나로 여러 기기를 꽂을 수 있어요. MCP는 AI와 도구 사이의 단자를 하나로 맞춘 약속이에요. MCP 공식 문서도 MCP를 ‘AI 앱을 위한 USB-C 포트’라고 소개해요.<br>
+<strong>MCP(Model Context Protocol)는 AI 앱이 바깥의 도구·데이터에 연결되는 방법을 하나로 정한 공개 표준이에요.</strong></p>
+<p><img alt="케이블 하나로 메일·일정·문서를 잇는 장면 — MCP를 USB-C에 빗댄 그림 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-usb-port.CtP3wUGq_Z15k1lq.webp" ></p>
+<p class="cap">케이블 하나로 메일·일정·문서를 잇는 장면 — MCP를 USB-C에 빗댄 그림 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: MCP라는 말이 낯선 분<br>① MCP 뜻과 USB-C 비유<br>② 호스트·서버 구조와 용어 6개<br>③ 연결하면 달라지는 일과 주의점<br>2026년 10월 기준 · MCP 사양 2026-07-28판</div>
+<hr>
+<h2 id="1-뜻-ai와-도구-사이의-공용-규격">1. 뜻: AI와 도구 사이의 공용 규격</h2>
+<p><strong>MCP는 AI가 내 메일·파일·업무 도구를 직접 다루게 해 주는 연결 규격이에요.</strong> 이름을 풀면 Model Context Protocol, 우리말로 ‘모델 컨텍스트 프로토콜’이에요. AI 모델에 필요한 맥락(context)과 도구를 건네는 규약(protocol)이라는 뜻이에요.</p>
+<p>원래 AI 챗봇은 지식은 많은데 손발이 없는 존재였어요. 메일을 읽어 달라고 해도 내 메일함에 들어갈 수 없고, 파일을 정리해 달라고 해도 내 폴더를 열 수 없었어요.</p>
+<p>클로드를 만든 앤트로픽(Anthropic)이 <strong>2024년 11월 25일</strong> 오픈소스로 공개했어요.</p>
+<h2 id="2-왜-나왔나-어댑터-지옥-문제">2. 왜 나왔나: 어댑터 지옥 문제</h2>
+<p><strong>MCP 전에는 AI 서비스와 도구를 잇는 연동을 하나하나 따로 만들어야 했어요.</strong> AI 서비스가 3개, 연결할 도구가 5개면 3×5 = 15개 연동을 전부 따로 개발하는 식이에요. 해외여행 갈 때 나라마다 다른 콘센트 어댑터를 챙기는 상황과 같아요.</p>
+<p>앤트로픽 발표문도 ‘새 데이터 소스마다 따로 구현해야 해서, 연결된 시스템을 넓히기 어렵다’는 문제를 짚었어요.</p>
+<p><img alt="MCP 이전과 이후 — AI 앱 3개와 도구 5개를 잇는 연결 수 비교 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="3240" src="/_astro/diagram-mcp-before-after.B-rzgcyj_Z15Dp11.webp" ></p>
+<p class="cap">MCP 이전과 이후 — AI 앱 3개와 도구 5개를 잇는 연결 수 비교 (직접 제작)</p>
+<p>MCP는 이걸 규격 하나로 정리했어요. 도구 쪽은 MCP 서버를 한 번만 만들고, AI 앱 쪽은 MCP를 한 번만 지원하면 돼요. 그러면 15개가 3 + 5 = 8개로 줄어요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>새 도구가 나와도 MCP 서버 하나만 더하면, MCP를 지원하는 AI 앱 어디서나 쓸 수 있어요.</div>
+<h2 id="3-구조-호스트와-서버-두-쪽">3. 구조: 호스트와 서버 두 쪽</h2>
+<p><strong>구조는 두 쪽만 기억하면 돼요. AI가 들어 있는 앱(호스트)과 도구를 내주는 쪽(서버)이에요.</strong> MCP 호스트는 클로드 데스크톱, 클로드 코드 같은 AI 앱이에요. MCP 서버는 Gmail 서버, 노션 서버, 회사 DB 서버처럼 도구마다 하나씩 있어요.</p>
+<p>호스트가 서버에 꽂히면, AI는 그 서버가 내주는 기능을 자기 손발처럼 쓸 수 있어요. 공식 문서를 읽다 보면 나오는 용어 여섯 개를 표로 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>호스트 (host)</td><td>AI가 들어 있는 앱 — 클로드 데스크톱, 클로드 코드</td></tr><tr><td>클라이언트 (client)</td><td>호스트 안에서 서버 하나와의 연결을 맡는 부품</td></tr><tr><td>서버 (server)</td><td>도구·데이터를 내주는 프로그램 — Gmail, 노션</td></tr><tr><td>도구 (tools)</td><td>AI가 실행하는 기능 — 메일 검색, DB 조회</td></tr><tr><td>리소스 (resources)</td><td>AI가 읽는 자료 — 파일 내용, DB 기록</td></tr><tr><td>프롬프트 (prompts)</td><td>미리 만들어 둔 요청 틀</td></tr></tbody></table>
+<p>클라이언트는 호스트가 서버마다 하나씩 만드는 연결 담당이라, 쓰는 사람이 따로 챙길 일은 없어요. <mark>호스트는 AI 앱, 서버는 도구 쪽</mark>이라는 것만 기억하면 충분해요.</p>
+<h2 id="4-연결하면-실제로-달라지는-것">4. 연결하면 실제로 달라지는 것</h2>
+<p><strong>MCP 서버를 연결해 두면, 내 메일·문서·일정을 다루는 일을 AI에게 말로 시킬 수 있어요.</strong> 저는 클로드에 Gmail·노션·구글 캘린더를 커넥터로 연결해 두고 써요. 클로드에서는 claude.ai에 추가한 MCP 서버를 커넥터(connector)라고 불러요.</p>
+<p>연결해 두면 이런 요청이 실제로 돼요. 먼저 Gmail을 연결했다면 이렇게요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>지난주 온 세금계산서 메일 찾아서 요약해줘</span></span></code></pre>
+<p>노션을 연결했다면 이렇게요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 회의록을 노션 페이지로 정리해줘</span></span></code></pre>
+<p>구글 캘린더를 연결했다면 이렇게요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>다음 주 일정 보고 비는 시간에 미팅 잡아줘</span></span></code></pre>
+<p><strong>연결된 MCP 서버는 직접 확인할 수 있어요.</strong></p>
+<ol class="steps"><li>클로드 웹이나 데스크톱에서 <code>Customize > Connectors</code> 메뉴를 여세요(영어 화면 기준).<span class="then">→ 연결할 수 있는 커넥터를 둘러보고 추가할 수 있어요.</span></li><li>클로드 코드를 쓴다면 터미널에 아래 한 줄을 입력하세요.</li></ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="powershell"><code><span class="line"><span style="color:#E1E4E8">claude mcp list</span></span></code></pre>
+<p>→ 연결된 MCP 서버가 한 줄씩 떠요. 이 머신(클로드 코드 <code>2.1.268</code>)에서는 <code>claude.ai Gmail</code>, <code>claude.ai Notion</code>, <code>claude.ai Google Calendar</code>가 <code>Connected</code>로 보여요.<br>
+→ 이름 앞의 claude.ai는 claude.ai에서 연결한 커넥터를 클로드 코드가 그대로 가져왔다는 표시예요.</p>
+<h2 id="5-한-회사의-기능이-아닌-이유">5. 한 회사의 기능이 아닌 이유</h2>
+<p><strong>MCP는 앤트로픽이 만들었지만, 지금은 여러 회사가 함께 쓰는 공개 표준이에요.</strong> 그래서 도구를 만드는 회사들이 ‘우리 서비스 MCP 서버’를 내놓고, 쓸 수 있는 도구가 계속 늘어나요.</p>
+<p>OpenAI 개발자 문서도 MCP를 ‘AI 모델을 확장하는 업계 표준이 되어 가는 공개 프로토콜’이라고 소개해요.</p>
+<p>2025년 12월 9일에는 앤트로픽이 MCP를 리눅스 재단(Linux Foundation) 산하의 Agentic AI Foundation에 기부했어요. 이 재단은 앤트로픽·Block·OpenAI가 함께 세웠어요. 같은 발표에 따르면 공개된 MCP 서버는 <strong>1만 개</strong>가 넘어요.</p>
+<p>MCP를 쓰는 곳을 공식 문서와 발표문 기준으로 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>쓰는 곳</th><th>MCP를 쓰는 방식</th></tr></thead><tbody><tr><td>클로드 (웹·데스크톱·코드)</td><td>커넥터로 연결</td></tr><tr><td>챗GPT · 코덱스</td><td>원격 MCP 서버 연결 (OpenAI 문서)</td></tr><tr><td>VS 코드 · 커서</td><td>개발 도구에 MCP 서버 연결</td></tr><tr><td>제미나이 · 코파일럿</td><td>MCP 채택 (앤트로픽 2025년 12월 발표)</td></tr></tbody></table>
+<h2 id="6-연결-전에-알아-둘-주의점">6. 연결 전에 알아 둘 주의점</h2>
+<p><strong>MCP는 AI에게 실제 권한을 주는 기술이라, 아무 서버나 연결하면 안 돼요.</strong> 연결한 서버는 내 데이터에 접근할 수 있어요. MCP 사양도 도구를 ‘임의의 코드 실행’으로 보고 조심해서 다루라고 적어 두었어요.</p>
+<p>OpenAI와 클로드 코드 공식 문서도 믿을 수 있는 서버만 연결하라고 해요. 글 속에 숨긴 지시로 AI를 조종하는 공격(프롬프트 인젝션)이 있어서예요.</p>
+<p><img alt="낯선 플러그를 꽂기 전에 돋보기로 살펴보는 장면 — MCP 서버도 연결 전에 확인 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-plug-check.n0lGzDBY_Z11wsOF.webp" ></p>
+<p class="cap">낯선 플러그를 꽂기 전에 돋보기로 살펴보는 장면 — MCP 서버도 연결 전에 확인 (GPT 이미지 생성)</p>
+<p>민감한 데이터를 다루는 연결은 신중하게 정하고, 쓰지 않는 커넥터는 연결을 끊어 두세요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>출처를 모르는 MCP 서버는 연결하지 마세요. 도구를 만든 회사가 직접 운영하는 공식 서버부터 쓰세요.</div>
+<h2 id="헷갈리기-쉬운-것">헷갈리기 쉬운 것</h2>
+<p><strong>MCP는 AI 이름이 아니에요</strong> 클로드나 ChatGPT 같은 AI가 아니라 <mark>AI 앱과 도구를 잇는 규격</mark>이에요. 공식 문서도 AI 앱이 모델을 어떻게 쓰는지는 MCP가 정하지 않는다고 적어요.</p>
+<p><strong>MCP 서버가 꼭 내 컴퓨터에서 도는 건 아니에요</strong> 같은 컴퓨터에서 도는 로컬 서버도, 서비스 회사가 인터넷에서 운영하는 원격 서버도 있어요. 제 클로드 코드 목록의 claude.ai 커넥터들은 모두 https 주소로 연결된 원격 서버예요.</p>
+<p><strong>MCP가 보안을 대신 지켜 주지는 않아요</strong> MCP 사양은 사용자 동의와 통제를 원칙으로 두면서도, 프로토콜만으로는 강제할 수 없다고 밝혀요. 지키는 건 앱 설정과, 무엇을 연결할지 고르는 사람의 몫이에요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① MCP는 AI 앱과 도구를 잇는 공개 표준<br>② 도구는 서버를, AI 앱은 지원을 한 번만<br>③ 구조는 호스트(AI 앱)와 서버(도구) 두 쪽<br>④ 출처를 아는 공식 서버만 연결</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. MCP를 쓰려면 코딩을 알아야 하나요?</summary><p>아니요. 4번처럼 커넥터 메뉴에서 골라 연결하면 돼요. 서버를 새로 만드는 건 개발자의 일이에요.</p></details>
+<details class="faq"><summary>Q. ChatGPT에서도 MCP를 쓸 수 있나요?</summary><p>네. OpenAI 문서에 따르면 원격 MCP 서버를 ChatGPT와 Codex, API에서 쓸 수 있어요.</p></details>
+<details class="faq"><summary>Q. MCP 서버는 누가 만드나요?</summary><p>도구를 만든 회사가 공식 서버를 내기도 하고, 개인이 만든 서버도 있어요. 앤트로픽은 처음 공개할 때 Google Drive, Slack, GitHub 서버를 함께 내놓았어요.</p></details>
+<details class="faq"><summary>Q. AI가 연결된 도구로 마음대로 일을 벌이지는 않나요?</summary><p>MCP 사양은 도구를 쓰기 전에 사용자 동의를 받으라고 정해 두었고, 실제로 얼마나 묻는지는 앱 설정에 따라 달라요. 저는 클로드 코드를 자동 모드로 쓰고, 밖으로 내보내는 일은 규칙을 정해 두고 맡겨요.</p></details>
+<p>다음 글에서는 클로드 코드에 MCP 서버를 직접 연결하는 방법을 다뤄요. 연결 방식 세 가지와 연결 뒤 확인하는 법까지요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260907-claude-code-mcp/">Claude Code에 MCP 연결하기 — 개념부터 첫 연결까지 (실사용 기준)</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>MCP 공식 문서 — MCP란 무엇인가 · <a href="https://modelcontextprotocol.io/docs/getting-started/intro">modelcontextprotocol.io/docs/getting-started/intro</a></li>
+<li>앤트로픽 발표 — MCP 공개(2024년 11월) · <a href="https://anthropic.com/news/model-context-protocol">anthropic.com/news/model-context-protocol</a></li>
+<li>Claude Code 공식 문서 — MCP 연결 · <a href="https://code.claude.com/docs/en/mcp">code.claude.com/docs/en/mcp</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 발행 2026년 9월 6일<br>다시 확인·수정 2026년 10월 6일<br>커넥터를 연결해 쓰는 경험 + 공식 문서 대조<br>Windows 11 · 클로드 코드 2.1.268<br>제휴 없음 · 캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260906-mcp-servers-guide/">MCP 서버 추천</a> · <a href="/docs/tech/20260922-mcp-vs-api-vs-cli/">MCP vs API vs CLI 차이</a> · <a href="/docs/tech/20260906-claude-code-usage/">클로드 코드 사용법</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

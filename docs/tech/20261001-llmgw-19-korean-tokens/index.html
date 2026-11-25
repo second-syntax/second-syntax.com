@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>한국어 토큰 수, 영어보다 2배 넘게 드는 이유와 긴 문서 나누기 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-19-korean-tokens/"><meta name="description" content="AI는 글을 글자가 아니라 토큰이라는 상자로 셉니다. 제가 만든 LLM 중계기의 설명서에 적어 둔 어림값으로 영어는 약 3.0자에 1토큰, 한국어와 기호는 약 1.1자에 1토큰이라, 같은 3,000자라도 한국어는 영어의 2.7배쯤 되는 토큰을 씁니다. 글자 수로 잡은 '안전해 보이던' 분량이 실제로는 두 배가 넘는 토큰이어서 번번이 넘쳤던 일, 그 일로 중계기 첫날 설명서에 남은 '여기서 크게 데였다'는 절, 중계기 안에서도 용도마다 다르게 쓰는 세 가지 자, 그리고 긴 한국어 문서를 AI에 나눠 줄 때의 계산법을 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="한국어 토큰 수, 영어보다 2배 넘게 드는 이유와 긴 문서 나누기 (LLM 중계기 개발기)"><meta property="og:description" content="AI는 글을 글자가 아니라 토큰이라는 상자로 셉니다. 제가 만든 LLM 중계기의 설명서에 적어 둔 어림값으로 영어는 약 3.0자에 1토큰, 한국어와 기호는 약 1.1자에 1토큰이라, 같은 3,000자라도 한국어는 영어의 2.7배쯤 되는 토큰을 씁니다. 글자 수로 잡은 '안전해 보이던' 분량이 실제로는 두 배가 넘는 토큰이어서 번번이 넘쳤던 일, 그 일로 중계기 첫날 설명서에 남은 '여기서 크게 데였다'는 절, 중계기 안에서도 용도마다 다르게 쓰는 세 가지 자, 그리고 긴 한국어 문서를 AI에 나눠 줄 때의 계산법을 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-19-korean-tokens/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.CJLrXeMW_1feDeN.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-19-korean-tokens/" data-title="한국어 토큰 수, 영어보다 2배 넘게 드는 이유와 긴 문서 나누기 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-토큰-ai가-글을-세는-단위" data-toc="1-토큰-ai가-글을-세는-단위" data-astro-cid-f3qesd3f>1. 토큰: AI가 글을 세는 단위</a></li><li data-astro-cid-f3qesd3f><a href="#2-같은-3000자-다른-토큰-수" data-toc="2-같은-3000자-다른-토큰-수" data-astro-cid-f3qesd3f>2. 같은 3,000자, 다른 토큰 수</a></li><li data-astro-cid-f3qesd3f><a href="#3-여기서-크게-데였다" data-toc="3-여기서-크게-데였다" data-astro-cid-f3qesd3f>3. 여기서 크게 데였다</a></li><li data-astro-cid-f3qesd3f><a href="#4-해법-세-단계" data-toc="4-해법-세-단계" data-astro-cid-f3qesd3f>4. 해법 세 단계</a></li><li data-astro-cid-f3qesd3f><a href="#5-중계기-안의-자-세-개" data-toc="5-중계기-안의-자-세-개" data-astro-cid-f3qesd3f>5. 중계기 안의 자 세 개</a></li><li data-astro-cid-f3qesd3f><a href="#6-긴-한국어-문서를-나눠-줄-때" data-toc="6-긴-한국어-문서를-나눠-줄-때" data-astro-cid-f3qesd3f>6. 긴 한국어 문서를 나눠 줄 때</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>4부 · 19편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-토큰-ai가-글을-세는-단위" data-astro-cid-l6a6buid>1. 토큰: AI가 글을 세는 단위</a></li><li data-astro-cid-l6a6buid><a href="#2-같은-3000자-다른-토큰-수" data-astro-cid-l6a6buid>2. 같은 3,000자, 다른 토큰 수</a></li><li data-astro-cid-l6a6buid><a href="#3-여기서-크게-데였다" data-astro-cid-l6a6buid>3. 여기서 크게 데였다</a></li><li data-astro-cid-l6a6buid><a href="#4-해법-세-단계" data-astro-cid-l6a6buid>4. 해법 세 단계</a></li><li data-astro-cid-l6a6buid><a href="#5-중계기-안의-자-세-개" data-astro-cid-l6a6buid>5. 중계기 안의 자 세 개</a></li><li data-astro-cid-l6a6buid><a href="#6-긴-한국어-문서를-나눠-줄-때" data-astro-cid-l6a6buid>6. 긴 한국어 문서를 나눠 줄 때</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 어떤 AI 서비스와도 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="한국어-토큰-수-영어보다-2배-넘게-드는-이유와-긴-문서-나누기-llm-중계기-개발기">한국어 토큰 수, 영어보다 2배 넘게 드는 이유와 긴 문서 나누기 (LLM 중계기 개발기)</h1>
+<p><img alt="한국어 토큰 수 — 영어보다 2배 넘게 드는 이유 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.CJLrXeMW_ZfN0CF.webp" ></p>
+<p class="cap">한국어 토큰 수 — 영어보다 2배 넘게 드는 이유 (캐릭터는 GPT 이미지 생성)</p>
+<p>“글자 수로는 분명 넉넉했는데, 왜 AI가 읽을 수 있는 분량을 넘었다고 하지?” 긴 한국어 문서를 AI에 맡기다 이런 일을 겪었다면, 범인은 글자가 아니라 토큰이에요. 지난 18편에서는 오류 문구가 잘려 원인이 사라졌던 일을 이야기했어요. 이번 편은 15편에서 미뤄 둔, 언어에 따라 토큰 수가 달라지는 이야기예요.</p>
+<p>이삿짐센터는 짐을 방 크기가 아니라 상자 수로 세요. 이불 방은 큰 상자 몇 개면 되지만, 그릇 방은 하나하나 싸서 작은 상자 여러 개에 나눠 담아야 해요. 겉으로는 둘 다 ‘방 하나 분량’인데 견적서의 상자 수는 몇 배씩 차이가 나요. AI도 글을 상자로 세고, 그 상자를 토큰이라고 불러요.<br>
+<strong>같은 글자 수라도 한국어는 영어보다 토큰이 2배 넘게 나와요.</strong></p>
+<p><img alt="같은 양의 옷인데 한쪽은 큰 상자 하나, 다른 쪽은 작은 상자 여러 개 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-packing-boxes.CRn6th6A_Z2rr8ed.webp" ></p>
+<p class="cap">같은 양의 옷인데 한쪽은 큰 상자 하나, 다른 쪽은 작은 상자 여러 개 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 19편 · 4부 AI가 이상하게 굴 때<br>대상: 긴 한국어 문서를 AI에 맡기는 분<br>① 한국어가 토큰을 더 쓰는 이유와 어림값<br>② 글자 예산이 2배 넘게 빗나간 사고<br>③ 넘치지 않게 나눠 보내는 세 단계<br>2026년 10월 1일 기준 · 중계기 개발 기록</div>
+<hr>
+<h2 id="1-토큰-ai가-글을-세는-단위">1. 토큰: AI가 글을 세는 단위</h2>
+<p><strong>토큰(token)은 AI가 글을 세는 단위예요. 글자 하나가 늘 토큰 하나는 아니고, 낱말이나 낱말 조각으로 세요.</strong> AI에게는 토큰으로 정해진 한도가 두 가지 있어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>한도</th><th>뜻</th></tr></thead><tbody><tr><td>한 번에 읽는 분량 (컨텍스트 창)</td><td>질문·자료·답 몫이 모두 이 안에 들어가야 해요. 9편 스펙 카드의 첫 줄</td></tr><tr><td>답 예산</td><td>답을 이만큼까지만 쓰라는 상한. 15편에서 생각에 다 써 버린 그 예산</td></tr></tbody></table>
+<p>이사로 치면 컨텍스트 창은 트럭 짐칸, 토큰은 상자예요. 문제는 우리가 글을 잴 때 쓰는 자가 글자 수라는 점이에요. 문서 프로그램은 글자 수는 세어 주지만 토큰 수는 세어 주지 않으니까요.</p>
+<h2 id="2-같은-3000자-다른-토큰-수">2. 같은 3,000자, 다른 토큰 수</h2>
+<p><strong>중계기 설명서에 적어 둔 어림값은 영어 약 3.0자에 1토큰, 한국어와 기호 약 1.1자에 1토큰이에요.</strong> 한국어는 거의 글자 하나가 토큰 하나인 셈이에요. 글 3,000자로 셈해 보면 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>글 3,000자</th><th>토큰 어림값</th></tr></thead><tbody><tr><td>영어 (약 3.0자에 1토큰)</td><td>약 <strong>1,000토큰</strong></td></tr><tr><td>한국어 (약 1.1자에 1토큰)</td><td>약 <strong>2,700토큰</strong>, 영어의 2.7배쯤</td></tr><tr><td>코드 (설명서가 한국어 쪽으로 묶음)</td><td>약 <strong>2,700토큰</strong></td></tr></tbody></table>
+<p>흔히 AI가 글을 토큰으로 자르는 방식이 영어 글을 많이 보며 만들어져서, 자주 쓰는 영어 낱말은 통째로 한 조각이 되고 한국어는 더 잘게 쪼개지는 경우가 많다고 설명해요. 괄호·점·등호·빈칸이 촘촘한 코드도 조각나기 쉬워서, 설명서는 코드를 한국어와 같은 쪽으로 묶어 두었어요.</p>
+<p>다만 AI마다, 글마다 달라지는 어림값이에요. 설명서에도 정확한 토큰은 내용마다 달라 미리 100% 맞힐 수 없다고 적혀 있어요.</p>
+<h2 id="3-여기서-크게-데였다">3. 여기서 크게 데였다</h2>
+<p><strong>글자 수로 잡은 ‘안전해 보이던’ 예산이 실제로는 2배 넘는 토큰이어서, 요청이 매번 넘쳤어요.</strong> 중계기를 처음 만든 날 저녁, 다른 프로그램을 중계기에 붙이려는 사람을 위한 연결 설명서를 처음 썼어요. 절 여덟 개 가운데 경고 표시는 여섯 번째 절에만 붙어 있어요.<br>
+<strong>“컨텍스트 한도 처리 — 여기서 우리가 크게 데였습니다”</strong></p>
+<p>중계기를 쓰는 코드 검토 도구가 먼저 겪은 일이에요. 이 도구는 코드와 한국어가 섞인 글을 AI에 보내면서, 한 번에 보낼 분량을 글자 수로 어림해 정했어요. 영어 기준으로 넉넉하다고 잡은 글자 수를 한국어에 그대로 쓰면 셈으로는 토큰이 2.7배쯤 나와요. 설명서의 “2배 넘는 토큰”과 맞아떨어지는 숫자예요. 이불 방 경험으로 “방 하나면 트럭 한 대”라고 견적을 잡았는데, 실제로 실은 건 그릇 방이었던 셈이에요.</p>
+<p>넘치면 AI는 읽을 수 있는 분량을 넘었다는 오류로 요청을 돌려보내요. 이 오류 문구에는 AI의 한도와 이번 요청의 입력 토큰 수가 숫자로 적혀 와요. 중계기는 이 문구를 자르지 않고 그대로 실어 전해요. 18편의 원칙이 여기서도 쓰여요. 이 숫자가 마지막 안전망이 되거든요.</p>
+<p>15편의 생각 글은 <strong>33,748자</strong>에 <strong>8,192토큰</strong>, 토큰 하나에 4.1자쯤이었어요. 영어 값보다도 가벼운 글이었죠. 같은 33,748자가 한국어였다면 설명서 값으로 약 3만 700토큰, 3.7배쯤이 돼요. 토큰 하나에 몇 글자인지는 고정값이 아니라 어떤 글이냐에 따라 달라요.</p>
+<h2 id="4-해법-세-단계">4. 해법 세 단계</h2>
+<p><strong>설명서는 함정 바로 아래에 해법을 세 단계로 적었어요. 토큰으로 세고, 넉넉히 잡고, 넘치면 숫자를 보고 줄이는 거예요.</strong></p>
+<ol class="steps"><li><b>1차 예산</b> — 한 번에 읽는 분량에서 답 예산과 여유(2~3천 토큰)를 먼저 빼고, 남은 자리에만 자료를 실어요.<span class="then">→ 분량 정보는 중계기가 모델 목록과 스펙 카드에 알려 줘요. 아는 모델에 대해서만요.</span></li><li><b>넉넉하게 세기</b> — 한국어·코드는 1자를 1토큰으로, 영어만 있는 글은 1.5~2자에 1토큰으로 세요.<span class="then">→ 조금 덜 싣게 되지만 짐칸이 넘치지는 않아요.</span></li><li><b>넘치면 줄이기</b> — 오류 문구의 한도와 입력 토큰 수로, 넘친 비율만큼 글을 줄여 다시 보내요.<span class="then">→ 마지막에 0.85를 곱해 15%를 더 덜어 내요. 줄인 비율도 어림이라 딱 맞추면 또 넘칠 수 있거든요.</span></li></ol>
+<p>세 번째 단계의 셈은 이래요.<br>
+<strong>새 길이 = 지금 길이 × (한도 − 답 예산 − 여유) ÷ 입력 토큰 × 0.85</strong></p>
+<p>계산하기 쉬운 예시 숫자로 따라가 볼게요. 저장소의 값이 아니라 셈을 보여 주려는 예시예요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>예시</th><th>셈한 결과</th></tr></thead><tbody><tr><td>창 10만 · 답 4천 · 여유 3천</td><td>입력 예산 <strong>9만 3천 토큰</strong></td></tr><tr><td>한국어를 1자 1토큰으로</td><td>한 번에 약 <strong>9만 3천 자</strong></td></tr><tr><td>영어 셈(3.0자)을 그대로 썼다면</td><td>27만 9천 자 ≈ 25만 토큰, 짐칸의 <strong>2.5배</strong></td></tr><tr><td>그래도 오류에 ‘입력 12만 토큰’</td><td>9만 3천 ÷ 12만 × 0.85 → 지금 길이의 <strong>66%쯤</strong>으로</td></tr></tbody></table>
+<p><img alt="같은 3,000자 가방의 토큰 상자 수와, 긴 문서를 나눠 보낼 때의 계산 카드 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5360" src="/_astro/diagram-token-suitcases.CMLr-7KV_r6AvA.webp" ></p>
+<p class="cap">같은 3,000자 가방의 토큰 상자 수와, 긴 문서를 나눠 보낼 때의 계산 카드 (직접 제작)</p>
+<p>설명서는 이렇게 맺어요. 한 번에 읽는 분량은 힌트일 뿐이고, 정확한 토큰은 미리 다 맞힐 수 없으니 오류에 기댄 세 번째 단계가 최종 안전망이라고요. 8월 12일에는 중계기에 붙을 프로그램을 AI 코딩 도구로 만들 때 건네는 안내문을 넣었는데, “실제 사고에서 나온 규칙” 목록에 이 줄이 들어갔어요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>적게 세면 실패하고, 넉넉하게 세면 조금 덜 담을 뿐이에요.</div>
+<h2 id="5-중계기-안의-자-세-개">5. 중계기 안의 자 세 개</h2>
+<p><strong>중계기 자신도 곳곳에서 글자 수로 토큰을 어림하는데, 자가 하나가 아니에요. 이 연재에서 이미 세 번 만났어요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>중계기 안의 자</th><th>쓰는 곳</th></tr></thead><tbody><tr><td>4글자 = 1토큰</td><td>12편 페이서의 1분 토큰 장부. 영어 기준의 대략적인 셈</td></tr><tr><td>3글자 = 1토큰</td><td>15편 생각 분량 어림. 그날 본 4.1자보다 일부러 무겁게</td></tr><tr><td>한국어 1글자 = 1토큰</td><td>16편 답 잘림 감지. 7월 21일에 넣은 자</td></tr></tbody></table>
+<p>세 번째 자를 넣을 때 코드 메모에는 “4글자 셈은 한국어를 크게 적게 센다”고 적었어요. 이 편의 이야기가 그대로 담긴 메모예요. 용도도, 맞춘 글도 달라서 자가 셋이지만 고르는 기준은 하나예요.</p>
+<p><mark>적게 세면 사고가 나는 자리에서는 무겁게 센다.</mark></p>
+<p>잘림 감지에서 적게 세면 잘린 답을 멀쩡한 답으로 놓치고, 생각 여유분을 적게 세면 15편처럼 답이 비어 버리니까요.</p>
+<h2 id="6-긴-한국어-문서를-나눠-줄-때">6. 긴 한국어 문서를 나눠 줄 때</h2>
+<p><strong>중계기를 쓰지 않아도, 긴 한국어 문서를 AI에 읽힐 때 같은 함정을 만날 수 있어요. 설명서의 해법을 읽는 분 쪽으로 옮기면 이래요.</strong></p>
+<ol class="steps"><li>글자가 아니라 <b>토큰으로</b> 계획하세요. 한국어와 코드는 1자를 1토큰으로 넉넉하게 세요.</li><li>한 번에 읽는 분량에서 <b>답 예산과 2~3천 토큰</b>을 먼저 빼세요.<span class="then">→ 생각형 AI라면 15편에서 본 생각 여유분도 함께 빼요.</span></li><li>그 AI의 <b>공식 스펙</b>부터 확인하세요. 중계기라면 스펙 카드예요.<span class="then">→ 스펙을 모르면 작게 나눠 차례로 보내는 게 안전해요.</span></li><li>넘치면 오류 문구 속 <b>한도와 입력 토큰 수</b>로 비율을 셈해 줄이고, 조금 더 덜어 내세요.<span class="then">→ 그러려면 오류 문구를 끝까지 남겨야 해요.</span></li></ol>
+<p><img alt="긴 두루마리를 자로 재며 같은 길이로 자르고, 조각마다 여백을 남기는 로봇 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-scroll-cut.BYAPLTz9_Z17zfDu.webp" ></p>
+<p class="cap">긴 두루마리를 자로 재며 같은 길이로 자르고, 조각마다 여백을 남기는 로봇 (GPT 이미지 생성)</p>
+<p>채팅창에 긴 문서를 직접 붙여 넣을 때도 셈은 같아요. 서비스가 “한 번에 몇 토큰까지”라고 안내한다면, <mark>한국어 문서는 그 숫자만큼의 글자를 넘지 않게</mark> 잡고 답이 들어갈 자리는 따로 남겨 두는 편이 넉넉해요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 한국어는 약 1.1자, 영어는 약 3.0자에 1토큰<br>② 글자로 잡은 예산이 2배 넘는 토큰이라 매번 넘침<br>③ 답 몫과 여유를 빼고, 1자를 1토큰으로 넉넉히<br>④ 넘치면 오류 속 숫자로 줄여 다시 보내기</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 한국어는 왜 토큰을 더 쓰나요?</summary><p>흔히 AI가 글을 자르는 방식이 영어 글을 많이 보며 만들어져서, 한국어는 더 잘게 쪼개지는 경우가 많다고 설명해요. 중계기 설명서의 어림값은 한국어 약 1.1자, 영어 약 3.0자에 1토큰이에요.</p></details>
+<details class="faq"><summary>Q. 정확한 토큰 수를 미리 알 수 있나요?</summary><p>100% 맞힐 수는 없어요. AI마다, 글마다 달라서 어림값으로 넉넉하게 잡고, 넘치면 오류 문구에 적힌 숫자로 줄이는 게 설명서의 방법이에요.</p></details>
+<details class="faq"><summary>Q. 코드도 한국어처럼 세나요?</summary><p>설명서는 코드를 한국어와 같은 쪽으로 묶어 1자를 1토큰으로 넉넉하게 세라고 적었어요. 괄호·점·등호 같은 기호가 촘촘해서 조각나기 쉽기 때문이에요.</p></details>
+<details class="faq"><summary>Q. 채팅창에 붙여 넣을 때도 해당되나요?</summary><p>셈은 같아요. 서비스가 안내한 토큰 한도만큼의 글자를 넘지 않게, 답이 들어갈 자리를 남겨 두고 잡으면 넉넉해요.</p></details>
+<p>이번 편으로 4부를 마쳐요. 다음 20편부터 5부 ‘만들고 나서가 더 어렵다’가 시작돼요. 첫 이야기는 만든 컴퓨터에서는 멀쩡하던 중계기가 다른 컴퓨터에서 멈춘 일, “맥에서 되는데 윈도에서 안 되는 이유”예요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 1일<br>저장소 기록 다시 대조 2026년 10월 7일<br>직접 만든 중계기의 설명서·코드 기준<br>제휴 없음 · 어떤 AI 서비스와도 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-18-keep-errors/">지난 편(18편) 오류 문구</a> · <a href="/docs/tech/20261001-llmgw-20-mac-vs-windows/">다음 편(20편) 맥과 윈도</a> · 함께 보기 <a href="/docs/tech/20261001-llmgw-09-spec-cards/">9편 스펙 카드</a> · <a href="/docs/tech/20261001-llmgw-12-pacer/">12편 페이서</a> · <a href="/docs/tech/20261001-llmgw-15-thinking-budget/">15편 생각 예산</a> · <a href="/docs/tech/20261001-llmgw-16-cut-answer/">16편 잘린 답</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-18-keep-errors/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 18편</span> <span class="t" data-astro-cid-l6a6buid>에러 메시지 로그, 자르면 안 되는 이유와 남기는 법</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-20-mac-vs-windows/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 20편 →</span> <span class="t" data-astro-cid-l6a6buid>맥에서 되는데 윈도에서 안 되는 이유, D: 두 글자의 함정</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

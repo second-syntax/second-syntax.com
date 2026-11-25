@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>LLM 게이트웨이 구조, 질문 하나가 지나가는 네 칸과 두 창구 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-02-what-is-relay/"><meta name="description" content="여행용 멀티 어댑터를 열어 보면 꽂는 구멍, 모양을 바꾸는 부품, 과부하를 막는 장치가 따로 있습니다. 제가 만든 LLM 중계기도 안을 열어 보면 칸이 나뉘어 있어요. 프로그램이 보낸 질문 하나가 창구 → 교통정리 → 어댑터를 지나 AI에 닿고 답이 조금씩 흘러 돌아오는 길, 사람용 관리 화면과 프로그램용 API라는 두 창구, 요청마다 남는 기록(토큰·첫 글자까지 걸린 시간·끝난 이유), 그리고 처음부터 지키는 세 가지 안전 기본값을 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="LLM 게이트웨이 구조, 질문 하나가 지나가는 네 칸과 두 창구 (LLM 중계기 개발기)"><meta property="og:description" content="여행용 멀티 어댑터를 열어 보면 꽂는 구멍, 모양을 바꾸는 부품, 과부하를 막는 장치가 따로 있습니다. 제가 만든 LLM 중계기도 안을 열어 보면 칸이 나뉘어 있어요. 프로그램이 보낸 질문 하나가 창구 → 교통정리 → 어댑터를 지나 AI에 닿고 답이 조금씩 흘러 돌아오는 길, 사람용 관리 화면과 프로그램용 API라는 두 창구, 요청마다 남는 기록(토큰·첫 글자까지 걸린 시간·끝난 이유), 그리고 처음부터 지키는 세 가지 안전 기본값을 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-02-what-is-relay/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.CQQ2QOUk_1y4OXB.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-02-what-is-relay/" data-title="LLM 게이트웨이 구조, 질문 하나가 지나가는 네 칸과 두 창구 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-질문-하나가-지나가는-네-칸" data-toc="1-질문-하나가-지나가는-네-칸" data-astro-cid-f3qesd3f>1. 질문 하나가 지나가는 네 칸</a></li><li data-astro-cid-f3qesd3f><a href="#2-창구와-교통정리-받고-차례를-정한다" data-toc="2-창구와-교통정리-받고-차례를-정한다" data-astro-cid-f3qesd3f>2. 창구와 교통정리, 받고 차례를 정한다</a></li><li data-astro-cid-f3qesd3f><a href="#3-어댑터와-흘려보내기" data-toc="3-어댑터와-흘려보내기" data-astro-cid-f3qesd3f>3. 어댑터와 흘려보내기</a></li><li data-astro-cid-f3qesd3f><a href="#4-창구는-두-개-사람용과-프로그램용" data-toc="4-창구는-두-개-사람용과-프로그램용" data-astro-cid-f3qesd3f>4. 창구는 두 개, 사람용과 프로그램용</a></li><li data-astro-cid-f3qesd3f><a href="#5-기록-한-줄에-담기는-것" data-toc="5-기록-한-줄에-담기는-것" data-astro-cid-f3qesd3f>5. 기록 한 줄에 담기는 것</a></li><li data-astro-cid-f3qesd3f><a href="#6-처음부터-지키는-세-가지" data-toc="6-처음부터-지키는-세-가지" data-astro-cid-f3qesd3f>6. 처음부터 지키는 세 가지</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>1부 · 2편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-질문-하나가-지나가는-네-칸" data-astro-cid-l6a6buid>1. 질문 하나가 지나가는 네 칸</a></li><li data-astro-cid-l6a6buid><a href="#2-창구와-교통정리-받고-차례를-정한다" data-astro-cid-l6a6buid>2. 창구와 교통정리, 받고 차례를 정한다</a></li><li data-astro-cid-l6a6buid><a href="#3-어댑터와-흘려보내기" data-astro-cid-l6a6buid>3. 어댑터와 흘려보내기</a></li><li data-astro-cid-l6a6buid><a href="#4-창구는-두-개-사람용과-프로그램용" data-astro-cid-l6a6buid>4. 창구는 두 개, 사람용과 프로그램용</a></li><li data-astro-cid-l6a6buid><a href="#5-기록-한-줄에-담기는-것" data-astro-cid-l6a6buid>5. 기록 한 줄에 담기는 것</a></li><li data-astro-cid-l6a6buid><a href="#6-처음부터-지키는-세-가지" data-astro-cid-l6a6buid>6. 처음부터 지키는 세 가지</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽·구글과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="llm-게이트웨이-구조-질문-하나가-지나가는-네-칸과-두-창구-llm-중계기-개발기">LLM 게이트웨이 구조, 질문 하나가 지나가는 네 칸과 두 창구 (LLM 중계기 개발기)</h1>
+<p><img alt="LLM 게이트웨이 구조 — 질문 하나가 지나가는 네 칸과 두 창구 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.CQQ2QOUk_32b68.webp" ></p>
+<p class="cap">LLM 게이트웨이 구조 — 질문 하나가 지나가는 네 칸과 두 창구 (캐릭터는 GPT 이미지 생성)</p>
+<p>“주소 한 줄만 바꾸면 여러 AI를 쓸 수 있다는데, 그 주소 안에서는 무슨 일이 일어날까?” 1편을 읽고 이런 궁금증이 남았을 거예요.</p>
+<p>해외여행 가방에 꼭 챙기는 물건이 있죠. 여행용 멀티 어댑터예요. 나라마다 콘센트 구멍 모양이 다른데, 이 작은 상자 하나만 있으면 내 충전기를 어디에든 꽂을 수 있어요. 겉으로는 플러그 덩어리 하나지만 안에서는 하는 일이 나뉘어 있어요. 충전기를 받아 주는 구멍, 나라별 모양으로 바꿔 주는 부품, 제품에 따라서는 전기가 한꺼번에 너무 많이 흐르지 않게 막는 장치도 들어 있어요.<br>
+<strong>제가 만든 LLM 중계기도 뚜껑을 열면 칸 네 개와 창구 두 개로 나뉘어 있어요.</strong></p>
+<p>이 글은 ‘LLM 중계기 개발기’의 2편이에요. 1편에서는 여러 AI를 주소 하나 뒤에 세우는 중계기를 왜 만들었는지 이야기했어요. 오늘은 그 중계기의 뚜껑을 열어 안에서 무슨 일이 일어나는지 들여다볼게요.</p>
+<p><img alt="공항에서 멀티 어댑터를 들어 보이는 로봇 — 중계기를 여행용 어댑터에 빗댄 그림 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-travel-adapter.H-Y6zsiw_2pXpae.webp" ></p>
+<p class="cap">공항에서 멀티 어댑터를 들어 보이는 로봇 — 중계기를 여행용 어댑터에 빗댄 그림 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 2편 · 1부 왜 만들었나<br>대상: 중계기 안이 궁금한 분<br>① 질문 하나가 지나가는 네 칸<br>② 사람용·프로그램용 두 창구<br>③ 요청 기록과 처음부터 지킨 세 가지<br>2026년 10월 1일 기준 · 중계기 v0.1.108</div>
+<hr>
+<h2 id="1-질문-하나가-지나가는-네-칸">1. 질문 하나가 지나가는 네 칸</h2>
+<p><strong>프로그램이 보낸 질문은 창구 → 교통정리 → 어댑터를 지나 AI에 닿고, 답은 흘려보내기 칸을 지나 돌아와요.</strong> 1편에서 프로그램 쪽이 할 일은 “AI 주소를 중계기 주소로 바꾸는 한 줄”이 전부라고 했어요. 그 주소로 들어간 질문이 지나는 칸이 넷이고, 실제 프로그램 파일도 이 칸대로 나뉘어 있어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>칸</th><th>하는 일</th></tr></thead><tbody><tr><td>① 창구</td><td>질문을 받아 형식을 확인하고 보낼 AI를 정해요</td></tr><tr><td>② 교통정리</td><td>바로 보낼지, 줄을 세워 기다리게 할지 정해요</td></tr><tr><td>③ 어댑터</td><td>질문을 그 AI가 알아듣는 방식으로 바꿔요</td></tr><tr><td>④ 흘려보내기</td><td>AI가 쓰는 답을 오는 대로 바로 넘겨요</td></tr></tbody></table>
+<p><img alt="LLM 게이트웨이 구조 — 질문 하나가 창구·교통정리·어댑터를 지나 AI에 닿고 답이 조금씩 돌아오는 길, 그리고 두 창구 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5880" src="/_astro/diagram-request-path.DSVmO-I__Z4PjD3.webp" ></p>
+<p class="cap">LLM 게이트웨이 구조 — 질문 하나가 창구·교통정리·어댑터를 지나 AI에 닿고 답이 조금씩 돌아오는 길, 그리고 두 창구 (직접 제작)</p>
+<p>여행용 어댑터에 빗대면 ①은 충전기를 꽂는 구멍, ②는 과부하를 막는 장치, ③은 나라별 모양으로 바꾸는 부품이에요.<br>
+④는 전기 어댑터에는 없는 칸인데, AI가 답하는 방식 때문에 필요해졌어요.</p>
+<h2 id="2-창구와-교통정리-받고-차례를-정한다">2. 창구와 교통정리, 받고 차례를 정한다</h2>
+<p><strong>창구는 질문을 맨 먼저 받아 보낼 곳을 정하고, 보낼 수 없으면 이유를 담아 돌려보내요.</strong> 프로그램은 <code>claude/opus</code>처럼 ‘AI 이름/모델 이름’ 모양으로 누구에게 물을지 적어 보내요. 창구는 이 이름을 보고 보낼 곳을 정해요.</p>
+<p>보낼 수 없는 질문이면 프로그램이 알아들을 수 있는 이유를 담아 그 자리에서 돌려줘요.<br>
+① 그 AI는 아직 열쇠를 넣지 않았거나 로그인하지 않았다<br>
+② 그런 모델은 없다<br>
+③ 질문이 너무 크다</p>
+<p>1편에서 프로그램마다 다시 만들어야 했던 ‘오류 정리’를 이 칸이 한 번에 맡는 셈이에요.</p>
+<p><strong>교통정리는 AI마다 한꺼번에 받을 수 있는 질문 수를 지켜요.</strong> 제 중계기는 기본 설정에서 Codex와 Claude에 각각 <strong>동시에 3건</strong>까지, 같은 모델에는 <strong>한 번에 1건</strong>씩만 보내요.</p>
+<p>자리가 없으면 질문은 줄을 서서 차례를 기다려요. 줄이 너무 길거나 너무 오래 기다리면 “지금은 붐빈다”고 알려 주며 돌려보내요. 교통정리가 왜 그렇게 중요한지는 3부에서 따로 다룰게요.</p>
+<h2 id="3-어댑터와-흘려보내기">3. 어댑터와 흘려보내기</h2>
+<p><strong>어댑터는 AI마다 하나씩 있어서, 공통 질문을 그 AI의 말로 바꿔 전달하고 답을 다시 공통 모양으로 바꿔요.</strong> Codex와 Claude는 원래 사람이 터미널에서 쓰는 명령어 도구이고, 다른 AI는 인터넷 너머의 주소에 열쇠(API 키)를 보여 주고 부르는 방식이에요. 부르는 방법도, 답을 돌려주는 모양도 제각각이에요.</p>
+<p>그래서 새 AI를 붙이려면 <strong>어댑터 파일 하나</strong>를 만들고 목록에 <strong>한 줄</strong>만 등록하면 돼요. 어댑터가 지켜야 하는 약속은 2부에서 자세히 이야기할게요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>새 AI를 붙일 때 바뀌는 건 어댑터 하나예요. 창구·교통정리·흘려보내기는 그대로 써요.</div>
+<p>어댑터를 실제로 돌리는 부분은 옆에서 스톱워치와 장부를 들고 있어요. 첫 글자가 오기까지 걸린 시간, 쓴 토큰, 답이 끝난 이유를 적어 둬요.</p>
+<p><strong>AI는 답을 한 번에 주지 않고 한 조각씩 써 내려가서, 중계기도 조각이 오는 대로 바로 넘겨요.</strong> 채팅 화면에서 답이 타자 치듯 나타나는 게 그 때문이에요. 이런 방식을 스트리밍이라고 불러요.</p>
+<p>AI가 오래 생각하느라 한동안 아무 글자도 보내지 않을 때도 있어요. 그러면 프로그램은 연결이 끊긴 건지 헷갈리겠죠. 그래서 중계기는 답을 기다리는 동안 <strong>15초마다</strong> “아직 연결돼 있어요” 신호를 따로 보내요.</p>
+<h2 id="4-창구는-두-개-사람용과-프로그램용">4. 창구는 두 개, 사람용과 프로그램용</h2>
+<p><strong>중계기에는 프로그램이 질문을 보내는 API 창구 말고, 사람이 보는 관리 화면이 하나 더 있어요.</strong> API 창구는 1편에서 말한 ‘OpenAI 호환’ 형식을 쓰고, 관리 화면에서는 아래 네 가지 일을 해요.</p>
+<p><img alt="사람용 창구와 프로그램용 창구를 함께 맡은 로봇 접수원 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-two-windows.az-_T20C_ZHLIS.webp" ></p>
+<p class="cap">사람용 창구와 프로그램용 창구를 함께 맡은 로봇 접수원 (GPT 이미지 생성)</p>
+<p>① <strong>AI 연결</strong> — 열쇠로 쓰는 AI는 열쇠를 넣고 연결하면, 그 열쇠가 실제로 통하는지 AI 쪽에 확인해요<br>
+② <strong>진단</strong> — Codex·Claude는 설치, 로그인, 실제 호출 한 번을 차례로 확인하고, 막힌 단계에 맞는 안내를 띄워요<br>
+③ <strong>스위치</strong> — 프로그램용 API 창구를 열고 닫아요. 꺼 두어도 관리 화면과 연결 설정은 그대로 동작해요<br>
+④ <strong>기록</strong> — 요청마다 기록이 한 줄씩 쌓여요(5번에서 설명)</p>
+<p><strong>API 창구는 처음 실행할 때 꺼진 채로 시작해요.</strong><br>
+<strong>8월 12일 업데이트</strong>(v0.1.67)부터 그렇게 바꿨어요. 막 설치한 중계기에는 연결된 AI가 하나도 없어서, 창구를 열어 봐야 빈 목록만 보여 줄 테니까요. AI를 연결하고 스위치를 켜면 되고, 그다음부터는 마지막에 켜 뒀는지 꺼 뒀는지를 기억해 그대로 돌려놓아요. 이미 쓰고 있던 중계기는 원래처럼 켜진 채로 시작하게 남겨 두었어요. <mark>보여 줄 게 없으면 창구를 열지 않는다</mark>는 게 그때 정한 기본값이에요.</p>
+<h2 id="5-기록-한-줄에-담기는-것">5. 기록 한 줄에 담기는 것</h2>
+<p><strong>답이 끝날 때마다 관리 화면에 기록이 한 줄 남고, 거기에 다섯 가지가 적혀요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>기록</th><th>뜻</th></tr></thead><tbody><tr><td>토큰 (질문 → 답, 합계)</td><td>AI가 글을 잘게 나눠 세는 단위 — 질문과 답에 각각 몇 개를 썼는지</td></tr><tr><td>첫 글자까지 걸린 시간</td><td>질문을 보내고 답의 첫 조각이 오기까지. 흔히 TTFT라고 불러요</td></tr><tr><td>줄 선 시간</td><td>교통정리 칸에서 차례를 기다린 시간(기다렸을 때만)</td></tr><tr><td>전체 시간</td><td>질문을 보낸 때부터 답이 끝날 때까지</td></tr><tr><td>끝난 이유</td><td>스스로 끝났는지, 정해 둔 길이를 다 써서 잘렸는지</td></tr></tbody></table>
+<p>끝난 이유가 ‘길이를 다 써서 잘림’이면 그 줄은 경고로 표시돼요. 겉보기엔 멀쩡히 끝난 답이 사실은 중간에 잘린 것일 수 있거든요. 이 이야기는 4부에서 다시 꺼낼게요.</p>
+<h2 id="6-처음부터-지키는-세-가지">6. 처음부터 지키는 세 가지</h2>
+<p><strong>여러 AI의 열쇠를 한곳에 모아 두는 프로그램이라, 처음부터 세 가지를 기본값으로 정해 두었어요.</strong></p>
+<p><img alt="작은 열쇠를 금고에 조심스럽게 넣는 로봇 — 열쇠는 암호화해 내 컴퓨터에만 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-key-safe.DmBE-sWj_24PmDM.webp" ></p>
+<p class="cap">작은 열쇠를 금고에 조심스럽게 넣는 로봇 — 열쇠는 암호화해 내 컴퓨터에만 (GPT 이미지 생성)</p>
+<p>① <strong>내 컴퓨터 안에서만 열린다</strong> — 관리 화면도 API 창구도 내 컴퓨터 안에서만 접속할 수 있어요. 같은 와이파이의 다른 기기나 인터넷에서는 들어올 수 없어요.</p>
+<p>② <strong>열쇠는 암호화해서 내 컴퓨터에만 둔다</strong> — 넣은 API 키는 저장하는 순간 암호화돼(AES-256-GCM이라는 널리 쓰이는 방식) 내 컴퓨터의 파일 하나에만 남고, 다른 곳으로 보내지 않아요. Codex·Claude는 원래 쓰던 로그인을 그대로 써요.</p>
+<p>③ <strong>기록에는 열쇠와 질문 내용을 남기지 않는다</strong> — 모델 이름, 메시지 개수, 토큰 수, 시간 같은 정보만 남겨요. 오류 메시지에 열쇠가 섞여 나오면 앞 세 글자만 남기고 가려요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 질문은 창구 → 교통정리 → 어댑터를 지나요<br>② 답은 오는 대로 조금씩 흘려 돌려줘요<br>③ 창구는 관리 화면과 API 두 개, API는 처음엔 꺼짐<br>④ 내 컴퓨터 안에서만, 열쇠는 암호화, 기록엔 질문 없음</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 중계기를 켜 두면 다른 기기에서도 쓸 수 있나요?</summary><p>아니요. 관리 화면도 API 창구도 내 컴퓨터 안에서만 접속되게 묶어 두었어요. 같은 와이파이의 휴대폰이나 다른 컴퓨터에서는 들어올 수 없어요.</p></details>
+<details class="faq"><summary>Q. Codex·Claude도 API 키를 넣어야 하나요?</summary><p>아니요. 두 명령어 도구는 원래 쓰던 로그인을 그대로 써요. 연결할 때 진단이 설치와 로그인부터 확인하고, 막히면 안내를 띄워요.</p></details>
+<details class="faq"><summary>Q. 새 AI를 붙이려면 무엇을 바꾸나요?</summary><p>어댑터 파일 하나를 만들고 목록에 한 줄 등록해요. 창구·교통정리·흘려보내기는 그대로 써요.</p></details>
+<details class="faq"><summary>Q. 답이 잘렸는지는 어떻게 아나요?</summary><p>기록 한 줄의 끝난 이유를 봐요. 정해 둔 길이를 다 써서 잘렸으면 그 줄이 경고로 표시돼요. 자세한 사연은 4부에서 다뤄요.</p></details>
+<p>다음 편은 “‘OpenAI 호환’은 왜 표준 콘센트가 됐나”예요. 중계기가 왜 하필 그 모양으로 창구를 열었는지, 호환을 어디까지 믿을 수 있는지 이야기할게요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 쓴 날 2026년 10월 1일<br>다시 다듬은 날 2026년 10월 7일<br>직접 만든 중계기의 개발 기록 바탕<br>숫자는 저장소 코드·릴리스 노트와 대조<br>제휴 없음 · OpenAI·앤트로픽·구글과 무관<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">연재 LLM 중계기 개발기 — 지난 편: <a href="/docs/tech/20261001-llmgw-01-idle-subscriptions/">LLM 게이트웨이를 직접 만든 이유</a> · 다음 편: <a href="/docs/tech/20261001-llmgw-03-openai-compatible/">OpenAI 호환 API 뜻</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-01-idle-subscriptions/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 1편</span> <span class="t" data-astro-cid-l6a6buid>LLM 게이트웨이를 직접 만든 이유, 퇴근하면 노는 AI 구독</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-03-openai-compatible/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 3편 →</span> <span class="t" data-astro-cid-l6a6buid>OpenAI 호환 API 뜻, 표준이 된 이유와 빈틈 4가지</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

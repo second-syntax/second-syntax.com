@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>AI 코딩 도우미 협업 회고, 사람이 판단하고 AI가 만들었다 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261002-llmgw-33-human-and-ai/"><meta name="description" content="LLM 중계기 개발기의 마지막 편입니다. 7월 13일부터 10월 1일까지 쌓인 저장 기록 394개를 주별로 펼치고, AI 코딩 도우미가 공동 작성자로 이름을 올린 기록이 얼마나 되는지, 시험과 릴리스 노트가 어떻게 늘었는지 세어 봤어요. AI는 코드·시험·릴리스 노트·저장 메모를 썼고, 사람은 무엇을 만들고 뺄지 정하고, AI의 '고쳤다'를 실제 환경에서 확인하고, 직접 재고, 지킬 규칙을 정했다는 것을 기록으로 정리합니다. 1편의 세 질문에 답하고, 아직 계획인 다음 단계와 연재 전체 목차로 마무리해요."><meta property="og:title" content="AI 코딩 도우미 협업 회고, 사람이 판단하고 AI가 만들었다 (LLM 중계기 개발기)"><meta property="og:description" content="LLM 중계기 개발기의 마지막 편입니다. 7월 13일부터 10월 1일까지 쌓인 저장 기록 394개를 주별로 펼치고, AI 코딩 도우미가 공동 작성자로 이름을 올린 기록이 얼마나 되는지, 시험과 릴리스 노트가 어떻게 늘었는지 세어 봤어요. AI는 코드·시험·릴리스 노트·저장 메모를 썼고, 사람은 무엇을 만들고 뺄지 정하고, AI의 '고쳤다'를 실제 환경에서 확인하고, 직접 재고, 지킬 규칙을 정했다는 것을 기록으로 정리합니다. 1편의 세 질문에 답하고, 아직 계획인 다음 단계와 연재 전체 목차로 마무리해요."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261002-llmgw-33-human-and-ai/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.9v-4htbI_2dsU4S.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261002-llmgw-33-human-and-ai/" data-title="AI 코딩 도우미 협업 회고, 사람이 판단하고 AI가 만들었다 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-11주를-숫자로" data-toc="1-11주를-숫자로" data-astro-cid-f3qesd3f>1. 11주를 숫자로</a></li><li data-astro-cid-f3qesd3f><a href="#2-주마다-쌓인-기록" data-toc="2-주마다-쌓인-기록" data-astro-cid-f3qesd3f>2. 주마다 쌓인 기록</a></li><li data-astro-cid-f3qesd3f><a href="#3-크레디트에-오른-이름" data-toc="3-크레디트에-오른-이름" data-astro-cid-f3qesd3f>3. 크레디트에 오른 이름</a></li><li data-astro-cid-f3qesd3f><a href="#4-사람이-한-일-네-가지" data-toc="4-사람이-한-일-네-가지" data-astro-cid-f3qesd3f>4. 사람이 한 일 네 가지</a></li><li data-astro-cid-f3qesd3f><a href="#5-1편의-세-질문에-답하기" data-toc="5-1편의-세-질문에-답하기" data-astro-cid-f3qesd3f>5. 1편의 세 질문에 답하기</a></li><li data-astro-cid-f3qesd3f><a href="#6-다음-단계는-아직-계획" data-toc="6-다음-단계는-아직-계획" data-astro-cid-f3qesd3f>6. 다음 단계는 아직 계획</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li><li data-astro-cid-f3qesd3f><a href="#연재-전체-목차" data-toc="연재-전체-목차" data-astro-cid-f3qesd3f>연재 전체 목차</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>6부 · 33편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 2일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-11주를-숫자로" data-astro-cid-l6a6buid>1. 11주를 숫자로</a></li><li data-astro-cid-l6a6buid><a href="#2-주마다-쌓인-기록" data-astro-cid-l6a6buid>2. 주마다 쌓인 기록</a></li><li data-astro-cid-l6a6buid><a href="#3-크레디트에-오른-이름" data-astro-cid-l6a6buid>3. 크레디트에 오른 이름</a></li><li data-astro-cid-l6a6buid><a href="#4-사람이-한-일-네-가지" data-astro-cid-l6a6buid>4. 사람이 한 일 네 가지</a></li><li data-astro-cid-l6a6buid><a href="#5-1편의-세-질문에-답하기" data-astro-cid-l6a6buid>5. 1편의 세 질문에 답하기</a></li><li data-astro-cid-l6a6buid><a href="#6-다음-단계는-아직-계획" data-astro-cid-l6a6buid>6. 다음 단계는 아직 계획</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li><li data-astro-cid-l6a6buid><a href="#연재-전체-목차" data-astro-cid-l6a6buid>연재 전체 목차</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="ai-코딩-도우미-협업-회고-사람이-판단하고-ai가-만들었다-llm-중계기-개발기">AI 코딩 도우미 협업 회고, 사람이 판단하고 AI가 만들었다 (LLM 중계기 개발기)</h1>
+<p><img alt="AI 코딩 도우미 협업 회고 — 사람이 판단하고 AI가 만들었다 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.9v-4htbI_Hqgcp.webp" ></p>
+<p class="cap">AI 코딩 도우미 협업 회고 — 사람이 판단하고 AI가 만들었다 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI 코딩 도우미와 몇 달을 같이 일하면, 결국 누가 무엇을 한 걸까요? “코드는 AI가 다 짰다는데, 그럼 사람은 뭘 했지?” 연재 마지막 편에서는 이 질문에 저장 기록으로 답해 볼게요.</p>
+<p>영화 촬영장을 떠올려 보세요. 카메라, 조명, 세트를 맡은 사람이 따로 있고, 감독은 그 일을 직접 하지 않아요. 대신 “이 장면으로 가자”, “이건 빼자”, “한 번 더”를 정해요. 영화가 끝나면 누가 어떤 일을 했는지 적힌 크레디트가 올라가죠. 제 LLM 중계기의 저장 기록에도 크레디트 같은 줄이 있어요. 저장 메모 맨 끝에 붙는 <code>Co-Authored-By</code> 공동 작성자 꼬리표예요.<br>
+<strong>기록으로 보면 AI는 코드·시험·기록을 만들었고, 사람은 무엇을 만들고 뺄지와 무엇을 지킬지를 정했어요.</strong></p>
+<p>지난 32편에서는 흉내 낸 AI로 통과한 시험이 실제 환경 점검을 대신하지 못하는 이유를 이야기했어요. 오늘은 11주 동안 쌓인 기록 전체를 숫자로 펼쳐, 사람과 AI가 각각 무엇을 했는지 돌아봐요.</p>
+<p><img alt="확성기를 든 감독 로봇과 세트를 짓는 스태프 로봇들 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-film-set.DRkYEE3e_Z1SED7o.webp" ></p>
+<p class="cap">확성기를 든 감독 로봇과 세트를 짓는 스태프 로봇들 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 33편(마지막) · 6부 중계기 위에서, 그리고 회고<br>대상: AI 코딩 도우미와 오래 일해 보려는 분<br>① 11주 저장 기록 394개를 센 결과<br>② AI가 한 일과 사람이 한 일 네 가지<br>③ 1편 세 질문의 답과 연재 전체 목차<br>2026년 10월 2일 기준 · 저장 기록 집계</div>
+<hr>
+<h2 id="1-11주를-숫자로">1. 11주를 숫자로</h2>
+<p><strong>7월 13일부터 10월 1일까지, 중계기 저장소에는 저장 기록이 394개 쌓였어요.</strong> 저장 기록은 두 종류예요. 실제로 무언가를 바꾼 ‘작업 기록’, 따로 한 작업을 본 줄기에 들이는 ‘합치기 기록’이에요. 숫자는 모두 본 줄기(최종으로 모아 두는 줄기) 기준이에요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>숫자</th></tr></thead><tbody><tr><td>기간</td><td>7월 13일 첫 기록 ~ 10월 1일 마지막 기록</td></tr><tr><td>저장 기록</td><td>394개 (작업 297 + 합치기 97)</td></tr><tr><td>판(버전)</td><td>v0.1.0 → v0.1.109</td></tr><tr><td>릴리스 노트</td><td>77개 (8월 3일 v0.1.32부터)</td></tr><tr><td>시험</td><td>0개 → 48개 → 229개 → 586개 → 799개</td></tr><tr><td>품질 검사</td><td>첫날 6개 → 지금 12종</td></tr><tr><td>사고</td><td>36건 (연재를 준비하며 저장 기록에서 추린 목록)</td></tr></tbody></table>
+<p>릴리스 노트는 새 판마다 바뀐 점을 적는 안내문이에요. 시험 숫자는 제가 따로 센 게 아니라, AI가 저장 메모 끝에 적어 둔 값을 날짜순으로 옮겼어요(7월 13일 밤, 7월 21일, 8월 26일, 9월 25일). 1편에서 말한 “약 11주, 390개”는 9월 29일까지의 숫자예요. 10월 1일에 마지막 판 v0.1.109와 함께 4개가 더 쌓였어요.</p>
+<h2 id="2-주마다-쌓인-기록">2. 주마다 쌓인 기록</h2>
+<p><strong>394개를 한 주씩 나눠 쌓으면, 몰아친 주와 조용한 주가 또렷하게 보여요.</strong> 분홍은 AI가 공동 작성자로 올라 있는 작업 기록, 노랑은 꼬리표 없는 작업 기록, 하늘색은 합치기 기록이에요.</p>
+<p><img alt="주마다 쌓인 저장 기록 12주 막대와, 사람과 AI가 나눈 일 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="6128" src="/_astro/diagram-human-and-ai.D6zdgHEe_1lUGwU.webp" ></p>
+<p class="cap">주마다 쌓인 저장 기록 12주 막대와, 사람과 AI가 나눈 일 (직접 제작)</p>
+<p>① 가장 많은 주는 첫 주(<strong>96개</strong>)예요. 그중 <strong>54개</strong>가 첫날 하루에 쌓였어요(4편)<br>
+② 둘째·셋째 주는 6개, 3개로 조용했어요<br>
+③ 8월 첫 주(65개)는 무거운 앱 껍데기를 걷어내고(25편) 자동 업데이트를 새로 붙인(23편) 주예요. 꼬리표 없는 기록 83개 중 56개가 이 주에 몰려 있어요<br>
+④ 8월 셋째 주(87개)에는 대화가 섞인 사고(14편)와 조용한 업데이트 사고(24편)를 고쳤어요<br>
+⑤ 9월 셋째 주(37개)에는 빈 책상(7편)과 판정 창구(29편)가 들어갔어요</p>
+<p>뒤로 갈수록 분홍이 막대를 채우고, 8월 31일부터 10월 1일까지 작업 기록 <strong>71개는 모두</strong> 공동 작성자 꼬리표를 달고 있어요.</p>
+<h2 id="3-크레디트에-오른-이름">3. 크레디트에 오른 이름</h2>
+<p><strong>꼬리표가 붙은 작업 기록은 297개 중 214개, 약 72%예요.</strong> 합치기 기록까지 넣은 394개로 따지면 54%예요. 한 기록에 이름은 하나씩 붙어 있었고, 이름은 이렇게 나왔어요(10월 2일 기준).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>꼬리표에 적힌 이름</th><th>기록 수 · 기간</th></tr></thead><tbody><tr><td><code>Claude Fable 5</code></td><td>100개 · 7월 13일 ~ 9월 4일</td></tr><tr><td><code>Claude Opus 4.8</code></td><td>42개 · 7월 13일 ~ 7월 21일</td></tr><tr><td><code>Claude Opus 5</code></td><td>15개 · 8월 6일 ~ 9월 22일</td></tr><tr><td><code>Claude Fable 5.1</code></td><td>35개 · 9월 8일 ~ 9월 24일</td></tr><tr><td><code>Claude Opus 5.5</code></td><td>21개 · 9월 25일 ~ 10월 1일</td></tr><tr><td>다른 AI 코딩 도구</td><td>1개 · 8월 11일</td></tr></tbody></table>
+<p>Codex는 꼬리표에 한 번도 나오지 않아요. 저장소 안내 문서에는 다른 작업 사본을 “Codex·ChatGPT 세션이 써 왔다”는 뜻의 메모가 있지만, 그쪽 기록엔 꼬리표가 없어서 몇 개가 Codex의 몫인지는 가를 수 없었어요.</p>
+<p>꼬리표가 붙은 기록을 열어 보면 AI가 맡은 일이 보여요.<br>
+① 코드 — 기능을 넣고 고장을 고친 변경 그 자체<br>
+② 시험 — 첫날 아침 0개였던 시험이 9월 25일 기록에는 799개<br>
+③ 릴리스 노트 — 8월 3일부터 판마다 쓴 안내문 77개<br>
+④ 저장 메모 — 무엇이 왜 고장 났고 어떻게 확인했는지 적은 긴 메모</p>
+<p>그 메모 안에는 틀린 보고를 스스로 고쳐 적은 문장도 있어요. 21편의 “v0.1.15의 ‘좀비 고침’ 보고는 트레이 경로만 고친 것으로, 틀렸다”가 그 예예요. AI가 정하지 않고 남겨 둔 것도 있어요. 7월 21일 오전 8시 4분의 기록은 검사를 돌리는 방식을 바꾸는 일을 두고 “사용자 결정 대기 — 이 커밋에 미포함”이라고 적고 빼 두었어요.</p>
+<h2 id="4-사람이-한-일-네-가지">4. 사람이 한 일 네 가지</h2>
+<p><strong>사람 쪽 일은 꼬리표처럼 숫자로 남지 않지만, 저장 메모 곳곳에 흔적이 있어요.</strong><br>
+① 무엇을 만들고 뺄지 정한다 — 첫날 v0.1.8 메모에 제 말이 그대로 남아 있어요. “방금 Codex를 안 쓰게 하려고 했더니 방법이 없었어.” 그래서 연결 해제와 모델별 끄기가 들어갔어요(4편). 빼는 쪽의 기준은 28편의 원칙, “넣어서 좋아진다는 것을 증명하기 전에는 넣지 않는다”예요<br>
+② AI의 “고쳤다”를 실제 환경에서 확인한다 — 첫날 밤의 좀비 정리 기록은 다음 날 “틀렸다”로 고쳐 적혔고(21편), 그 기록 끝에는 “잔존 0개는 Windows 사용자 확인 필요”라는 문장이 있어요. 실제 컴퓨터에서 마지막으로 켜 보는 일은 사람 몫이었어요(32편)<br>
+③ 직접 재고, 잰 값으로 고른다 — 첫날 첫 답이 늦던 문제는 “사용자가 잰 값으로 결론이 났다”로 끝났어요(4편). 함께 쓰던 사람이 “네이티브가 성능이 좋다”고 했을 때도 그대로 따르지 않고 재서 확인했어요. 메모리 <strong>329MB에서 61MB</strong>였어요(25편)<br>
+④ 지킬 규칙을 정한다 — “사용자 결정 대기”는 <strong>11분 뒤</strong> 8시 15분의 다음 기록에 반영됐어요. 기본 시험은 몇 초 안에 끝나게 하고, 무거운 검사는 지우지 않고 정해 둔 때에 따로 돌리고, 이 방침에 “되돌리지 말 것”을 적었어요(31편)</p>
+<p>기록에는 결정을 기다린 줄과 결정이 반영된 줄이 11분 간격으로 나란히 남아 있어요. 이 프로젝트의 역할 분담이 가장 짧게 드러나는 장면이에요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>AI가 스스로 정하지 않고 사람에게 넘긴 것은 ‘무엇을 지킬지’였어요.</div>
+<p>AI 코딩 도우미와 일할 때도 이 나눔을 요청에 넣을 수 있어요. <mark>정할 일은 따로 남겨 달라고 말하기</mark>예요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>작업을 저장할 때마다 무엇을 왜 바꿨고 어떻게 확인했는지 메모에 적어줘. 내가 정해야 하는 일은 하지 말고 '결정 대기'로 따로 남겨줘</span></span></code></pre>
+<h2 id="5-1편의-세-질문에-답하기">5. 1편의 세 질문에 답하기</h2>
+<p><strong>1편에서 던진 세 질문에는 모두 “된다, 다만 손이 많이 간다”로 답하게 됐어요.</strong><br>
+① 사람이 쓰는 명령어 도구를 프로그램이 부를 수 있는 창구로 바꿀 수 있을까? — 돼요. Codex와 Claude의 명령어 도구를 어댑터로 감싸 ‘OpenAI 호환’ 창구 뒤에 세웠어요(5·6편). 다만 폴더 메모를 읽어 오는 버릇(7편), 끈 뒤에도 남는 프로세스(21편), 허락을 기다리며 멈추는 동작(30편)처럼 사람을 전제로 한 버릇을 하나씩 걷어 내야 했어요<br>
+② 골라 쓰거나 동시에 쓰면 어떨까? — 돼요. 스펙 카드로 고르고(9편), 병렬 채팅(26편)과 코드 리뷰 대결(27편)로 동시에 써요. 다만 동시에 받을 수 있는 수에 한도가 있고(10편), 많이 넣는다고 좋아지지도 않았어요(28편)<br>
+③ 연결 코드를 한 곳으로 모을 수 있을까? — 돼요. 줄 세우기·취소 전달·한도·오류 전달을 중계기 한 곳에 모았어요(10~13·18편). 한 곳에서 고치면 모두 나아지지만, 빠진 설정 한 줄이 새 AI의 호출을 전부 막은 적도 있어요(13편). 그래서 고칠 때마다 붙인 검사를 지우지 않아요(31편)</p>
+<h2 id="6-다음-단계는-아직-계획">6. 다음 단계는 아직 계획</h2>
+<p><strong>아래 두 가지는 계획이고, 아직 만들지 않았어요.</strong><br>
+① 사용량에 따라 나눠 보내기 — 급한 대화는 빠른 모델로, 한꺼번에 처리할 많은 일은 놀고 있는 AI로<br>
+② 모델 추천 — 모델마다 쌓인 품질·속도·생각에 쓴 양의 기록으로 어떤 일에 어떤 AI가 맞는지 추천</p>
+<p>재료는 일부 들어가 있어요. 9월 24일(v0.1.104)부터 AI·모델·프로그램·날짜별 요청 수, 토큰, 평균 걸린 시간, 추정 비용을 장부에 남겨요. 9월 25일에는 ‘빠른 대화용’ 같은 역할 이름으로 부르면 중계기가 모델을 고르고, 한도를 다 쓴 모델은 빼는 기능이 들어갔어요(v0.1.105). 하지만 장부를 보고 스스로 나눠 보내거나 추천하는 부분은 아직 없어요.</p>
+<p>저장소 문서에는 같은 판정을 반복할 때 결과를 다시 쓰는 기능(“후속 후보, 현재 없음”)과, 다시 켤 때 연결을 자동으로 되살리는 기능(“미결 후보”)도 남아 있어요.</p>
+<p><img alt="마지막 장면 뒤, 무대에서 함께 인사하는 감독과 스태프 로봇 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-curtain-bow.Dmvxm2K6_Z26DobE.webp" ></p>
+<p class="cap">마지막 장면 뒤, 무대에서 함께 인사하는 감독과 스태프 로봇 (GPT 이미지 생성)</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 저장 기록 394개, 작업 기록 297개 중 214개에 AI 꼬리표<br>② AI는 코드 · 시험 · 릴리스 노트 · 메모를 썼다<br>③ 사람은 정하고, 확인하고, 재고, 규칙을 세웠다<br>④ 사용량 배분 · 모델 추천은 아직 계획</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. Co-Authored-By는 무슨 뜻인가요?</summary><p>저장 기록(커밋) 메모 끝에 함께 쓴 이름을 적는 줄이에요. 이 저장소에서는 AI 코딩 도우미가 함께 만든 작업 기록에 'Co-Authored-By: Claude …' 꼬리표가 붙어 있었고, 작업 기록 297개 중 214개였어요.</p></details>
+<details class="faq"><summary>Q. 꼬리표 없는 기록 83개는 사람이 쓴 건가요?</summary><p>기록만으로는 가를 수 없어요. 다른 작업 사본을 Codex·ChatGPT 세션이 써 왔다는 메모가 있지만 그쪽 기록엔 꼬리표가 없어서, 이 글에서는 '꼬리표 없음'으로만 셌어요.</p></details>
+<details class="faq"><summary>Q. AI가 코드를 다 짠다면 사람은 무엇을 하나요?</summary><p>이 프로젝트에서는 무엇을 만들고 뺄지 정하고, AI의 “고쳤다”를 실제 컴퓨터에서 확인하고, 직접 재고, 지킬 규칙을 정했어요. AI도 정할 일은 “사용자 결정 대기”로 남겨 두었어요.</p></details>
+<h2 id="연재-전체-목차">연재 전체 목차</h2>
+<p><img alt="33편을 감아 정리하는 필름 두루마리 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-film-scroll.B8asO7ym_1S8yLI.webp" ></p>
+<p class="cap">33편을 감아 정리하는 필름 두루마리 (GPT 이미지 생성)</p>
+<p><strong>편마다 다룬 이야기를 부별로 모았어요.</strong></p>
+<p><strong>1부 왜 만들었나</strong></p>
+<ul>
+<li>1편 퇴근하면 노는 AI 구독, 왜 중계기를 만들었나</li>
+<li>2편 중계기란 무엇인가 — 만능 어댑터</li>
+<li>3편 ‘OpenAI 호환’은 왜 표준이 됐나</li>
+<li>4편 AI와 함께 하루 만에 만든 첫 버전</li>
+</ul>
+<p><strong>2부 여러 AI를 한 줄로</strong></p>
+<ul>
+<li>5편 AI마다 다른 플러그를 같은 어댑터로</li>
+<li>6편 부를 때마다 켤까, 켜 둔 채 쓸까</li>
+<li>7편 엉뚱한 메모를 읽은 AI와 빈 책상</li>
+<li>8편 로그인했는데 401, 서랍 속 옛 열쇠</li>
+<li>9편 모델마다 다른 스펙을 카드로</li>
+</ul>
+<p><strong>3부 교통정리</strong></p>
+<ul>
+<li>10편 중계기에 톨게이트가 필요한 이유</li>
+<li>11편 끊긴 전화와 끝까지 전하는 취소 신호</li>
+<li>12편 1분에 몇 번까지 부를 수 있나, 페이서</li>
+<li>13편 설정 한 줄 빠졌을 뿐인데 전멸</li>
+<li>14편 ‘저는 Claude예요’라고 말한 다른 AI</li>
+</ul>
+<p><strong>4부 AI가 이상하게 굴 때</strong></p>
+<ul>
+<li>15편 생각만 하다 답을 못 한 AI</li>
+<li>16편 ‘다 했어요’라더니 잘린 답</li>
+<li>17편 성공 응답 속에 숨은 실패</li>
+<li>18편 에러 메시지를 자르지 마라</li>
+<li>19편 한국어는 토큰을 더 먹는다</li>
+</ul>
+<p><strong>5부 만들고 나서가 더 어렵다</strong></p>
+<ul>
+<li>20편 맥에서 되는데 윈도에서 안 되는 이유</li>
+<li>21편 끄는 것도 기술, 남은 프로세스</li>
+<li>22편 끝나지 않는 ‘준비 중’ 화면</li>
+<li>23편 자동 업데이트가 계속 되돌아간 이유</li>
+<li>24편 조용한 업데이트는 멈춘 줄 안다</li>
+<li>25편 무거운 껍데기를 걷어내다</li>
+</ul>
+<p><strong>6부 중계기 위에서, 그리고 회고</strong></p>
+<ul>
+<li>26편 한 질문, 여러 AI의 답</li>
+<li>27편 AI끼리 코드 리뷰 대결</li>
+<li>28편 지식을 넣었더니 지적이 사라졌다</li>
+<li>29편 생각하지 않고 고르기만 하는 창구</li>
+<li>30편 허락을 기다리다 멈춘 AI</li>
+<li>31편 회귀 테스트와 품질 게이트</li>
+<li>32편 목 테스트와 스모크 테스트</li>
+<li>33편 AI 코딩 도우미 협업 회고 (이 글)</li>
+</ul>
+<p>이것으로 ‘LLM 중계기 개발기’를 마쳐요. 놀고 있는 구독 AI를 일하게 할 수 없을까라는 질문에서 시작해 33편을 이어 왔어요. 끝까지 읽어 주셔서 고마워요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 쓴 날 2026년 10월 2일<br>숫자 다시 대조 2026년 10월 7일<br>제가 만든 중계기의 저장 기록을 직접 셈<br>다음 단계 두 가지는 아직 계획<br>제휴 없음 · 언급한 서비스들과 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">연재 이어 보기: <a href="/docs/tech/20261002-llmgw-32-fake-vs-real/">← 32편</a> · 처음부터: <a href="/docs/tech/20261001-llmgw-01-idle-subscriptions/">1편</a></p>
+<p class="related">편 바로 가기: <a href="/docs/tech/20261001-llmgw-01-idle-subscriptions/">1</a> · <a href="/docs/tech/20261001-llmgw-02-what-is-relay/">2</a> · <a href="/docs/tech/20261001-llmgw-03-openai-compatible/">3</a> · <a href="/docs/tech/20261001-llmgw-04-first-day/">4</a> · <a href="/docs/tech/20261001-llmgw-05-adapters/">5</a> · <a href="/docs/tech/20261001-llmgw-06-spawn-vs-resident/">6</a> · <a href="/docs/tech/20261001-llmgw-07-empty-desk/">7</a> · <a href="/docs/tech/20261001-llmgw-08-stray-key/">8</a> · <a href="/docs/tech/20261001-llmgw-09-spec-cards/">9</a> · <a href="/docs/tech/20261001-llmgw-10-tollgate/">10</a> · <a href="/docs/tech/20261001-llmgw-11-hang-up/">11</a> · <a href="/docs/tech/20261001-llmgw-12-pacer/">12</a> · <a href="/docs/tech/20261001-llmgw-13-missing-lane/">13</a> · <a href="/docs/tech/20261001-llmgw-14-mixed-sessions/">14</a> · <a href="/docs/tech/20261001-llmgw-15-thinking-budget/">15</a> · <a href="/docs/tech/20261001-llmgw-16-cut-answer/">16</a> · <a href="/docs/tech/20261001-llmgw-17-hidden-failure/">17</a> · <a href="/docs/tech/20261001-llmgw-18-keep-errors/">18</a> · <a href="/docs/tech/20261001-llmgw-19-korean-tokens/">19</a> · <a href="/docs/tech/20261001-llmgw-20-mac-vs-windows/">20</a> · <a href="/docs/tech/20261001-llmgw-21-zombies/">21</a> · <a href="/docs/tech/20261001-llmgw-22-endless-preparing/">22</a> · <a href="/docs/tech/20261001-llmgw-23-update-rollback/">23</a> · <a href="/docs/tech/20261001-llmgw-24-silent-update/">24</a> · <a href="/docs/tech/20261001-llmgw-25-lighter-shell/">25</a> · <a href="/docs/tech/20261001-llmgw-26-parallel-answers/">26</a> · <a href="/docs/tech/20261002-llmgw-27-review-battle/">27</a> · <a href="/docs/tech/20261002-llmgw-28-knowledge-silence/">28</a> · <a href="/docs/tech/20261002-llmgw-29-pick-only/">29</a> · <a href="/docs/tech/20261002-llmgw-30-waiting-approval/">30</a> · <a href="/docs/tech/20261002-llmgw-31-keep-the-checks/">31</a> · <a href="/docs/tech/20261002-llmgw-32-fake-vs-real/">32</a> · 33(이 글)</p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261002-llmgw-32-fake-vs-real/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 32편</span> <span class="t" data-astro-cid-l6a6buid>목 테스트 한계, 가짜로 통과해도 스모크 테스트가 필요한 이유</span> </a> <span class="next empty" data-astro-cid-l6a6buid>마지막 편입니다</span> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

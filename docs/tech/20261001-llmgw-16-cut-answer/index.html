@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>AI 답변 잘림, finish_reason ‘다 했음’을 믿기 전에 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-16-cut-answer/"><meta name="description" content="AI의 답장 끝에는 왜 멈췄는지를 적는 '끝난 이유' 칸이 있습니다. 여기에 '다 했음'이 찍히면 프로그램은 잘린 답도 완성본으로 저장해요. 제가 만든 LLM 중계기가 이 칸을 바로잡기까지의 경위 — 둘째 날의 첫 수정, 34분 뒤의 두 번째 수정, 일주일 뒤에야 드러난 '말 없는 AI' 문제 — 와 AI마다 다른 '끝'의 말투, 직접 재서 추정하는 방법, 스펙 카드의 '믿어도 되는지' 표시, 쓰는 쪽 프로그램의 점검표를 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="AI 답변 잘림, finish_reason ‘다 했음’을 믿기 전에 (LLM 중계기 개발기)"><meta property="og:description" content="AI의 답장 끝에는 왜 멈췄는지를 적는 '끝난 이유' 칸이 있습니다. 여기에 '다 했음'이 찍히면 프로그램은 잘린 답도 완성본으로 저장해요. 제가 만든 LLM 중계기가 이 칸을 바로잡기까지의 경위 — 둘째 날의 첫 수정, 34분 뒤의 두 번째 수정, 일주일 뒤에야 드러난 '말 없는 AI' 문제 — 와 AI마다 다른 '끝'의 말투, 직접 재서 추정하는 방법, 스펙 카드의 '믿어도 되는지' 표시, 쓰는 쪽 프로그램의 점검표를 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-16-cut-answer/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.lKqEvVoV_2jBdX8.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-16-cut-answer/" data-title="AI 답변 잘림, finish_reason ‘다 했음’을 믿기 전에 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-문제-다-했음-도장-하나의-위험" data-toc="1-문제-다-했음-도장-하나의-위험" data-astro-cid-f3qesd3f>1. 문제: ‘다 했음’ 도장 하나의 위험</a></li><li data-astro-cid-f3qesd3f><a href="#2-경위-도장을-바로잡기까지-네-번" data-toc="2-경위-도장을-바로잡기까지-네-번" data-astro-cid-f3qesd3f>2. 경위: 도장을 바로잡기까지 네 번</a></li><li data-astro-cid-f3qesd3f><a href="#3-ai마다-끝을-말하는-방식" data-toc="3-ai마다-끝을-말하는-방식" data-astro-cid-f3qesd3f>3. AI마다 ‘끝’을 말하는 방식</a></li><li data-astro-cid-f3qesd3f><a href="#4-믿어도-되는지를-따로-적는다" data-toc="4-믿어도-되는지를-따로-적는다" data-astro-cid-f3qesd3f>4. ‘믿어도 되는지’를 따로 적는다</a></li><li data-astro-cid-f3qesd3f><a href="#5-결과-지금-중계기가-하는-일" data-toc="5-결과-지금-중계기가-하는-일" data-astro-cid-f3qesd3f>5. 결과: 지금 중계기가 하는 일</a></li><li data-astro-cid-f3qesd3f><a href="#6-배운-점-쓰는-쪽-점검표" data-toc="6-배운-점-쓰는-쪽-점검표" data-astro-cid-f3qesd3f>6. 배운 점: 쓰는 쪽 점검표</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>4부 · 16편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-문제-다-했음-도장-하나의-위험" data-astro-cid-l6a6buid>1. 문제: ‘다 했음’ 도장 하나의 위험</a></li><li data-astro-cid-l6a6buid><a href="#2-경위-도장을-바로잡기까지-네-번" data-astro-cid-l6a6buid>2. 경위: 도장을 바로잡기까지 네 번</a></li><li data-astro-cid-l6a6buid><a href="#3-ai마다-끝을-말하는-방식" data-astro-cid-l6a6buid>3. AI마다 ‘끝’을 말하는 방식</a></li><li data-astro-cid-l6a6buid><a href="#4-믿어도-되는지를-따로-적는다" data-astro-cid-l6a6buid>4. ‘믿어도 되는지’를 따로 적는다</a></li><li data-astro-cid-l6a6buid><a href="#5-결과-지금-중계기가-하는-일" data-astro-cid-l6a6buid>5. 결과: 지금 중계기가 하는 일</a></li><li data-astro-cid-l6a6buid><a href="#6-배운-점-쓰는-쪽-점검표" data-astro-cid-l6a6buid>6. 배운 점: 쓰는 쪽 점검표</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 글에 나오는 AI 서비스들(OpenAI·앤트로픽·구글·NVIDIA·LM Studio)과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="ai-답변-잘림-finish_reason-다-했음을-믿기-전에-llm-중계기-개발기">AI 답변 잘림, finish_reason ‘다 했음’을 믿기 전에 (LLM 중계기 개발기)</h1>
+<p><img alt="AI 답변 잘림 — finish_reason을 믿기 전에 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.lKqEvVoV_Nyz5E.webp" ></p>
+<p class="cap">AI 답변 잘림 — finish_reason을 믿기 전에 (캐릭터는 GPT 이미지 생성)</p>
+<p>LLM 중계기 개발기 16편이에요. 지난 15편에서는 생각하느라 답 분량을 다 써 버린 AI 이야기를 했어요. 이번에는 그보다 조용한 사고예요. “AI 답이 중간에 끊겼는데, 프로그램은 왜 ‘완료’라고 적었지?”</p>
+<p>장을 보고 받은 영수증에 ‘결제 완료’ 도장이 또렷한데, 집에 와 보니 장바구니가 절반뿐이라고 해 볼게요. 영수증만 보고 가계부를 쓰면, 빠진 물건은 처음부터 없던 일이 돼요.</p>
+<p>제가 만든 LLM 중계기도 처음에는 이런 계산대였어요. 답이 잘려도 끝에는 늘 “다 했어요” 도장을 찍어 보냈거든요.<br>
+<strong>AI 답이 잘렸는지는 답장 끝의 ‘끝난 이유’ 한 칸만 알려 주고, 그 칸이 틀리면 잘림은 소리 없이 사라져요.</strong></p>
+<p><img alt="완납 도장 영수증과 절반만 찬 장바구니 — 잘린 답에 찍힌 ‘다 했음’ (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-paid-receipt.s4jyyTFY_2v9aps.webp" ></p>
+<p class="cap">완납 도장 영수증과 절반만 찬 장바구니 — 잘린 답에 찍힌 ‘다 했음’ (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 16편 · 4부 AI가 이상하게 굴 때<br>대상: AI를 프로그램에 붙여 쓰거나 궁금한 분<br>① 끝난 이유가 잘림을 가린 경위<br>② AI마다 다른 ‘끝’의 말투와 신뢰도 표시<br>③ 잘린 답을 받는 쪽의 점검표 5가지<br>2026년 10월 1일 중계기 코드 기준</div>
+<hr>
+<h2 id="1-문제-다-했음-도장-하나의-위험">1. 문제: ‘다 했음’ 도장 하나의 위험</h2>
+<p><strong>프로그램은 답을 읽지 않고, 답장 끝의 끝난 이유 칸만 보고 다음 단계로 넘어가요.</strong> AI 답장에는 왜 멈췄는지 적는 끝난 이유(finish_reason) 칸이 있어요. 보통 ‘다 했음’(stop) 아니면 ‘분량에 걸려 잘렸음’(length)이 적혀요.</p>
+<p>3편에서 짧게 다뤘듯, 처음 중계기는 이 칸을 늘 ‘다 했음’으로 채웠어요. 이번 편은 그 뒤 이야기예요.</p>
+<p>사람은 문장이 뚝 끊기면 알아채지만, 프로그램은 칸이 ‘다 했음’이면 그대로 저장해요. 그러면 이런 일이 생길 수 있어요.<br>
+<strong>회의록 요약</strong> — 안건 다섯 개 중 세 개만 정리된 요약이 완성본으로 저장돼요. 뒤의 두 안건은 없던 일이 되죠<br>
+<strong>코드 검토</strong> — 파일 열 개 중 여섯 개에만 의견이 달려요. 나머지 넷은 “문제없음”처럼 보여요<br>
+<strong>자료 정리</strong> — 표의 마지막 몇 줄이 빠져요. 줄 수를 세어 보기 전에는 몰라요</p>
+<p>더 곤란한 점은 <strong>잘림이 오류가 아니라는 것</strong>이에요. AI는 허락된 분량만큼 쓰고 멈췄고, 요청도 ‘성공’으로 끝나요. 끝난 이유 칸이 유일한 단서인데, 거기에 ‘다 했음’이 찍히면 그 단서마저 사라져요.</p>
+<h2 id="2-경위-도장을-바로잡기까지-네-번">2. 경위: 도장을 바로잡기까지 네 번</h2>
+<p><strong>고친 줄 알았던 도장은 7월 14일부터 8월 12일까지 네 번 손봐야 했어요.</strong> 개발 둘째 날부터 한 달 사이에 한 일을 날짜순으로 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>언제</th><th>고친 것</th></tr></thead><tbody><tr><td>7월 14일 저녁</td><td>한꺼번에 받는 답장 — 덮어쓰던 ‘다 했음’ 대신 AI가 적은 값을 그대로</td></tr><tr><td>34분 뒤</td><td>조금씩 받는 답장의 마지막 조각도 고침 · 잘리면 기록에 경고 줄</td></tr><tr><td>7월 21일</td><td>끝난 이유를 챙겨 오지 않던 연결 부품 셋을 고침 · 자동 시험 7개</td></tr><tr><td>8월 12일</td><td>중계기 자기 화면의 답 분량 4,096 → 16,384토큰 · ‘완료 · 출력 잘림’ 표시</td></tr></tbody></table>
+<p><strong>첫 수정은 AI가 적어 보낸 값을 옮기고, 아무것도 적지 않았을 때만 ‘다 했음’을 쓰게 한 거예요.</strong> 한 AI 서버는 잘리면 ‘잘렸음’을 분명히 적었는데, 중계기가 답장을 다시 포장하며 코드에 박힌 ‘다 했음’으로 덮어썼거든요.</p>
+<p>34분 뒤 판에서는 조금씩 흘려 받는 방식(스트리밍)도 고치고, 기록에 ‘출력 잘림’ 경고가 빠지면 실패하는 자동 검사를 붙였어요.</p>
+<p>문제는 ‘아무것도 적지 않았을 때만’이라는 그 한 줄이었어요. Claude, Codex, 그리고 끝난 이유 칸이 아예 없는 한 AI 서비스는 연결 부품이 이 값을 챙겨 오지 않았어요. 넘어오는 값이 없으니 매번 기본값 ‘다 했음’이 찍혔고, 일주일 뒤 기록에는 잘림이 ‘위장’되고 있었다는 진단이 남았어요.</p>
+<p>8월에는 여러 AI의 답을 나란히 보는 중계기 화면이 문제였어요. 생각을 길게 하는 AI는 답이 잘렸는데 화면엔 ‘완료’라고 떴어요. 바깥 프로그램에 하지 말라고 적어 둔 일을 중계기 자기 화면이 하고 있었던 거예요.</p>
+<h2 id="3-ai마다-끝을-말하는-방식">3. AI마다 ‘끝’을 말하는 방식</h2>
+<p><strong>중계기 뒤의 AI들은 끝난 이유를 네 갈래로 알려 줘서, 연결 부품마다 받아 적는 법이 달라요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>AI</th><th>끝난 이유를 정하는 법</th></tr></thead><tbody><tr><td>웹 주소로 부르는 AI (NVIDIA · Gemini API · LM Studio)</td><td>AI가 직접 적어 보낸 값을 그대로 넘김</td></tr><tr><td>Claude 명령어 도구</td><td>자기 낱말을 번역 — end_turn은 다 했음, max_tokens는 잘렸음, refusal은 걸러짐(content_filter)</td></tr><tr><td>Codex · Gemini 명령어 도구</td><td>분량 초과 알림이나 끝 상태 낱말을 읽고, 말이 없으면 ‘다 했음’</td></tr><tr><td>끝난 이유 칸이 없는 AI 서비스</td><td>중계기가 답 길이를 재서 추정</td></tr></tbody></table>
+<p>Codex는 말이 없으면 ‘다 했음’으로 둬요. 중계기가 Codex에는 답 분량 한도를 걸지 않아서, 한도에 걸려 잘릴 일이 없다는 판단이에요.</p>
+<p><strong>끝난 이유를 아예 적지 않는 AI 서비스는 중계기가 직접 재요.</strong> 답 길이를 토큰(AI가 글을 세는 단위)으로 어림하되, 한국어는 글자 하나를 토큰 하나로 넉넉하게 세요. 적게 세면 잘린 답을 놓치니까요.</p>
+<p>어림한 길이가 요청한 한도의 98%에 닿으면 ‘잘렸음’으로 판정해요.</p>
+<p>판정이 어디서 왔는지는 기록에 꼬리표로 남겨요. AI가 알려 준 값은 ‘받음’, 길이를 재서 판정한 값은 ‘추정’, 근거 없이 둔 ‘다 했음’은 ‘가정’이에요.</p>
+<h2 id="4-믿어도-되는지를-따로-적는다">4. ‘믿어도 되는지’를 따로 적는다</h2>
+<p><strong>칸만 봐서는 AI가 한 말인지 중계기가 채운 말인지 모르니, 스펙 카드에 신뢰도를 따로 적어요.</strong> 쓰는 쪽이 받는 ‘다 했음’에는 AI가 직접 한 말, 중계기가 번역한 말, 중계기가 대신 채운 말이 섞여 있어요.</p>
+<p>그래서 9편의 스펙 카드에 ‘끝난 이유를 믿어도 되는지’ 줄이 있어요. 값은 둘 중 하나예요.</p>
+<p><strong>믿어도 됨(reliable)</strong> — 끝난 이유를 그대로 전한다고 연결 부품이 밝힌 AI예요. NVIDIA, Gemini API, 첫 사고의 AI 서버가 여기 있어요<br>
+<strong>모름(unknown)</strong> — 따로 밝히지 않은 나머지 전부예요. 명령어 도구로 부르는 Claude·Codex·Gemini와 길이를 재는 AI 서비스가 여기 있어요</p>
+<p>확인을 마친 곳만 ‘믿어도 됨’으로 적어요. 코드 메모 그대로 “과장 금지”예요. 그래서 끝난 이유를 그대로 넘기는 LM Studio도 아직 카드에는 ‘모름’이에요.</p>
+<p><img alt="영수증 세 장으로 본 끝난 이유(finish_reason) — 정상 종료, 길이 초과, 대신 적음 — 과 쓰는 쪽 점검표 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5140" src="/_astro/diagram-three-receipts.DbzD_nU1_1hphdl.webp" ></p>
+<p class="cap">영수증 세 장으로 본 끝난 이유(finish_reason) — 정상 종료, 길이 초과, 대신 적음 — 과 쓰는 쪽 점검표 (직접 제작)</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>‘모름’은 틀렸다는 뜻이 아니라, ‘다 했음’이어도 중계기가 채운 값일 수 있으니 보수적으로 다루라는 뜻이에요.</div>
+<h2 id="5-결과-지금-중계기가-하는-일">5. 결과: 지금 중계기가 하는 일</h2>
+<p><strong>지금 중계기는 끝난 이유를 그대로 전하고, 번역하고, 모르면 표시하고, 잘리면 경고해요.</strong><br>
+① 전달: AI가 적은 값을 한꺼번에 받는 답장과 조금씩 받는 답장 모두에 실어요<br>
+② 번역: Claude·Codex·Gemini 명령어 도구의 낱말을 OpenAI 형식 낱말로 옮겨요<br>
+③ 표시: 직접 잰 값은 기록에 ‘추정’ 꼬리표를, 확인 못 한 AI는 카드에 ‘모름’을 적어요<br>
+④ 경고: 기록에 쓴 분량·한도와 함께 ‘출력 잘림’ 경고 줄을 남기고, 이 경고가 사라지면 자동 검사가 실패해요</p>
+<p>이 표시는 중계기 안에서도 쓰여요. 15편의 자동 재시도는 ‘잘렸음’인데 답 본문이 <strong>0자</strong>일 때 분량을 키워 다시 보내거든요. ‘잘렸음’이 정확히 적혀야 이 장치도 제때 움직여요.</p>
+<h2 id="6-배운-점-쓰는-쪽-점검표">6. 배운 점: 쓰는 쪽 점검표</h2>
+<p><strong>잘린 답을 어떻게 다룰지는 결국 쓰는 쪽이 정해야 해서, 연결 안내서에 점검표를 적어 뒀어요.</strong><br>
+① <mark>‘잘렸음’이면 완성본으로 저장하지 않는다</mark><br>
+② 잘린 답은 ‘부분 결과’라고 알린다<br>
+③ 입력을 줄이거나 답 분량 한도를 늘려 다시 요청한다<br>
+④ 조금씩 받을 때는 맨 마지막 조각의 끝난 이유를 챙긴다<br>
+⑤ 카드가 ‘모름’이면 보수적으로 다룬다</p>
+<p><img alt="작은 봉투에 다 못 담은 손님에게 더 큰 봉투를 건네는 점원 로봇 — 분량을 늘려 다시 요청하기 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-bigger-bag.D4ntuXtO_Z1HhRv0.webp" ></p>
+<p class="cap">작은 봉투에 다 못 담은 손님에게 더 큰 봉투를 건네는 점원 로봇 — 분량을 늘려 다시 요청하기 (GPT 이미지 생성)</p>
+<p>프로그램을 붙일 때 AI 코딩 도구에 건네는 제 연동 지침에도 이 규칙이 “실제 사고에서 나온 규칙” 첫 줄로 들어 있어요. 내 프로그램에 AI를 붙인다면, 그 줄을 우리말 요청문으로 옮긴 아래 문장을 AI 코딩 도구에 건네 보세요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>AI 답의 finish_reason이 length면 완성본으로 저장하지 말고, 부분 결과라고 표시한 뒤 입력을 줄이거나 max_tokens를 늘려 다시 요청하게 고쳐줘</span></span></code></pre>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 잘림은 오류가 아니라 끝난 이유로만 드러난다<br>② 기본값 ‘다 했음’이 일주일 동안 잘림을 가렸다<br>③ 지금은 전달 · 번역 · 추정 꼬리표 · ‘모름’ · 경고<br>④ ‘잘렸음’이면 완성본으로 저장하지 않는다</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 끝난 이유는 응답의 어디에 있나요?</summary><p>OpenAI 호환 응답이면 답마다 finish_reason 칸에 있어요. 조금씩 받을 때는 맨 마지막 조각에만 실리고, 그 앞 조각에는 ‘아직 없음’(null)이 적혀요.</p></details>
+<details class="faq"><summary>Q. 잘린 답은 버려야 하나요?</summary><p>아니요. ‘부분 결과’라고 알리고 보여 줄 수 있어요. 완성본으로 저장하지만 않으면 돼요. 필요하면 분량을 조정해 다시 요청해요.</p></details>
+<details class="faq"><summary>Q. 카드에 ‘모름’인 AI는 쓰면 안 되나요?</summary><p>쓸 수 있어요. ‘다 했음’이 AI가 한 말이 아닐 수도 있으니, 잘렸을 가능성을 남겨 두고 다루라는 표시예요.</p></details>
+<p>다음 17편은 “성공 응답 속에 숨은 실패”예요. 로그인이 만료됐다거나 한도를 다 썼다는 안내문이 아예 정상 답처럼 돌아온 날의 이야기예요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 1일<br>다시 확인·수정 2026년 10월 7일<br>직접 만든 중계기의 커밋·코드 기록 기준<br>제휴 없음 · 글에 나온 AI 서비스들과 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-15-thinking-budget/">← 15편 생각만 하다 답을 못 한 AI</a> · <a href="/docs/tech/20261001-llmgw-17-hidden-failure/">17편 성공 응답 속에 숨은 실패 →</a> · 함께 보면 좋은 편: <a href="/docs/tech/20261001-llmgw-03-openai-compatible/">3편 OpenAI 호환</a> · <a href="/docs/tech/20261001-llmgw-09-spec-cards/">9편 스펙 카드</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-15-thinking-budget/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 15편</span> <span class="t" data-astro-cid-l6a6buid>추론 모델 max_tokens, 생각만 하다 답 0자로 끝난 이유</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-17-hidden-failure/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 17편 →</span> <span class="t" data-astro-cid-l6a6buid>Claude 로그인 만료·한도 소진, 성공 응답 속에 숨은 실패</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

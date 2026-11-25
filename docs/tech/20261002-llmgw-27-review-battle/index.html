@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>AI 코드리뷰, 여러 AI에게 나눠 맡기고 교차 검증하는 법 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261002-llmgw-27-review-battle/"><meta name="description" content="노래 경연의 심사위원은 혼자 점수를 매기지 않죠. 여럿이 따로 채점한 뒤 채점표를 맞춰 봅니다. 제가 만든 LLM 중계기를 처음부터 써 온 '코드 리뷰 대결 도구'도 그렇게 일해요. 바뀐 코드를 조각으로 나누고, 사용자 치명 문제·실행 중 멈춤·호환성·동시성 같은 일곱 가지 관점을 여러 AI에게 나눠 맡긴 뒤, 같은 지적을 몇이 찾았는지와 다른 AI가 동의하는지로 믿을 만한 정도를 매겨 한 장의 보고서로 합칩니다. 보스·파이터·장비로 그린 게임 같은 화면 뒤의 구조, 걸러 내던 심판이 표시하는 심판으로 바뀐 이유, 그리고 중계기가 맡은 일 — 한 창구, 같은 출발선의 묶음 요청, 스펙 카드로 정하는 조각 크기 — 를 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="AI 코드리뷰, 여러 AI에게 나눠 맡기고 교차 검증하는 법 (LLM 중계기 개발기)"><meta property="og:description" content="노래 경연의 심사위원은 혼자 점수를 매기지 않죠. 여럿이 따로 채점한 뒤 채점표를 맞춰 봅니다. 제가 만든 LLM 중계기를 처음부터 써 온 '코드 리뷰 대결 도구'도 그렇게 일해요. 바뀐 코드를 조각으로 나누고, 사용자 치명 문제·실행 중 멈춤·호환성·동시성 같은 일곱 가지 관점을 여러 AI에게 나눠 맡긴 뒤, 같은 지적을 몇이 찾았는지와 다른 AI가 동의하는지로 믿을 만한 정도를 매겨 한 장의 보고서로 합칩니다. 보스·파이터·장비로 그린 게임 같은 화면 뒤의 구조, 걸러 내던 심판이 표시하는 심판으로 바뀐 이유, 그리고 중계기가 맡은 일 — 한 창구, 같은 출발선의 묶음 요청, 스펙 카드로 정하는 조각 크기 — 를 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261002-llmgw-27-review-battle/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DzOdTx6h_Z1PEkVA.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261002-llmgw-27-review-battle/" data-title="AI 코드리뷰, 여러 AI에게 나눠 맡기고 교차 검증하는 법 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-문제-ai-리뷰어-하나는-놓친다" data-toc="1-문제-ai-리뷰어-하나는-놓친다" data-astro-cid-f3qesd3f>1. 문제: AI 리뷰어 하나는 놓친다</a></li><li data-astro-cid-f3qesd3f><a href="#2-일곱-가지-관점으로-나눠-맡긴다" data-toc="2-일곱-가지-관점으로-나눠-맡긴다" data-astro-cid-f3qesd3f>2. 일곱 가지 관점으로 나눠 맡긴다</a></li><li data-astro-cid-f3qesd3f><a href="#3-조각-크기는-스펙-카드가-정한다" data-toc="3-조각-크기는-스펙-카드가-정한다" data-astro-cid-f3qesd3f>3. 조각 크기는 스펙 카드가 정한다</a></li><li data-astro-cid-f3qesd3f><a href="#4-같은-출발선-한-창구와-묶음-요청" data-toc="4-같은-출발선-한-창구와-묶음-요청" data-astro-cid-f3qesd3f>4. 같은 출발선: 한 창구와 묶음 요청</a></li><li data-astro-cid-f3qesd3f><a href="#5-교차-채점-지우지-않고-표시한다" data-toc="5-교차-채점-지우지-않고-표시한다" data-astro-cid-f3qesd3f>5. 교차 채점: 지우지 않고 표시한다</a></li><li data-astro-cid-f3qesd3f><a href="#6-걸러-내던-심판-표시하는-심판으로" data-toc="6-걸러-내던-심판-표시하는-심판으로" data-astro-cid-f3qesd3f>6. 걸러 내던 심판, 표시하는 심판으로</a></li><li data-astro-cid-f3qesd3f><a href="#7-배운-점-관점이-먼저-판단은-사람" data-toc="7-배운-점-관점이-먼저-판단은-사람" data-astro-cid-f3qesd3f>7. 배운 점: 관점이 먼저, 판단은 사람</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>6부 · 27편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 2일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-문제-ai-리뷰어-하나는-놓친다" data-astro-cid-l6a6buid>1. 문제: AI 리뷰어 하나는 놓친다</a></li><li data-astro-cid-l6a6buid><a href="#2-일곱-가지-관점으로-나눠-맡긴다" data-astro-cid-l6a6buid>2. 일곱 가지 관점으로 나눠 맡긴다</a></li><li data-astro-cid-l6a6buid><a href="#3-조각-크기는-스펙-카드가-정한다" data-astro-cid-l6a6buid>3. 조각 크기는 스펙 카드가 정한다</a></li><li data-astro-cid-l6a6buid><a href="#4-같은-출발선-한-창구와-묶음-요청" data-astro-cid-l6a6buid>4. 같은 출발선: 한 창구와 묶음 요청</a></li><li data-astro-cid-l6a6buid><a href="#5-교차-채점-지우지-않고-표시한다" data-astro-cid-l6a6buid>5. 교차 채점: 지우지 않고 표시한다</a></li><li data-astro-cid-l6a6buid><a href="#6-걸러-내던-심판-표시하는-심판으로" data-astro-cid-l6a6buid>6. 걸러 내던 심판, 표시하는 심판으로</a></li><li data-astro-cid-l6a6buid><a href="#7-배운-점-관점이-먼저-판단은-사람" data-astro-cid-l6a6buid>7. 배운 점: 관점이 먼저, 판단은 사람</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽과 아무 관계가 없습니다. 제가 직접 만든 중계기와 코드 리뷰 대결 도구의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="ai-코드리뷰-여러-ai에게-나눠-맡기고-교차-검증하는-법-llm-중계기-개발기">AI 코드리뷰, 여러 AI에게 나눠 맡기고 교차 검증하는 법 (LLM 중계기 개발기)</h1>
+<p><img alt="AI 코드리뷰 교차 검증 — 여러 AI에게 나눠 맡기기 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DzOdTx6h_1Iu8YR.webp" ></p>
+<p class="cap">AI 코드리뷰 교차 검증 — 여러 AI에게 나눠 맡기기 (캐릭터는 GPT 이미지 생성)</p>
+<p>지난 편에서는 질문 하나를 여러 AI에게 동시에 보내는 병렬 채팅과, ‘다 같이 아니면 아무도’인 묶음 창구 이야기를 했어요.</p>
+<p>AI에게 코드 리뷰를 맡기다 보면 이런 의문이 들어요. “이 AI가 놓친 건 누가 잡지?”</p>
+<p>노래 경연의 심사위원은 여럿이 따로 채점한 뒤 채점표를 맞춰 봐요. 셋이 모두 “2절 고음이 흔들렸다”고 적었다면 거의 확실하고, 한 사람만 적었다면 다시 돌려 볼 일이에요. 묶음 창구의 원래 손님인 ‘코드 리뷰 대결 도구’도 여러 AI를 심사위원처럼 앉혀요. 중계기와 나란히 만들어 온 도구예요.<br>
+<strong>바뀐 코드를 조각으로 나누고, 일곱 가지 관점을 여러 AI에 나눠 맡긴 뒤, 지적을 교차 채점해 한 장으로 합쳐요.</strong></p>
+<p><img alt="무대 앞 심사석에 앉은 로봇 넷 — 여러 AI가 코드를 따로 채점하는 비유 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-judge-panel.CsyHqps1_8UwCK.webp" ></p>
+<p class="cap">무대 앞 심사석에 앉은 로봇 넷 — 여러 AI가 코드를 따로 채점하는 비유 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 27편 · 6부 중계기 위에서, 그리고 회고<br>대상: AI 코드 리뷰를 여러 AI로 해 보고 싶은 분<br>① 관점 일곱 가지로 나눠 맡기는 법<br>② 같은 출발선을 지키는 중계기의 몫<br>③ 지적을 지우지 않고 교차 채점하기<br>2026년 10월 2일 기준 · 기본 설정값</div>
+<hr>
+<h2 id="1-문제-ai-리뷰어-하나는-놓친다">1. 문제: AI 리뷰어 하나는 놓친다</h2>
+<p><strong>같은 결함도 어떤 AI는 찾고 어떤 AI는 놓쳐요. AI 하나에 맡기면 놓친 결함은 아무도 모른 채 지나가요.</strong> 먼저 낱말 두 개예요. 변경분(diff)은 코드에서 바뀐 줄만 모은 것이고, PR은 “제가 바꾼 이 부분을 합쳐 주세요”라는 요청이에요. 코드 리뷰는 보통 PR 하나를 단위로 해요.</p>
+<p>코드 리뷰 대결 도구는 이 검토 과정을 게임 화면처럼 보여 줘요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>게임 화면</th><th>실제로 뜻하는 것</th></tr></thead><tbody><tr><td>보스</td><td>검토할 PR — 바뀐 파일과 줄 수가 체력</td></tr><tr><td>파이터</td><td>예선을 통과한 AI 모델 — 조각 하나를 볼 때마다 공격</td></tr><tr><td>장비(요정)</td><td>리뷰 관점 — 맡은 AI 곁에 떠 있다가 넘어가면 옮겨 감</td></tr></tbody></table>
+<p>이름은 ‘대결’이지만 방향이 한 번 바뀌었어요. 처음에는 AI끼리 승부를 가리는 구조였어요. 7월 19일의 설계 기록에는 “리뷰의 기준은 관점이고, AI의 개수와 성능은 관점을 완성하는 수단”이라고 적혔어요. 그 뒤로는 승패보다 관점이 하나도 빠지지 않았는지가 중요해졌어요.</p>
+<h2 id="2-일곱-가지-관점으로-나눠-맡긴다">2. 일곱 가지 관점으로 나눠 맡긴다</h2>
+<p><strong>AI마다 어떤 눈으로 볼지 정해 줘요. 번호는 실제 사용자가 겪을 위험이 큰 순서예요.</strong> “이 코드 검토해 줘”라고만 하면 AI는 저마다 눈에 띄는 것부터 봐요. 그래서 관점을 나눠 줘요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>관점</th><th>보는 것</th></tr></thead><tbody><tr><td>① 사용자 치명 문제</td><td>데이터 소실, 틀린 값, 안 되는 기능</td></tr><tr><td>② 실행 중 멈춤</td><td>빈 값·빠진 예외 처리로 프로그램이 죽는 길</td></tr><tr><td>③ 호환성</td><td>이름·설정을 바꿔 기존에 부르던 쪽이 깨지는지</td></tr><tr><td>④ 의도 정합</td><td>하겠다던 일을 했는지, 엉뚱한 변경은 없는지</td></tr><tr><td>⑤ 옵션 분기</td><td>설정·스위치 조합마다 빠뜨린 경우</td></tr><tr><td>⑥ 입력·권한</td><td>들어오는 값 검사, 권한 확인, 정보 노출</td></tr><tr><td>⑦ 동시성·자원</td><td>순서 꼬임, 끝나지 않는 기다림, 돌려주지 않은 자원</td></tr></tbody></table>
+<p>여덟째 자리로 아무 관점도 주지 않고 자유롭게 보게 하는 ‘자유 시점’도 있어요.</p>
+<p>AI가 관점보다 적으면 앞 번호 관점부터 맡기고, 한 AI가 여러 관점을 겸해요. AI가 남으면 앞 번호 관점에 두 번째 AI를 붙여, 같은 관점을 서로 다른 AI가 따로 봐요. 한 AI가 중간에 빠지면 그 관점은 남은 AI들에게 나눠 넘어가요.</p>
+<p><strong>무대에 오르기 전에는 예선이 있어요.</strong> “손님 이름이 없으면 ‘손님, 안녕하세요’라고 인사하라”는 안전장치를 지운 몇 줄짜리 연습 문제예요. 약속한 답안 양식으로, 이 심어 둔 결함을 위치와 함께 짚어야 통과해요.</p>
+<h2 id="3-조각-크기는-스펙-카드가-정한다">3. 조각 크기는 스펙 카드가 정한다</h2>
+<p><strong>바뀐 코드가 크면 조각으로 나누는데, 얼마나 크게 자를지는 AI마다 달라요.</strong> 9편에서 스펙 카드가 생긴 계기로 소개한 ‘긴 글을 AI에게 읽히는 도구’가 바로 이 도구였어요. 도구는 카드를 읽고 이렇게 계획해요.</p>
+<p>① 읽을 수 있는 분량 — 조각 크기의 상한이 돼요<br>
+② 권장 방식이 ‘크게 몇 번’인 AI — 요청 한 번이 귀한 AI라, 조각을 <strong>두 개 이하</strong>로 크게 묶어요. 다른 AI는 기본 설정에서 최대 <strong>40조각</strong>까지 나눠요<br>
+③ 동시에 받을 수 있는 건수 — 여러 건을 받는 AI는 작은 조각 여럿을 한꺼번에 처리하고, 무대에는 분신이 생겨요</p>
+<p>그래도 넘치면 오류 속 숫자를 읽어 줄여 다시 보내요. 끝내 못 본 부분은 보고서에 ‘검토 범위 미완성’이라고 적어요. 다 본 척하지 않는 거예요.</p>
+<p><img alt="AI 코드리뷰 흐름 — 조각 × 관점으로 나눠 중계기 한 창구로 보내고, 교차 채점해 한 장의 보고서로 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5000" src="/_astro/diagram-review-battle.bBWvm0UB_Z1GWXo7.webp" ></p>
+<p class="cap">AI 코드리뷰 흐름 — 조각 × 관점으로 나눠 중계기 한 창구로 보내고, 교차 채점해 한 장의 보고서로 (직접 제작)</p>
+<h2 id="4-같은-출발선-한-창구와-묶음-요청">4. 같은 출발선: 한 창구와 묶음 요청</h2>
+<p><strong>채점표를 맞춰 보려면 모든 AI가 같은 무대를 봐야 해요. 중계기는 이걸 세 가지로 받쳐 줘요.</strong> 도구가 AI들에게 보내는 요청문에도 “선택된 모든 모델이 똑같은 이 요청을 받으므로, 각자의 지적을 독립적으로 비교할 수 있다”는 뜻의 문장이 들어 있어요.</p>
+<p>① 한 창구 — 중계기 첫날인 7월 13일, 도구는 AI마다 따로 붙여 두었던 연결 코드를 지우고 모든 AI 호출을 중계기 주소 하나로 돌렸어요. 부품 목록까지 약 <strong>2,400줄</strong>이 지워지고, 약 <strong>100줄</strong>짜리 파일 하나가 들어왔어요<br>
+② 묶음 창구 — 지난 편의 묶음 창구가 생긴 8월 7일, 도구도 같은 날 이 창구를 쓰기 시작했어요. 묶음 속 AI들은 같은 순간에 함께 출발해요<br>
+③ 차선에 맞춘 웨이브 — Codex는 동시에 3개까지라, 도구는 AI들을 미리 웨이브(같이 출발하는 묶음)로 나눠요. 한 웨이브는 최대 10개예요</p>
+<p>예를 들어 Codex 넷과 Claude 둘을 고르면, 첫 웨이브에 Codex 셋과 Claude 둘이 출발하고 남은 Codex 하나는 둘째 웨이브로 가요. 지난 편의 ‘3인승 칸에 넷’이 생기지 않게 처음부터 나눠 타는 거예요. 사용자가 멈추면 ‘그만’ 신호 하나가 묶음 안의 모든 AI에게 전해져요.</p>
+<h2 id="5-교차-채점-지우지-않고-표시한다">5. 교차 채점: 지우지 않고 표시한다</h2>
+<p><strong>같은 지적은 하나로 합치고, 몇이 찾았는지와 다른 AI가 동의하는지로 믿을 만한 정도를 붙여요.</strong> 합치기는 AI에게 맡기지 않고 정해진 규칙으로 해서, 어느 답이 먼저 오든 결과가 같아요. 변경분에 없는 파일을 가리킨 지적은 지어낸 것으로 보고 빼요.</p>
+<p>8월 10일부터 기본 구성은 ‘3×8’이에요. AI 셋이 같은 변경분을 각자 여덟 관점 체크리스트로 처음부터 끝까지 봐요. 세 심사위원이 같은 무대를 모든 항목으로 따로 채점하는 셈이라, 지적이 겹치면 그 자체가 교차 확인이 돼요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>표시</th><th>언제 붙나</th></tr></thead><tbody><tr><td>교차 확인</td><td>서로 다른 AI 둘 이상이 같은 지적, 또는 검증 AI 둘 이상이 동의</td></tr><tr><td>근거 지지</td><td>AI 하나가 찾고 검증 AI 하나가 동의</td></tr><tr><td>단일 출처</td><td>AI 하나만 찾음 — 다시 돌려 볼 것</td></tr><tr><td>이견 있음</td><td>검증 AI가 틀렸다고 함</td></tr></tbody></table>
+<p><mark>이 표시는 아무 지적도 지우지 않아요</mark>. 순서만 바꿔서, 교차 확인된 지적이 맨 위에 오고 이견 있는 지적이 맨 아래로 가요.</p>
+<h2 id="6-걸러-내던-심판-표시하는-심판으로">6. 걸러 내던 심판, 표시하는 심판으로</h2>
+<p><strong>처음엔 심판 AI가 지적을 걸러 냈는데, 너무 깐깐해져서 걸러 내지 않고 표시하는 쪽으로 바꿨어요.</strong> 7월에는 누가 썼는지 가린 채로 심판 AI가 지적을 하나씩 판정했어요. 그런데 심판도 AI라, 7월 27일 기록에는 ‘확인 못 함’이 사실상 기본값이 됐다고 적혀 있어요.</p>
+<p>심판이 보는 코드는 잘라 낸 일부라 근거가 화면 밖에 있을 수 있거든요. 그래서 지침에 “보여 준 부분에 근거가 안 보이는 것은 지적이 틀렸다는 증거가 아니다”라는 줄이 들어갔어요. 7월 30일에는 걸러 내지 않고 모두 싣는 통합 요약으로 바꿨어요.</p>
+<p><img alt="심판 로봇이 작은 로봇들의 메모를 한 묶음의 보고서로 엮는 장면 — 지적을 지우지 않고 합치는 비유 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-head-judge.n4SN4G3-_1Bbrui.webp" ></p>
+<p class="cap">심판 로봇이 작은 로봇들의 메모를 한 묶음의 보고서로 엮는 장면 — 지적을 지우지 않고 합치는 비유 (GPT 이미지 생성)</p>
+<p>마지막 심판 AI는 가능하면 이번 판에 참가하지 않은 AI로 골라요. 서로 이어진 지적을 묶어 “이 두 문제는 같은 원인” 같은 해설을 붙이지만, 새 지적을 만들거나 지적을 빼지는 않아요.</p>
+<p><strong>마지막 결정은 사람이 해요.</strong> 지적마다 [이 지적을 PR에 댓글 달기] 버튼이 있어서, 사람이 골라 누른 지적만 해당 줄에 댓글로 올라가요. 댓글 첫 줄에는 ‘관점 × AI’ 출처가 붙어요.</p>
+<p>도구는 댓글만 달아요. 합쳐도 된다는 승인이나 고쳐 오라는 거절 표시는 AI에게 맡기지 않아요.</p>
+<h2 id="7-배운-점-관점이-먼저-판단은-사람">7. 배운 점: 관점이 먼저, 판단은 사람</h2>
+<p><strong>여러 AI로 리뷰하면서 남긴 규칙은 세 가지예요.</strong></p>
+<p><strong>관점이 먼저, AI는 수단이에요</strong> AI가 하나뿐이어도 관점을 먼저 정해요. 관점이 비면 AI를 아무리 늘려도 같은 곳만 봐요.</p>
+<p><strong>같은 출발선이어야 비교가 돼요</strong> 같은 요청을 같은 순간에 받아야, 지적이 겹치는 것을 교차 확인으로 믿을 수 있어요.</p>
+<p><strong>버리지 말고 표시하세요</strong> 깐깐한 심판은 맞는 지적까지 떨어뜨렸어요. 판단은 표시를 읽는 사람이 해요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>AI 여럿에게 나눠 맡기고, 겹치는 지적부터 보세요. 올릴지 말지는 사람이 정해요.</div>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① AI 리뷰어 하나는 놓친다 — 관점 일곱 가지로 나눠 맡기기<br>② 중계기는 한 창구·묶음 창구·웨이브로 같은 출발선<br>③ 조각 크기는 AI마다, 스펙 카드로<br>④ 지적은 지우지 않고 표시, 결정은 사람</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. AI 하나로 코드 리뷰하면 안 되나요?</summary><p>해도 돼요. 다만 같은 결함도 AI마다 찾고 놓치는 게 달라서, 이 도구는 여럿을 앉혀 빈틈을 줄여요.</p></details>
+<details class="faq"><summary>Q. AI끼리 의견이 갈리면 어떻게 하나요?</summary><p>지우지 않고 ‘이견 있음’으로 표시해 맨 아래에 둬요. PR에 올릴지는 사람이 정해요.</p></details>
+<details class="faq"><summary>Q. AI가 PR을 승인하거나 막기도 하나요?</summary><p>아니요. 도구는 댓글만 달아요. 승인이나 거절 표시는 AI에게 맡기지 않아요.</p></details>
+<details class="faq"><summary>Q. 왜 굳이 같은 순간에 출발시키나요?</summary><p>같은 요청을 같은 조건에서 받아야 각자의 지적을 독립적으로 비교할 수 있어서요. 그래서 묶음 창구와 웨이브를 써요.</p></details>
+<p>다음 28편은 리뷰하는 AI에게 프로젝트 지식을 더 넣어 주면 더 잘 찾을 줄 알았는데, 재 보니 정반대였던 실험 이야기예요. 참고서를 줬더니 답안이 짧아진 학생처럼요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 2일<br>다시 확인·수정 2026년 10월 7일<br>직접 만든 중계기와 리뷰 도구의 개발 기록 기준<br>숫자는 저장 기록·설정값과 대조<br>OpenAI·앤트로픽과 관계없음 · 제휴 없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-26-parallel-answers/">← 지난 편(26편)</a> · <a href="/docs/tech/20261002-llmgw-28-knowledge-silence/">다음 편(28편) →</a> · 함께 보면 좋은 편: <a href="/docs/tech/20261001-llmgw-09-spec-cards/">9편 스펙 카드</a> · <a href="/docs/tech/20261001-llmgw-10-tollgate/">10편 차선과 줄</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-26-parallel-answers/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 26편</span> <span class="t" data-astro-cid-l6a6buid>여러 AI 답 비교하는 병렬 채팅, 429 거절이 끝나지 않던 이유</span> </a> <a class="next" href="/docs/tech/20261002-llmgw-28-knowledge-silence/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 28편 →</span> <span class="t" data-astro-cid-l6a6buid>AI 코드 리뷰 컨텍스트 주입, 지식을 넣었더니 지적이 0건</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

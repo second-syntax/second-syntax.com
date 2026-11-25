@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>LLM 게이트웨이 판정 API, Jev 계약을 옮겨 붙인 기록</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260922-llm-gateway-fast-decisions/"><meta name="description" content="여러 앱이 AI를 부를 때 거치는 단일 창구(LLM 게이트웨이)에 '빠른 판정' 창구 POST /v1/decisions를 새로 냈다. TypeSafe AI Jev의 계약(상태와 타입 질문을 보내면 확률적 결정이 돌아온다)을 그대로 채택하고, 진짜 Jev와 챗 모델의 흉내라는 두 경로로 같은 모양을 낸다. 속도 이득의 실체(생성은 안 빨라진다), 키와 기록을 다룬 규칙, 남은 숙제를 릴리스 노트와 코드 기준으로 적었다. Jev 3부작의 3편."><meta property="og:title" content="LLM 게이트웨이 판정 API, Jev 계약을 옮겨 붙인 기록"><meta property="og:description" content="여러 앱이 AI를 부를 때 거치는 단일 창구(LLM 게이트웨이)에 '빠른 판정' 창구 POST /v1/decisions를 새로 냈다. TypeSafe AI Jev의 계약(상태와 타입 질문을 보내면 확률적 결정이 돌아온다)을 그대로 채택하고, 진짜 Jev와 챗 모델의 흉내라는 두 경로로 같은 모양을 낸다. 속도 이득의 실체(생성은 안 빨라진다), 키와 기록을 다룬 규칙, 남은 숙제를 릴리스 노트와 코드 기준으로 적었다. Jev 3부작의 3편."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260922-llm-gateway-fast-decisions/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.NFi7XqXh_1qEhS7.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260922-llm-gateway-fast-decisions/" data-title="LLM 게이트웨이 판정 API, Jev 계약을 옮겨 붙인 기록" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-문제-판정도-글-창구에-줄을-섰다" data-toc="1-문제-판정도-글-창구에-줄을-섰다" data-astro-cid-f3qesd3f>1. 문제: 판정도 글 창구에 줄을 섰다</a></li><li data-astro-cid-f3qesd3f><a href="#2-한-일-판정-창구를-하나-더-냈다" data-toc="2-한-일-판정-창구를-하나-더-냈다" data-astro-cid-f3qesd3f>2. 한 일: 판정 창구를 하나 더 냈다</a></li><li data-astro-cid-f3qesd3f><a href="#3-두-경로-진짜-jev와-흉내" data-toc="3-두-경로-진짜-jev와-흉내" data-astro-cid-f3qesd3f>3. 두 경로: 진짜 Jev와 흉내</a></li><li data-astro-cid-f3qesd3f><a href="#4-결과-빨라진-건-모델이-아니라-흐름" data-toc="4-결과-빨라진-건-모델이-아니라-흐름" data-astro-cid-f3qesd3f>4. 결과: 빨라진 건 모델이 아니라 흐름</a></li><li data-astro-cid-f3qesd3f><a href="#5-키와-기록-남기지-않는-것" data-toc="5-키와-기록-남기지-않는-것" data-astro-cid-f3qesd3f>5. 키와 기록: 남기지 않는 것</a></li><li data-astro-cid-f3qesd3f><a href="#6-검증과-남은-숙제" data-toc="6-검증과-남은-숙제" data-astro-cid-f3qesd3f>6. 검증과 남은 숙제</a></li><li data-astro-cid-f3qesd3f><a href="#적용해-보기" data-toc="적용해-보기" data-astro-cid-f3qesd3f>적용해 보기</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-문제-판정도-글-창구에-줄을-섰다" data-astro-cid-l6a6buid>1. 문제: 판정도 글 창구에 줄을 섰다</a></li><li data-astro-cid-l6a6buid><a href="#2-한-일-판정-창구를-하나-더-냈다" data-astro-cid-l6a6buid>2. 한 일: 판정 창구를 하나 더 냈다</a></li><li data-astro-cid-l6a6buid><a href="#3-두-경로-진짜-jev와-흉내" data-astro-cid-l6a6buid>3. 두 경로: 진짜 Jev와 흉내</a></li><li data-astro-cid-l6a6buid><a href="#4-결과-빨라진-건-모델이-아니라-흐름" data-astro-cid-l6a6buid>4. 결과: 빨라진 건 모델이 아니라 흐름</a></li><li data-astro-cid-l6a6buid><a href="#5-키와-기록-남기지-않는-것" data-astro-cid-l6a6buid>5. 키와 기록: 남기지 않는 것</a></li><li data-astro-cid-l6a6buid><a href="#6-검증과-남은-숙제" data-astro-cid-l6a6buid>6. 검증과 남은 숙제</a></li><li data-astro-cid-l6a6buid><a href="#적용해-보기" data-astro-cid-l6a6buid>적용해 보기</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다. TypeSafe AI와 아무 관계가 없고, 게이트웨이는 제가 직접 만들어 쓰는 프로젝트입니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="llm-게이트웨이-판정-api-jev-계약을-옮겨-붙인-기록">LLM 게이트웨이 판정 API, Jev 계약을 옮겨 붙인 기록</h1>
+<p><img alt="LLM 게이트웨이 — 판정 창구를 하나 더 낸 기록 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.NFi7XqXh_Z4nlYm.webp" ></p>
+<p class="cap">LLM 게이트웨이 — 판정 창구를 하나 더 낸 기록 (캐릭터는 GPT 이미지 생성)</p>
+<p>‘이 문의는 어느 팀?’, ‘이 리뷰 지적은 진짜인가?’ 같은 질문에는 긴 글이 필요 없어요. 그런데 이런 판정도 글을 만드는 창구에서 수 초에서 수십 초씩 기다려 받고 있었어요.</p>
+<p>은행에 창구가 하나뿐이라고 해 보세요. 잔액 확인은 10초면 되는데, 앞사람 대출 상담이 30분이면 다 같이 기다려요. 그래서 은행은 빠른 창구를 따로 내요. 상담은 원래 창구로, 확인·판정은 빠른 창구로요.<br>
+<strong>그래서 제가 만들어 쓰는 LLM 게이트웨이에 판정 전용 창구를 하나 더 냈어요. 계약은 Jev의 것을 그대로 가져왔어요.</strong></p>
+<p><img alt="긴 줄의 대화 창구 옆에 짧은 줄의 판정 창구를 낸 장면 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-two-windows.D-U-Di90_Z19D7QB.webp" ></p>
+<p class="cap">긴 줄의 대화 창구 옆에 짧은 줄의 판정 창구를 낸 장면 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: 여러 앱이 쓰는 AI 창구를 만들거나 쓰는 분<br>① 판정 창구를 따로 낸 이유와 설계<br>② 진짜 Jev와 흉내, 두 경로<br>③ 속도 이득의 실체와 남은 숙제<br>게이트웨이 v0.1.99(2026년 9월 22일) 기준</div>
+<hr>
+<h2 id="1-문제-판정도-글-창구에-줄을-섰다">1. 문제: 판정도 글 창구에 줄을 섰다</h2>
+<p><strong>게이트웨이에 창구가 하나뿐이라, 판정만 필요한 요청도 글을 만드는 줄에 섰어요.</strong> LLM 게이트웨이는 여러 앱(코드 리뷰 도구, 문서 도우미, 자동화 스크립트)이 AI를 부를 때 거치는 단 하나의 주소예요.</p>
+<p>앱은 어느 모델을 쓸지 몰라도 돼요. 게이트웨이가 연결된 모델을 골라 주고, 키와 동시 접속 수와 대기열을 관리해요.</p>
+<p>문제는 이 창구가 하나였다는 거예요. 글을 만드는 요청과 판정만 필요한 요청이 같은 줄(/v1/chat/completions)에 섰어요.</p>
+<h2 id="2-한-일-판정-창구를-하나-더-냈다">2. 한 일: 판정 창구를 하나 더 냈다</h2>
+<p><strong>2026년 9월 22일, 판정 전용 창구 POST /v1/decisions를 새로 냈어요.</strong> 상태와 타입 질문(noul·choice·score)을 보내면, 글 대신 답과 확률이 돌아와요. 글 창구는 그대로 두었어요.</p>
+<p><strong>새 형식을 발명하지 않고, Jev의 계약을 그대로 채택한 게 핵심 결정이었어요.</strong> 2편에서 본 대로 그 계약은 이미 잘 설계돼 있어요(질문 셋, 확률, 확신도). 그리고 앱 입장에서는 게이트웨이 뒤가 Jev든 다른 모델이든 요청·응답 모양이 같아야 창구를 둔 의미가 있어요.</p>
+<p>판정 창구가 지키는 한도는 공식 한도를 따르거나 조금 더 보수적이에요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>판정 창구의 한도</th></tr></thead><tbody><tr><td>질문 수</td><td>최대 32개</td></tr><tr><td>Choice 보기 · Score 단계</td><td>보기 최대 255개 · 단계 2~10개</td></tr><tr><td>질문 문장</td><td>4,000자</td></tr><tr><td>상태</td><td>기본 20만 자에서 먼저 자름 (공식 한도는 요청 64k 토큰)</td></tr><tr><td>Jev를 글 창구로 부르면</td><td>400 오류 — 모델이 없는 게 아니라 능력이 없는 것</td></tr></tbody></table>
+<p><img alt="LLM 게이트웨이에 낸 두 번째 창구 — 앱은 창구만 고르고, 뒤의 두 경로는 게이트웨이가 고른다 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="4140" src="/_astro/diagram-gateway-two-lanes.DiwcNPHR_RGToV.webp" ></p>
+<p class="cap">LLM 게이트웨이에 낸 두 번째 창구 — 앱은 창구만 고르고, 뒤의 두 경로는 게이트웨이가 고른다 (직접 제작)</p>
+<h2 id="3-두-경로-진짜-jev와-흉내">3. 두 경로: 진짜 Jev와 흉내</h2>
+<p><strong>같은 계약을 두 경로가 내게 만들었어요. 진짜 Jev와, 챗 모델의 흉내(에뮬레이션)예요.</strong> Jev는 클라우드 서비스라서, 바깥 클라우드에 닿지 않는 회사망에서는 쓸 수 없어요. 어떤 곳에서는 되고 어떤 곳에서는 안 되는 창구는 창구가 아니죠.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>경로</th><th>하는 일</th></tr></thead><tbody><tr><td>① 진짜 Jev (개인 PC 모드)</td><td>요청을 Jev 공식 주소로 그대로 넘긴다 — 보정된 확률, calibrated: true</td></tr><tr><td>② 흉내 (회사망 모드)</td><td>빠른 챗 모델에 ‘JSON으로만 답하라’고 시켜 같은 모양으로 정리 — 자기보고 확률, calibrated: false</td></tr></tbody></table>
+<p>흉내 경로는 지원하는 모델에 응답 형식(json_schema)까지 강제하고, 생각(추론) 기능은 끄고, 도구 없이 한 번에 불러요. 단, <strong>확률은 그 모델이 스스로 적어 낸 숫자</strong>예요. 그래서 응답에 calibrated: false를 붙이고, ‘이 확률로 문턱 분기를 하지 말고 답 값만 믿으라’고 문서에 적었어요. JSON이 어긋나면 한 번만 다시 시도하고, 그래도 안 되면 조용히 추측하지 않고 502 오류로 돌려줘요.</p>
+<p><img alt="다른 로봇의 가면을 든 배우 로봇 — 흉내 경로는 흉내라는 걸 응답에 표시한다 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-mask-emulation.DwE9CBFa_2jDlBK.webp" ></p>
+<p class="cap">다른 로봇의 가면을 든 배우 로봇 — 흉내 경로는 흉내라는 걸 응답에 표시한다 (GPT 이미지 생성)</p>
+<p>앱이 model: “auto”로 보내면 게이트웨이가 후보를 차례로 봐요. 개인 PC에서는 Jev → 로컬 모델 → 클라우드 소형 모델 순이고, 회사망에서는 그 안의 소형 모델부터예요. 연결돼 있고, 허용되고, 지금 받을 수 있는 첫 모델이 답해요. 앱은 어느 쪽이 답했는지 응답의 calibrated 값으로 알 수 있어요.</p>
+<h2 id="4-결과-빨라진-건-모델이-아니라-흐름">4. 결과: 빨라진 건 모델이 아니라 흐름</h2>
+<p><strong>릴리스 노트에 굵게 적어 둔 문장이 있어요. ‘텍스트 생성 자체는 바뀌지 않는다.’</strong> 판정 창구를 냈다고 글 창구가 빨라지지는 않아요. 이득은 두 군데서 와요.</p>
+<p>① <strong>판정을 옮긴다.</strong> 글 창구에서 ‘이 리뷰 지적이 진짜인가?’를 문장으로 받아 파싱하던 것을, 판정 창구에서 noul 0.93 같은 숫자 하나로 받아요.<br>
+② <strong>판정으로 생성을 건너뛴다.</strong> ‘이 청크는 검토할 가치가 있나?’의 답이 아니오면 뒤의 긴 생성을 아예 하지 않아요. 이쪽이 더 큰 이득이에요.</p>
+<p>릴리스 노트에 적은 실측 기대치는 이래요. 환경에 따라 달라요. Jev <strong>0.1~0.5초</strong> · 로컬·소형 챗 모델 <strong>0.2~2초</strong> · 상주 세션 없는 CLI 모델 <strong>3~8초</strong></p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>빨라지는 건 모델이 아니라 앱의 흐름이에요. 판정은 판정 창구로, 글이 필요한 것만 글 창구로 보내세요.</div>
+<h2 id="5-키와-기록-남기지-않는-것">5. 키와 기록: 남기지 않는 것</h2>
+<p><strong>Jev를 붙이면서 지킨 규칙은 게이트웨이의 다른 프로바이더와 같아요.</strong><br>
+① API 키는 화면(설정 패널)에서 입력하고 암호화 저장소에만 둬요. 환경변수·코드·로그에는 두지 않아요.<br>
+② 로그에는 모델 이름·걸린 시간·질문 개수만 남겨요. 상태와 질문 문구는 남기지 않아요. 상태에는 고객 문의 원문이 들어가니까요.<br>
+③ 회사망 모드에서는 Jev 프로바이더가 목록에서 아예 사라져요. 연결 시도조차 하지 않게요.<br>
+④ 429(속도 초과)·529(과부하)는 2초 뒤부터 지수 백오프로 다시 시도해요. 2편에서 본 공식 지침 그대로예요.</p>
+<h2 id="6-검증과-남은-숙제">6. 검증과 남은 숙제</h2>
+<p><strong>개발 PC 실환경에서 두 경로를 모두 돌려 확인했어요.</strong> 자동 테스트에 더해 Jev 네이티브를 영어·한국어·객체 상태로, 흉내를 클라우드 소형 모델 둘로 돌렸어요. auto 후보 순서, 오류 코드, 그리고 로그에 키와 상태가 남지 않는지도 봤어요.</p>
+<p>한국어 상태로도 답이 왔지만, Jev 문서는 영어 외 언어의 정확도가 같지 않다고 하니 판정 품질은 앱마다 따로 봐야 해요.</p>
+<p>남은 숙제도 있어요.<br>
+① 앱 쪽 전환은 이제 시작이에요. 창구를 냈다고 앱이 저절로 옮겨 오지 않아요. 코드 리뷰 도구의 ‘지적이 진짜인가’ 검증과 청크 우선순위 매기기가 첫 후보예요.<br>
+② 판정 결과 캐시(같은 상태·질문이면 재사용)와 리뷰 전 선별(판정이 아니오면 건너뜀)은 후속 후보로 남겨 두었어요.<br>
+③ Jev는 새 제품이라 요금·한도·버전이 바뀔 수 있어요. 실제로 10월 7일 문서의 속도 한도는 9월과 달라져 있었어요. 게이트웨이는 응답에 실린 실제 버전(jev-1.13.0)을 기억해 앱이 고정할 수 있게 보여 줘요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>흉내 경로의 확률로 0.9 같은 문턱을 걸지 마세요. calibrated: false를 무시하면 1편에서 본 ‘자신만만한 환각’이 그대로 돌아와요.</div>
+<h2 id="적용해-보기">적용해 보기</h2>
+<p><strong>여러 앱이 쓰는 AI 창구가 있다면, 이 순서로 판정 창구를 따져 보세요.</strong></p>
+<ol class="steps"><li>앱들이 AI에게 보내는 요청을 ‘글이 필요한 것’과 ‘판정만 필요한 것’으로 나눠 보세요.<span class="then">→ 판정만 필요한 요청이 생각보다 많아요.</span></li><li>판정 요청을 상태 + 질문 셋(어느 것·몇 단계·예/아니오)으로 다시 적어 보세요.<span class="then">→ 이렇게 적히지 않는 것은 글이 필요한 요청이에요.</span></li><li>창구를 하나 더 내되, 계약은 발명하지 말고 이미 있는 것을 채택하세요. 클라우드에 닿지 않는 환경이면 흉내 경로를 함께 두고 calibrated: false를 꼭 붙이세요.<span class="then">→ Jev의 계약이 좋은 출발점이에요.</span></li><li>첫 앱 하나만 옮기고, 두 창구의 대기 시간을 비교하세요.<span class="then">→ 숫자로 확인한 뒤에 다음 앱을 옮겨요.</span></li></ol>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 판정 창구를 따로 냈어요 — 계약은 Jev 것<br>② 진짜 Jev와 흉내, 두 경로가 같은 모양으로<br>③ 흉내의 확률은 calibrated: false로 표시<br>④ 빨라지는 건 모델이 아니라 앱의 흐름</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 판정 창구를 내면 글 생성도 빨라지나요?</summary><p>아니요. 릴리스 노트에 적은 대로 텍스트 생성 자체는 바뀌지 않아요. 판정을 옮기고, 판정으로 불필요한 생성을 건너뛰는 만큼 앱의 흐름이 빨라져요.</p></details>
+<details class="faq"><summary>Q. 왜 새 형식을 만들지 않고 Jev의 계약을 썼나요?</summary><p>이미 잘 설계된 계약이고, 뒤에서 어느 모델이 답하든 앱이 보는 모양이 같아야 창구를 둔 의미가 있어서요.</p></details>
+<details class="faq"><summary>Q. 흉내 경로의 확률은 아예 못 쓰나요?</summary><p>답 값(choice·score)은 쓰되, 확률로 문턱 분기는 하지 말라고 문서에 적었어요. 모델이 스스로 적어 낸 숫자라 보정되지 않았거든요.</p></details>
+<details class="faq"><summary>Q. Jev 모델을 글 창구로 부르면 어떻게 되나요?</summary><p>400 오류로 돌려보내요. 모델을 못 찾은 게 아니라, 글을 만드는 능력이 없는 모델이라서요.</p></details>
+<p>이 글은 Jev 3부작의 마지막이에요. Jev의 계약 자체를 쓰는 법과 확신도로 세 갈래를 나누는 법은 2편에 정리했어요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260922-jev-confidence-routing/">Jev 사용법, 확신도로 자동·확인·사람 세 갈래 나누기</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>TypeSafe 공식 문서 — HTTP API(오류·재시도) · <a href="https://docs.typesafe.ai/api">docs.typesafe.ai/api</a></li>
+<li>TypeSafe 공식 문서 — 모델(한도·버전) · <a href="https://docs.typesafe.ai/models">docs.typesafe.ai/models</a></li>
+<li>제 LLM 게이트웨이 — 릴리스 노트 v0.1.99와 코드 (비공개)</li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 9월 22일<br>다시 확인·수정 2026년 10월 7일<br>직접 만든 게이트웨이의 릴리스 노트·코드 기준<br>Jev 내용은 공식 문서와 대조<br>TypeSafe AI와 관계없음 · 제휴 없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">Jev 3부작: <a href="/docs/tech/20260922-system-one-model-jev/">1편 System One 모델 Jev란</a> · <a href="/docs/tech/20260922-jev-confidence-routing/">2편 Jev 사용법</a> · 3편 이 글 · 함께 보면 좋은 글: <a href="/docs/tech/20260922-mcp-vs-api-vs-cli/">MCP vs API vs CLI 차이</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

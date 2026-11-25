@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>클로드 코드 서브에이전트 사용법, 언제 쓰고 어떻게 만드나</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260907-claude-code-subagents/"><meta name="description" content="Claude Code 서브에이전트가 뭔지, 언제 쓰는지, 어떻게 만드는지. 컨텍스트 격리·병렬 처리·역할 전문화라는 세 가지 쓸모를 실사용 기준으로 정리했다."><meta property="og:title" content="클로드 코드 서브에이전트 사용법, 언제 쓰고 어떻게 만드나"><meta property="og:description" content="Claude Code 서브에이전트가 뭔지, 언제 쓰는지, 어떻게 만드는지. 컨텍스트 격리·병렬 처리·역할 전문화라는 세 가지 쓸모를 실사용 기준으로 정리했다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260907-claude-code-subagents/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BkGcwc1n_FqKY9.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260907-claude-code-subagents/" data-title="클로드 코드 서브에이전트 사용법, 언제 쓰고 어떻게 만드나" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-맥락을-따로-쓰는-보조-일꾼" data-toc="1-맥락을-따로-쓰는-보조-일꾼" data-astro-cid-f3qesd3f>1. 맥락을 따로 쓰는 보조 일꾼</a></li><li data-astro-cid-f3qesd3f><a href="#2-언제-쓰나-세-가지-상황" data-toc="2-언제-쓰나-세-가지-상황" data-astro-cid-f3qesd3f>2. 언제 쓰나: 세 가지 상황</a></li><li data-astro-cid-f3qesd3f><a href="#3-말로-맡기기" data-toc="3-말로-맡기기" data-astro-cid-f3qesd3f>3. 말로 맡기기</a></li><li data-astro-cid-f3qesd3f><a href="#4-내-서브에이전트-만들기" data-toc="4-내-서브에이전트-만들기" data-astro-cid-f3qesd3f>4. 내 서브에이전트 만들기</a></li><li data-astro-cid-f3qesd3f><a href="#5-훅과-뭐가-다른가" data-toc="5-훅과-뭐가-다른가" data-astro-cid-f3qesd3f>5. 훅과 뭐가 다른가</a></li><li data-astro-cid-f3qesd3f><a href="#6-쓰지-않는-게-나은-때" data-toc="6-쓰지-않는-게-나은-때" data-astro-cid-f3qesd3f>6. 쓰지 않는 게 나은 때</a></li><li data-astro-cid-f3qesd3f><a href="#막힐-때" data-toc="막힐-때" data-astro-cid-f3qesd3f>막힐 때</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-맥락을-따로-쓰는-보조-일꾼" data-astro-cid-l6a6buid>1. 맥락을 따로 쓰는 보조 일꾼</a></li><li data-astro-cid-l6a6buid><a href="#2-언제-쓰나-세-가지-상황" data-astro-cid-l6a6buid>2. 언제 쓰나: 세 가지 상황</a></li><li data-astro-cid-l6a6buid><a href="#3-말로-맡기기" data-astro-cid-l6a6buid>3. 말로 맡기기</a></li><li data-astro-cid-l6a6buid><a href="#4-내-서브에이전트-만들기" data-astro-cid-l6a6buid>4. 내 서브에이전트 만들기</a></li><li data-astro-cid-l6a6buid><a href="#5-훅과-뭐가-다른가" data-astro-cid-l6a6buid>5. 훅과 뭐가 다른가</a></li><li data-astro-cid-l6a6buid><a href="#6-쓰지-않는-게-나은-때" data-astro-cid-l6a6buid>6. 쓰지 않는 게 나은 때</a></li><li data-astro-cid-l6a6buid><a href="#막힐-때" data-astro-cid-l6a6buid>막힐 때</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다.</blockquote> <h1 id="클로드-코드-서브에이전트-사용법-언제-쓰고-어떻게-만드나">클로드 코드 서브에이전트 사용법, 언제 쓰고 어떻게 만드나</h1>
+<p><img alt="클로드 코드 서브에이전트 사용법 — 큰 일은 나눠 맡기고 결론만 받기 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BkGcwc1n_ZOARSk.webp" ></p>
+<p class="cap">클로드 코드 서브에이전트 사용법 — 큰 일은 나눠 맡기고 결론만 받기 (캐릭터는 GPT 이미지 생성)</p>
+<p>클로드 코드에 큰 조사를 시키면 이런 순간이 와요. “코드 전체에서 이 함수 쓰는 곳 다 찾아줘.” 파일을 수십 개 읽는 사이 대화창이 무거워지고, 정작 하려던 작업의 맥락이 흐려져요.</p>
+<p>팀장이 자료 조사를 팀원에게 맡기는 장면을 떠올려 보세요. 팀원은 자기 책상에 서류를 잔뜩 펼쳐 놓고 찾고, 팀장 책상에는 한 장짜리 보고서만 올라와요. 서브에이전트(subagent)가 바로 이 팀원이에요.<br>
+<strong>서브에이전트는 일을 나누는 기능이기 전에, 맥락을 나누는 기능이에요.</strong></p>
+<p><img alt="팀원이 서류 더미는 자기 책상에 두고 보고서 한 장만 건네는 장면 — 서브에이전트를 빗댄 그림 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-team-desks.BbcQttG1_2UQs0.webp" ></p>
+<p class="cap">팀원이 서류 더미는 자기 책상에 두고 보고서 한 장만 건네는 장면 — 서브에이전트를 빗댄 그림 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: 큰 작업에서 대화가 무거워진 분<br>① 서브에이전트가 하는 일과 쓸 때<br>② 말로 맡기는 법과 내 서브에이전트 만들기<br>③ 훅과의 차이, 쓰지 않는 게 나은 때<br>준비물: 클로드 코드 · 작업할 프로젝트 폴더<br>2026년 10월 기준 · Windows 11 · 2.1.268</div>
+<hr>
+<h2 id="1-맥락을-따로-쓰는-보조-일꾼">1. 맥락을 따로 쓰는 보조 일꾼</h2>
+<p><strong>서브에이전트는 메인 대화와 분리된 자기 맥락 창에서 일하고, 결과만 돌려주는 보조 일꾼이에요.</strong> 공식 문서는 검색 결과·로그·파일 내용처럼 다시 볼 일 없는 것이 메인 대화를 채울 때 쓰라고 해요. 서브에이전트가 그 일을 자기 맥락에서 하고 요약만 돌려줘요.</p>
+<p>그래서 서브에이전트가 파일을 백 개 읽어도, 내 대화에는 결론만 남아요. 대화가 길수록 요청마다 쓰는 양이 커지는 문제를 피하는 길이기도 해요. <mark>일을 나누는 게 아니라 맥락을 나누는 것</mark>, 이게 핵심이에요.</p>
+<p><img alt="서브에이전트 구조 — 메인 대화가 맡기고, 서브에이전트가 따로 조사하고, 결론만 돌아온다 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="2540" src="/_astro/diagram-subagents.DVtAt1Ih_10S4hu.webp" ></p>
+<p class="cap">서브에이전트 구조 — 메인 대화가 맡기고, 서브에이전트가 따로 조사하고, 결론만 돌아온다 (직접 제작)</p>
+<h2 id="2-언제-쓰나-세-가지-상황">2. 언제 쓰나: 세 가지 상황</h2>
+<p><strong>파일을 많이 읽어야 답이 나오는 일, 서로 상관없는 여러 일, 같은 역할을 되풀이하는 일에 맞아요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>상황</th><th>예</th></tr></thead><tbody><tr><td>큰 탐색·조사</td><td>이 함수가 쓰이는 곳 전부 찾기 — 결론만 필요할 때</td></tr><tr><td>나눠서 동시에</td><td>폴더 세 곳을 세 서브에이전트가 동시에 조사</td></tr><tr><td>역할 고정</td><td>코드 리뷰어·테스트 작성자처럼 한 관점으로만</td></tr></tbody></table>
+<p>공식 문서도 서로 독립된 조사는 서브에이전트 여러 개를 동시에 돌리라고 해요. 저는 블로그 글감 조사를 여러 각도로 나눠 동시에 돌릴 때 이렇게 써요.</p>
+<p><img alt="세 일꾼이 각자 책상에서 동시에 자료를 찾는 장면 — 서브에이전트를 동시에 돌리는 것을 빗댄 그림 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-parallel.BaeccwpN_ZHsf7D.webp" ></p>
+<p class="cap">세 일꾼이 각자 책상에서 동시에 자료를 찾는 장면 — 서브에이전트를 동시에 돌리는 것을 빗댄 그림 (GPT 이미지 생성)</p>
+<h2 id="3-말로-맡기기">3. 말로 맡기기</h2>
+<p><strong>따로 만들지 않아도 돼요. 요청에 서브에이전트로 해 달라고 적으면, 클로드 코드가 판단해서 맡겨요.</strong> 클로드 코드에는 서브에이전트가 이미 들어 있어요. 코드를 읽기만 하며 찾는 <code>Explore</code>, 계획 모드에서 자료를 모으는 <code>Plan</code>, 찾고 고치는 일을 다 하는 <code>general-purpose</code>예요.</p>
+<p class="plabel">❌ 이렇게 말고</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 함수 어디서 쓰이는지 찾아줘</span></span></code></pre>
+<p>무엇을 돌려받을지가 빠져 있어요. 결과가 길게 오면 그만큼 내 대화가 무거워져요.</p>
+<p class="plabel">⭕ 이렇게</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>서브에이전트로 이 함수가 쓰이는 곳을 전부 찾고, 파일 이름과 한 줄 설명만 돌려줘</span></span></code></pre>
+<p>맡기면 대화 기록에 서브에이전트 이름과 짧은 작업 설명이 한 줄로 보여요. 서브에이전트는 메인 대화 기록을 보지 못하고 새로 시작해요. 그래서 배경과 범위, 돌려받을 모양을 요청에 적어 주는 게 중요해요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>맡길 때는 무엇을 찾을지와 무엇만 돌려받을지를 같이 적으세요.</div>
+<h2 id="4-내-서브에이전트-만들기">4. 내 서브에이전트 만들기</h2>
+<p><strong>자주 맡기는 역할은 파일 하나로 만들어 두면, 이름으로 부르거나 클로드 코드가 알아서 불러요.</strong> 만드는 법은 클로드에게 말로 부탁하는 게 가장 쉬워요.</p>
+<p>예전 글에서는 /agents로 만든다고 썼는데, 2.1.268에서는 /agents가 만들기 화면을 열지 않아요. 공식 문서에 따르면 2.1.197까지는 만들기 화면이 열렸고, 지금은 클로드에게 부탁하거나 .claude/agents/ 폴더의 파일을 직접 고치라는 안내만 보여 줘요. 아래는 공식 문서의 방법이에요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 프로젝트의 .claude/agents/ 폴더에 읽기만 하는 code-reviewer 서브에이전트를 만들어줘. 코드 품질을 검토하고 sonnet 모델을 쓰게 해줘</span></span></code></pre>
+<ol class="steps"><li>위 요청을 클로드 코드에 입력하세요.<span class="then">→ <code>.claude/agents/code-reviewer.md</code> 파일이 생겨요.</span></li><li>파일을 열어 맨 위 설정을 확인하세요.<span class="then">→ 이름·설명·도구·모델이 아래와 같은 모양으로 적혀 있어요. 그 아래 줄은 서브에이전트가 받는 지시문이에요.</span></li></ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">---</span></span>
+<span class="line"><span style="color:#E1E4E8">name: code-reviewer</span></span>
+<span class="line"><span style="color:#E1E4E8">description: Reviews code quality</span></span>
+<span class="line"><span style="color:#E1E4E8">tools: Read, Glob, Grep</span></span>
+<span class="line"><span style="color:#E1E4E8">model: sonnet</span></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">---</span></span></code></pre>
+<p>네 항목이 정하는 것을 표로 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>정하는 것</th></tr></thead><tbody><tr><td><code>name</code></td><td>부를 때 쓰는 이름</td></tr><tr><td><code>description</code></td><td>언제 맡길지 — 클로드 코드가 이걸 보고 알아서 맡겨요</td></tr><tr><td><code>tools</code></td><td>쓸 수 있는 도구 — 조사용은 읽기·검색만</td></tr><tr><td><code>model</code></td><td>sonnet·opus·haiku 같은 별칭, 또는 inherit(메인과 같게)</td></tr></tbody></table>
+<p>파일을 <code>.claude/agents/</code>에 두면 그 프로젝트에서만 쓰고, 저장소에 올려 팀과 나눠요. <code>~/.claude/agents/</code>에 두면 내 모든 프로젝트에서 써요. 이름이 같으면 프로젝트 쪽이 먼저예요. 쓸 때는 이름을 불러요. 꼭 그 서브에이전트가 돌게 하려면 <code>@</code>를 치고 목록에서 고르세요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>code-reviewer 서브에이전트로 오늘 바꾼 파일을 검토해줘</span></span></code></pre>
+<h2 id="5-훅과-뭐가-다른가">5. 훅과 뭐가 다른가</h2>
+<p><strong>훅은 정해진 시점에 무조건 실행되는 규칙이고, 서브에이전트는 필요할 때 일을 떼어 맡기는 일꾼이에요.</strong><br>
+<strong>훅(hooks)</strong> — 내가 시스템에 거는 강제예요. AI가 고르지 않아도 그 시점이 오면 반드시 돌아요.<br>
+<strong>서브에이전트</strong> — 판단해서 맡기는 위임이에요. 언제 맡길지는 내 요청과 description이 정해요.</p>
+<p>강제해야 하면 훅, 나눠 맡기고 싶으면 서브에이전트라고 기억하면 돼요.</p>
+<h2 id="6-쓰지-않는-게-나은-때">6. 쓰지 않는 게 나은 때</h2>
+<p><strong>작고 빠른 일, 주고받기가 많은 일은 메인 대화에서 하는 게 나아요.</strong> 공식 문서가 메인 대화를 권하는 경우는 넷이에요.<br>
+① 여러 번 주고받으며 다듬어야 하는 일<br>
+② 계획·구현·테스트처럼 단계끼리 맥락을 많이 나누는 일<br>
+③ 파일 한두 개를 고치는 빠르고 좁은 수정<br>
+④ 답이 빨리 필요할 때 — 서브에이전트는 새로 시작해서 맥락을 모으는 데 시간이 걸려요</p>
+<p>위임한 일은 과정이 보이지 않고 결론만 와요. 중요한 작업은 그 결론을 다시 확인하세요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>서브에이전트도 따로 요청을 보내서 같은 사용량 한도를 써요. 여러 개를 한꺼번에 돌리면 한도가 빨리 닳아요.</div>
+<h2 id="막힐-때">막힐 때</h2>
+<p><strong>/agents를 입력해도 만들기 화면이 안 떠요</strong><br>
+원인: 2.1.197보다 새 버전에서는 /agents가 안내만 보여 줘요.<br>
+해결: 4번처럼 클로드에게 말로 부탁하거나, .claude/agents/ 폴더에 파일을 직접 만드세요.</p>
+<p><strong>새로 만든 서브에이전트를 못 찾아요</strong><br>
+원인: 세션을 켤 때 <code>~/.claude/agents</code> 폴더가 없었으면, 켜져 있는 세션은 새로 생긴 폴더를 알아채지 못해요.<br>
+해결: 클로드 코드를 다시 켜고 다시 부르세요.</p>
+<p><strong>서브에이전트 결과가 엉뚱해요</strong><br>
+원인: 서브에이전트는 메인 대화 기록을 보지 못하고 새로 시작해요.<br>
+해결: 배경, 찾을 범위, 돌려받을 모양을 요청에 적으세요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 서브에이전트는 맥락을 따로 쓰는 일꾼<br>② 큰 조사·동시 작업·고정 역할에 맡겨요<br>③ 만들 땐 말로 부탁하거나 .claude/agents/<br>④ 작은 일은 메인에서, 결론은 다시 확인</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 서브에이전트를 꼭 만들어야 쓸 수 있나요?</summary><p>아니요. Explore 같은 기본 서브에이전트가 들어 있어서, 요청에 서브에이전트로 해 달라고 적으면 돼요. 자주 쓰는 역할만 파일로 만들어 두세요.</p></details>
+<details class="faq"><summary>Q. 서브에이전트를 쓰면 한도를 더 쓰나요?</summary><p>네. 서브에이전트마다 요청을 따로 보내고, 메인 대화와 같은 한도에서 빠져요. 가벼운 일은 model에 haiku처럼 작은 모델을 지정하면 덜 써요.</p></details>
+<details class="faq"><summary>Q. 서브에이전트가 또 서브에이전트를 부를 수 있나요?</summary><p>네. 공식 문서에 따르면 기본으로 메인 대화 아래 세 단계까지 부를 수 있어요.</p></details>
+<p>서브에이전트가 돌려준 결론을 어떻게 검증하는지는 AI 검증 자동화 글에 정리했어요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260907-ai-review-automation/">AI 검증 자동화 — 사고 한 번 나고 배운 것 (코드리뷰부터 산출물 검증까지)</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>Claude Code 공식 문서 — 서브에이전트 · <a href="https://code.claude.com/docs/en/sub-agents">code.claude.com/docs/en/sub-agents</a></li>
+<li>Claude Code 공식 문서 — 비용 관리 · <a href="https://code.claude.com/docs/en/costs">code.claude.com/docs/en/costs</a></li>
+<li>Claude Code 공식 문서 — 훅 · <a href="https://code.claude.com/docs/en/hooks-guide">code.claude.com/docs/en/hooks-guide</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 발행 2026년 9월 7일<br>다시 확인·수정 2026년 10월 7일<br>글감 조사를 나눠 맡기는 경험 + 공식 문서<br>Windows 11 · 2.1.268 · 공식 문서와 대조<br>제휴 없음 · 캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260906-claude-code-usage/">클로드 코드 사용법</a> · <a href="/docs/tech/20260907-claude-code-hooks/">클로드 코드 훅 활용법</a> · <a href="/docs/tech/20260907-claude-code-limits/">클로드 코드 요금과 한도</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>진행률 표시, 조용한 업데이트가 멈춘 줄 알았던 이유 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-24-silent-update/"><meta name="description" content="LLM 중계기의 자동 업데이트는 트레이 아이콘이 사라진 뒤 설치 프로그램이 창 하나 없이 돌았습니다. 몇 초, 어떤 컴퓨터에서는 수십 초 동안 아무것도 보이지 않자 '중단된 줄 알았다'는 피드백이 돌아왔어요. 설치 프로그램을 '아주 조용히'에서 '조용히'로 바꿔 진행률 바 창 하나를 띄운 이야기, 알림은 숨겨질 수 있지만 창은 남는다는 점, 고친 효과가 다음 업데이트부터 나타나는 함정, 그 전에 연결 확인 카드·멈춘 스피너·트레이 아이콘에서 배운 같은 교훈까지 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="진행률 표시, 조용한 업데이트가 멈춘 줄 알았던 이유 (LLM 중계기 개발기)"><meta property="og:description" content="LLM 중계기의 자동 업데이트는 트레이 아이콘이 사라진 뒤 설치 프로그램이 창 하나 없이 돌았습니다. 몇 초, 어떤 컴퓨터에서는 수십 초 동안 아무것도 보이지 않자 '중단된 줄 알았다'는 피드백이 돌아왔어요. 설치 프로그램을 '아주 조용히'에서 '조용히'로 바꿔 진행률 바 창 하나를 띄운 이야기, 알림은 숨겨질 수 있지만 창은 남는다는 점, 고친 효과가 다음 업데이트부터 나타나는 함정, 그 전에 연결 확인 카드·멈춘 스피너·트레이 아이콘에서 배운 같은 교훈까지 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-24-silent-update/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.CfMGIXGy_ZlltXw.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-24-silent-update/" data-title="진행률 표시, 조용한 업데이트가 멈춘 줄 알았던 이유 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-문제-아이콘이-사라진-뒤의-빈-시간" data-toc="1-문제-아이콘이-사라진-뒤의-빈-시간" data-astro-cid-f3qesd3f>1. 문제: 아이콘이 사라진 뒤의 빈 시간</a></li><li data-astro-cid-f3qesd3f><a href="#2-원인-아주-조용히와-숨는-알림" data-toc="2-원인-아주-조용히와-숨는-알림" data-astro-cid-f3qesd3f>2. 원인: ‘아주 조용히’와 숨는 알림</a></li><li data-astro-cid-f3qesd3f><a href="#3-한-일-진행률-바-창-하나" data-toc="3-한-일-진행률-바-창-하나" data-astro-cid-f3qesd3f>3. 한 일: 진행률 바 창 하나</a></li><li data-astro-cid-f3qesd3f><a href="#4-함정-고친-판으로-가는-길은-아직-조용" data-toc="4-함정-고친-판으로-가는-길은-아직-조용" data-astro-cid-f3qesd3f>4. 함정: 고친 판으로 가는 길은 아직 조용</a></li><li data-astro-cid-f3qesd3f><a href="#5-돌아보면-네-번째였다" data-toc="5-돌아보면-네-번째였다" data-astro-cid-f3qesd3f>5. 돌아보면 네 번째였다</a></li><li data-astro-cid-f3qesd3f><a href="#6-남긴-규칙-기다리게-하면-보여-준다" data-toc="6-남긴-규칙-기다리게-하면-보여-준다" data-astro-cid-f3qesd3f>6. 남긴 규칙: 기다리게 하면 보여 준다</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>5부 · 24편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-문제-아이콘이-사라진-뒤의-빈-시간" data-astro-cid-l6a6buid>1. 문제: 아이콘이 사라진 뒤의 빈 시간</a></li><li data-astro-cid-l6a6buid><a href="#2-원인-아주-조용히와-숨는-알림" data-astro-cid-l6a6buid>2. 원인: ‘아주 조용히’와 숨는 알림</a></li><li data-astro-cid-l6a6buid><a href="#3-한-일-진행률-바-창-하나" data-astro-cid-l6a6buid>3. 한 일: 진행률 바 창 하나</a></li><li data-astro-cid-l6a6buid><a href="#4-함정-고친-판으로-가는-길은-아직-조용" data-astro-cid-l6a6buid>4. 함정: 고친 판으로 가는 길은 아직 조용</a></li><li data-astro-cid-l6a6buid><a href="#5-돌아보면-네-번째였다" data-astro-cid-l6a6buid>5. 돌아보면 네 번째였다</a></li><li data-astro-cid-l6a6buid><a href="#6-남긴-규칙-기다리게-하면-보여-준다" data-astro-cid-l6a6buid>6. 남긴 규칙: 기다리게 하면 보여 준다</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="진행률-표시-조용한-업데이트가-멈춘-줄-알았던-이유-llm-중계기-개발기">진행률 표시, 조용한 업데이트가 멈춘 줄 알았던 이유 (LLM 중계기 개발기)</h1>
+<p><img alt="진행률 표시 — 조용한 업데이트가 멈춘 줄 알았던 이유 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.CfMGIXGy_Z1Qo8Q0.webp" ></p>
+<p class="cap">진행률 표시 — 조용한 업데이트가 멈춘 줄 알았던 이유 (캐릭터는 GPT 이미지 생성)</p>
+<p>지난 23편에서는 자동 업데이트를 윈도 설치 프로그램 방식으로 바꾼 이야기를 했어요. 오늘은 그 설치 프로그램이 너무 조용해서 생긴 일이에요.</p>
+<p>업데이트를 누르고 나서 이런 순간을 겪어 본 적 있나요? “아이콘이 사라졌는데, 멈춘 건가?” 아무것도 보이지 않으면 기다려도 되는지 알 수가 없어요.</p>
+<p>엘리베이터를 기다리는데 문 위의 층 표시가 꺼져 있다고 해 볼게요. 버튼은 눌렀는데, 엘리베이터가 오고는 있는지 알 길이 없어요. 조금만 지나도 버튼을 한 번 더 누르고, 계단 쪽을 쳐다보게 되죠. 층 표시가 켜져 있었다면 오는 시간이 똑같아도 그냥 기다렸을 거예요.<br>
+<strong>문제는 걸리는 시간이 아니라, 일하는 중이라는 표시가 없다는 거였어요.</strong></p>
+<p><img alt="층 표시가 꺼진 엘리베이터 앞에서 버튼을 누르고 문에 귀를 대 보는 로봇들 — 진행률 표시가 없는 업데이트 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-elevator.BsQk3W59_ZWkEFO.webp" ></p>
+<p class="cap">층 표시가 꺼진 엘리베이터 앞에서 버튼을 누르고 문에 귀를 대 보는 로봇들 — 진행률 표시가 없는 업데이트 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 24편 · 5부 만들고 나서가 더 어렵다<br>대상: 진행률 표시가 왜 필요한지 궁금한 분<br>① 업데이트가 멈춘 것처럼 보였던 이유<br>② 옵션 한 단어로 띄운 진행률 바 창<br>③ 같은 교훈을 먼저 배운 세 장면<br>2026년 10월 1일 기준 · 중계기 개발 기록</div>
+<hr>
+<h2 id="1-문제-아이콘이-사라진-뒤의-빈-시간">1. 문제: 아이콘이 사라진 뒤의 빈 시간</h2>
+<p><strong>자동 업데이트를 실제로 써 본 쪽에서 이런 피드백이 왔어요. “중단된 줄 알았다.”</strong> 중계기는 화면 오른쪽 아래, 시계 옆의 작은 아이콘 자리(트레이)에 떠 있는 앱이에요. 업데이트는 이렇게 흘러가요.</p>
+<ol class="steps"><li>트레이 메뉴에서 ‘업데이트 확인 및 설치’를 누르고, 확인 창에서 ‘예’를 눌러요.</li><li>중계기가 새 판의 설치 프로그램을 내려받고 진짜인지 확인해요.</li><li>하던 요청이 끝나면 설치 프로그램을 실행하고 스스로 꺼져요.<span class="then">→ 이때 트레이 아이콘이 사라져요.</span></li><li>설치 프로그램이 파일을 바꾸고, 끝나면 중계기를 다시 켜요.<span class="then">→ 트레이 아이콘이 다시 나타나요.</span></li></ol>
+<p>윈도에서는 보통 실행 중인 프로그램의 파일을 그대로 바꿀 수 없어서, ③에서 중계기가 먼저 꺼져요. 문제는 ③과 ④ 사이였어요. 아무 창도 뜨지 않은 채 몇 초, 어떤 컴퓨터에서는 수십 초가 지나고, 그러다 아이콘이 다시 나타났어요.</p>
+<p>끝까지 기다린 사람에게는 문제가 없어요. 그런데 기다리는 사람은 끝이 올지 몰라요. 릴리스 노트(판마다 바뀐 점을 적는 문서)는 업데이트가 ‘멈췄거나 고장 난 것처럼 보였다’고 적었어요.</p>
+<p>설치 프로그램 방식으로 바꾼 판(v0.1.80)이 8월 20일 오후 2시 반쯤 나왔고, 이 문제를 고친 판(v0.1.84)은 같은 날 저녁 7시 무렵에 나왔어요.</p>
+<h2 id="2-원인-아주-조용히와-숨는-알림">2. 원인: ‘아주 조용히’와 숨는 알림</h2>
+<p><strong>설치 프로그램은 실행할 때 붙이는 옵션으로, 사람에게 얼마나 말을 걸지 정할 수 있어요.</strong> 중계기의 설치 프로그램은 널리 쓰이는 제작 도구(Inno Setup)로 만들었어요. 도움말 기준으로 세 방식이 화면에 보여 주는 건 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>실행 방식</th><th>화면에 보이는 것</th></tr></thead><tbody><tr><td>보통 실행</td><td>‘다음 → 설치’ 마법사 화면과 질문, 진행률</td></tr><tr><td>조용히 (SILENT)</td><td>마법사·질문 없이 진행률 창만</td></tr><tr><td>아주 조용히 (VERYSILENT)</td><td>진행률 창도 없음 — 아무것도 안 보임</td></tr></tbody></table>
+<p>자동 업데이트는 ‘아주 조용히’로 실행하고 있었어요. 묻지 않고 끝나는 것 자체는 자동 업데이트에 어울려요. 문제는 그 침묵이 트레이 아이콘이 사라진 직후와 겹쳤다는 점이에요. 화면 어디에도 “지금 일하는 중”이라고 말해 줄 쪽이 남아 있지 않았어요.</p>
+<p>알림은 있었어요. 설치 직전에 “설치를 시작합니다. 설치가 끝나면 자동으로 다시 실행됩니다.”라는 풍선 알림이 떴어요. 그런데 약점이 두 가지였어요.</p>
+<p><strong>첫째, 윈도가 숨길 수 있어요.</strong> 알림을 잠시 꺼 두는 기능(집중 지원, 방해 금지)이 켜져 있으면 풍선이 화면에 뜨지 않을 수 있어요.<br>
+<strong>둘째, 한 번 뜨고 사라져요.</strong> 마침 다른 창을 보고 있었다면 놓쳐요.</p>
+<p>엘리베이터로 치면 “곧 도착합니다” 방송을 한 번 하고 끝낸 셈이에요. 방송을 못 들은 사람에게는 꺼진 층 표시만 남아요.</p>
+<h2 id="3-한-일-진행률-바-창-하나">3. 한 일: 진행률 바 창 하나</h2>
+<p><strong>고친 방법은 옵션 한 단어였어요. ‘아주 조용히’를 ‘조용히’로 바꿨어요.</strong> 이제 업데이트 중에는 작은 창이 떠서, 파일을 바꾸는 동안 진행률 바가 차올라요. 누를 것은 없고, 바가 다 차면 창이 닫히고 중계기가 다시 켜져요.</p>
+<p>릴리스 노트는 이 창을 <mark>업데이트가 진행 중이라는 유일하게 보장되는 신호</mark>라고 불러요. 알림이 꺼져 있어도, 다른 창을 보다가 돌아와도, 일이 끝날 때까지 창은 그 자리에 있어요.</p>
+<p>‘고장 하나에 검사 하나’ 습관대로 검사도 붙였어요. 설치 프로그램 실행 설정이 ‘조용히’인지 확인하고, ‘아주 조용히’가 다시 들어오면 실패해요. 나중에 누군가 “자동 업데이트니까 더 조용한 게 낫겠다”며 되돌리려 해도, 검사가 먼저 알려 줘요.</p>
+<p><img alt="같은 업데이트를 사용자 눈으로 본 전과 후 — 빈 시간과 진행률 바 창, 그리고 8월에 붙인 진행 신호 넷 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="6216" src="/_astro/diagram-silent-update.D7vTSgH5_ZwWx74.webp" ></p>
+<p class="cap">같은 업데이트를 사용자 눈으로 본 전과 후 — 빈 시간과 진행률 바 창, 그리고 8월에 붙인 진행 신호 넷 (직접 제작)</p>
+<h2 id="4-함정-고친-판으로-가는-길은-아직-조용">4. 함정: 고친 판으로 가는 길은 아직 조용</h2>
+<p><strong>릴리스 노트에는 이런 안내가 있어요. 새 동작은 이 판이 다음 업데이트를 할 때 적용된다.</strong> 0.1.83 이하에서 0.1.84로 올리는 업데이트는 여전히 보이지 않게 돌아요.</p>
+<p>설치 프로그램을 어떻게 실행할지는 설치 프로그램이 아니라, 지금 깔려 있는 중계기의 트레이가 정하기 때문이에요. 0.1.84로 올라가는 순간 설치 프로그램을 실행하는 쪽은 아직 옛 판이고, 옛 판은 옛 습관대로 ‘아주 조용히’를 붙여요. 진행률 바 창은 0.1.84가 다음 판을 설치할 때부터 보여요.</p>
+<p>층 표시판을 새로 다는 공사 날, 표시판을 싣고 올라가는 그 엘리베이터에는 아직 표시판이 없는 것과 같아요. 23편에서도 새 판을 판정한 건 옛 판이었죠. 업데이트를 고칠 때는 “이 고침은 누가 실행하나?”를 먼저 물어야 했어요.</p>
+<h2 id="5-돌아보면-네-번째였다">5. 돌아보면 네 번째였다</h2>
+<p><strong>‘아무것도 안 보이면 멈춘 줄 안다’는 교훈은 이번이 처음이 아니었어요.</strong> 8월 한 달 동안 화면 곳곳에서 같은 문제를 하나씩 고쳤어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>날짜 · 어디</th><th>고친 것</th></tr></thead><tbody><tr><td>8월 3일 · 연결 확인</td><td>“연결 중…” 한 줄 → 도는 표시, 1초마다 오르는 경과 시간, 시간이 지나면 바뀌는 안내 문장</td></tr><tr><td>8월 6일 · 스피너</td><td>움직임 줄이기 설정에서 멈춰 있던 스피너를, 로그인·연결 표시만은 조금 느리게라도 돌게</td></tr><tr><td>8월 12일 · 트레이 아이콘</td><td>준비 중에도 빨간 정지 아이콘 → 노란 고리가 도는 아이콘, 준비 중 메뉴는 상태·종료만</td></tr><tr><td>8월 20일 · 업데이트</td><td>아무 창 없음 → 진행률 바 창</td></tr></tbody></table>
+<p><strong>8월 3일, 연결 확인 화면에 시계가 가는 카드가 생겼어요.</strong> Codex나 Claude 같은 명령어 도구 AI는 처음 켤 때 준비 시간이 드는데, 예전엔 “연결 중…” 한 줄이 1분 뒤에도 똑같았어요.</p>
+<p>이제는 경과 시간이 0:42처럼 1초마다 오르고, “창을 닫거나 연결 확인을 다시 누르지 말고 기다려 주세요” 같은 안내가 바뀌어요. <mark>남은 시간을 모르면 지난 시간이라도</mark> 보여 주는 거예요. 이 카드를 지키는 검사 이름은 ‘여러 번 누르는 데 기대지 않는다’예요.</p>
+<p><strong>8월 6일, 멈춰 있던 스피너를 다시 돌렸어요.</strong> 윈도에는 화면의 움직임을 줄여 달라는 설정(애니메이션 효과 끄기)이 있고, 중계기 화면은 그 설정에서 스피너를 멈춰 두었어요.</p>
+<p>그런데 멈춘 스피너는 멈춘 화면처럼 보여요. 그래서 오래 걸리는 로그인·연결 표시만은 평소(한 바퀴 0.85초)보다 느린 한 바퀴 1.1초로 돌게 했어요. 채팅 답을 기다리는 점 같은 다른 움직임은 지금도 그 설정을 따라요.</p>
+<p><img alt="멈춘 회색 고리와 힘차게 도는 노란 고리를 비교해 보는 로봇 — 멈춘 스피너는 멈춘 화면처럼 보인다 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-two-spinners.B4Gz00r3_Z1VObmi.webp" ></p>
+<p class="cap">멈춘 회색 고리와 힘차게 도는 노란 고리를 비교해 보는 로봇 — 멈춘 스피너는 멈춘 화면처럼 보인다 (GPT 이미지 생성)</p>
+<p><strong>8월 12일, 준비 중인 트레이 아이콘을 바꿨어요.</strong> 중계기를 켜고 준비하는 동안 아이콘이 빨간 정지 아이콘이었어요. 실패했거나 꺼졌을 때와 같은 모양이요.</p>
+<p>이제는 준비 중에 아이콘 위에서 노란 고리가 돌아요. <strong>0.14초</strong>마다 한 칸씩 넘어가는 여덟 장의 그림이에요. 실패·꺼짐만 빨간 정지 아이콘이에요. 같은 날 저녁엔 준비 중 메뉴를 상태와 ‘종료’만 남겼고, 준비 중 더블클릭에도 매번 바로 대답하게 했어요. 예전엔 첫 번째 클릭에만 대답했거든요.</p>
+<p>그리고 8월 20일의 업데이트가 네 번째였어요. 이번엔 트레이 아이콘도 관리 화면도 꺼져 있어서, 설치 프로그램만이 “아직 일하는 중”이라고 말할 수 있었어요.</p>
+<h2 id="6-남긴-규칙-기다리게-하면-보여-준다">6. 남긴 규칙: 기다리게 하면 보여 준다</h2>
+<p><strong>네 번의 고침을 모으면 규칙이 여섯 줄로 남아요.</strong></p>
+<p>① 일하고 있다는 걸 보여 준다 — 아무것도 안 보이면 사람은 멈췄다고 읽고, 버튼을 다시 누르거나 다시 켜기 쉬워요<br>
+② 얼마나 왔는지 보여 준다 — 끝을 알면 진행률 바, 모르면 경과 시간이라도요<br>
+③ 표시는 실제로 움직여야 한다 — 멈춘 스피너는 없는 것과 같아요<br>
+④ 숨겨지지 않는 신호를 고른다 — 꺼질 수 있는 알림보다 끝날 때까지 남는 창이요<br>
+⑤ 기다리는 동안에도 대답하고, 나갈 문은 남긴다 — 두 번째 클릭에도 대답하고, ‘종료’는 준비 중에도 남겨요<br>
+⑥ 고침이 언제부터 효과를 내는지 적고, 되돌아가지 않게 검사로 묶는다</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>걸리는 시간은 같아도, 일하는 중이라는 표시 하나가 ‘고장’을 ‘기다림’으로 바꿔요.</div>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① ‘아주 조용히’ 설치라 아이콘이 사라진 뒤 빈 시간<br>② ‘조용히’로 바꿔 진행률 바 창 하나를 띄웠어요<br>③ 효과는 고친 판이 다음 업데이트를 할 때부터<br>④ 끝을 모르면 경과 시간, 스피너는 늘 움직이게</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 풍선 알림만으로는 왜 부족했나요?</summary><p>윈도의 알림 끄기 기능이 켜져 있으면 뜨지 않을 수 있고, 떠도 한 번 보였다 사라져요. 진행률 창은 일이 끝날 때까지 남아 있어요.</p></details>
+<details class="faq"><summary>Q. 0.1.84로 올리는 업데이트에서는 왜 진행률 창이 안 보였나요?</summary><p>설치 프로그램을 어떻게 실행할지는 지금 깔려 있는 판의 트레이가 정해요. 0.1.83 이하의 트레이는 ‘아주 조용히’를 붙여서, 진행률 창은 0.1.84가 다음 판을 설치할 때부터 보여요.</p></details>
+<details class="faq"><summary>Q. 남은 시간을 모르는 작업은 어떻게 보여 줬나요?</summary><p>연결 확인처럼 끝을 미리 알 수 없는 일은 진행률 대신 도는 표시와 1초마다 오르는 경과 시간, 시간이 지나면 바뀌는 안내 문장을 보여 줘요.</p></details>
+<p>다음 25편에서는 중계기를 감싸던 무거운 앱 껍데기를 걷어내자 메모리와 내려받는 크기가 얼마나 줄었는지 이야기할게요.</p>
+<p><strong>참고 자료</strong> Inno Setup 도움말 — 설치 명령줄 옵션 · <a href="https://jrsoftware.org/ishelp/topic_setupcmdline.htm">jrsoftware.org/ishelp/topic_setupcmdline.htm</a></p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>사이트 첫 발행 2026년 10월 1일<br>다시 대조·수정 2026년 10월 7일<br>제가 만든 중계기의 저장 기록·릴리스 노트로<br>제휴 없음 · 언급한 제품 제작사와 관계 없음<br>삽화는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">연재 LLM 중계기 개발기 — <a href="/docs/tech/20261001-llmgw-23-update-rollback/">← 지난 편(23편)</a> · <a href="/docs/tech/20261001-llmgw-25-lighter-shell/">다음 편(25편) →</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-23-update-rollback/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 23편</span> <span class="t" data-astro-cid-l6a6buid>자동 업데이트 롤백, 업데이트했는데 버전이 그대로인 이유</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-25-lighter-shell/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 25편 →</span> <span class="t" data-astro-cid-l6a6buid>Electron 앱이 무거운 이유, 329MB를 61MB로 줄인 기록</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>무한 로딩 원인, &#39;준비 중&#39;에서 멈춘 화면을 고친 기록 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-22-endless-preparing/"><meta name="description" content="AI 연결도 끝났고 채팅도 잘 되는데, LLM 중계기 화면의 준비 표시는 '워밍업 중'에서 영영 넘어가지 않았습니다. 첫 번째는 준비에 실패한 모델이 갈 '끝'이 없어서, 두 번째는 아무도 데우지 않는 모델까지 '워밍업 중'이라고 보고해서였어요. 카페 주문 번호판에 빗대어 상태와 끝 상태가 무엇인지, 실패와 시간 초과도 끝으로 쳐야 하는 이유, 진행 중인 일이 없으면 '준비 전'이라고 정직하게 말해야 하는 이유, 같은 병이 업데이트 '적용 중'에서 다시 나타난 이야기까지 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="무한 로딩 원인, '준비 중'에서 멈춘 화면을 고친 기록 (LLM 중계기 개발기)"><meta property="og:description" content="AI 연결도 끝났고 채팅도 잘 되는데, LLM 중계기 화면의 준비 표시는 '워밍업 중'에서 영영 넘어가지 않았습니다. 첫 번째는 준비에 실패한 모델이 갈 '끝'이 없어서, 두 번째는 아무도 데우지 않는 모델까지 '워밍업 중'이라고 보고해서였어요. 카페 주문 번호판에 빗대어 상태와 끝 상태가 무엇인지, 실패와 시간 초과도 끝으로 쳐야 하는 이유, 진행 중인 일이 없으면 '준비 전'이라고 정직하게 말해야 하는 이유, 같은 병이 업데이트 '적용 중'에서 다시 나타난 이야기까지 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-22-endless-preparing/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DoDNJKYb_Z1zQOV8.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-22-endless-preparing/" data-title="무한 로딩 원인, '준비 중'에서 멈춘 화면을 고친 기록 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-번호판으로-보는-상태와-끝-상태" data-toc="1-번호판으로-보는-상태와-끝-상태" data-astro-cid-f3qesd3f>1. 번호판으로 보는 상태와 끝 상태</a></li><li data-astro-cid-f3qesd3f><a href="#2-첫-번째-23-준비에서-멈춘-밤" data-toc="2-첫-번째-23-준비에서-멈춘-밤" data-astro-cid-f3qesd3f>2. 첫 번째: ‘2/3 준비’에서 멈춘 밤</a></li><li data-astro-cid-f3qesd3f><a href="#3-한-일-실패와-시간-초과도-끝으로" data-toc="3-한-일-실패와-시간-초과도-끝으로" data-astro-cid-f3qesd3f>3. 한 일: 실패와 시간 초과도 끝으로</a></li><li data-astro-cid-f3qesd3f><a href="#4-두-번째-03-준비에서-멈춘-표시" data-toc="4-두-번째-03-준비에서-멈춘-표시" data-astro-cid-f3qesd3f>4. 두 번째: ‘0/3 준비’에서 멈춘 표시</a></li><li data-astro-cid-f3qesd3f><a href="#5-한-일-진행-중일-때만-워밍업-중" data-toc="5-한-일-진행-중일-때만-워밍업-중" data-astro-cid-f3qesd3f>5. 한 일: 진행 중일 때만 ‘워밍업 중’</a></li><li data-astro-cid-f3qesd3f><a href="#6-같은-병-적용-중에-멈춘-업데이트" data-toc="6-같은-병-적용-중에-멈춘-업데이트" data-astro-cid-f3qesd3f>6. 같은 병: ‘적용 중’에 멈춘 업데이트</a></li><li data-astro-cid-f3qesd3f><a href="#7-남긴-규칙-모든-상태에는-끝이-있다" data-toc="7-남긴-규칙-모든-상태에는-끝이-있다" data-astro-cid-f3qesd3f>7. 남긴 규칙: 모든 상태에는 끝이 있다</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>5부 · 22편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-번호판으로-보는-상태와-끝-상태" data-astro-cid-l6a6buid>1. 번호판으로 보는 상태와 끝 상태</a></li><li data-astro-cid-l6a6buid><a href="#2-첫-번째-23-준비에서-멈춘-밤" data-astro-cid-l6a6buid>2. 첫 번째: ‘2/3 준비’에서 멈춘 밤</a></li><li data-astro-cid-l6a6buid><a href="#3-한-일-실패와-시간-초과도-끝으로" data-astro-cid-l6a6buid>3. 한 일: 실패와 시간 초과도 끝으로</a></li><li data-astro-cid-l6a6buid><a href="#4-두-번째-03-준비에서-멈춘-표시" data-astro-cid-l6a6buid>4. 두 번째: ‘0/3 준비’에서 멈춘 표시</a></li><li data-astro-cid-l6a6buid><a href="#5-한-일-진행-중일-때만-워밍업-중" data-astro-cid-l6a6buid>5. 한 일: 진행 중일 때만 ‘워밍업 중’</a></li><li data-astro-cid-l6a6buid><a href="#6-같은-병-적용-중에-멈춘-업데이트" data-astro-cid-l6a6buid>6. 같은 병: ‘적용 중’에 멈춘 업데이트</a></li><li data-astro-cid-l6a6buid><a href="#7-남긴-규칙-모든-상태에는-끝이-있다" data-astro-cid-l6a6buid>7. 남긴 규칙: 모든 상태에는 끝이 있다</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="무한-로딩-원인-준비-중에서-멈춘-화면을-고친-기록-llm-중계기-개발기">무한 로딩 원인, ‘준비 중’에서 멈춘 화면을 고친 기록 (LLM 중계기 개발기)</h1>
+<p><img alt="무한 로딩 원인 — &amp;#x27;준비 중&amp;#x27;에서 멈춘 화면을 고친 기록 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DoDNJKYb_1YhE0k.webp" ></p>
+<p class="cap">무한 로딩 원인 — '준비 중'에서 멈춘 화면을 고친 기록 (캐릭터는 GPT 이미지 생성)</p>
+<p>지난 21편에서는 꺼졌어야 할 프로그램이 뒤에 남은 이야기를 했어요. 오늘은 끝났어야 할 ‘표시’가 끝나지 않은 이야기예요.</p>
+<p>앱을 쓰다 보면 이런 화면 앞에서 멈칫하게 돼요. “연결은 된 것 같은데, 왜 아직도 준비 중이지?” 기다려야 할지, 다시 켜야 할지 알 수 없는 화면이죠.</p>
+<p>카페 계산대 위 번호판에 ‘조리 중’과 ‘완료’ 두 칸만 있다고 해 볼게요. 주방에서 내 음료를 엎었는데 ‘취소’ 칸이 없으면, 내 번호는 ‘조리 중’에 영원히 떠 있어요. 제가 만든 LLM 중계기에서 꼭 이런 일이 두 번 있었어요. AI 연결은 끝났는데 준비 표시가 ‘워밍업 중’에서 넘어가지 않았어요.<br>
+<strong>원인은 컴퓨터가 느려서가 아니라, 표시가 도착할 끝이 빠진 설계였어요.</strong></p>
+<p><img alt="불 하나만 오래 켜진 주문 번호판 아래에서 기다리는 로봇 손님 — 무한 로딩을 번호판에 빗댄 그림 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-order-board.RW6qxyIq_Z1EEels.webp" ></p>
+<p class="cap">불 하나만 오래 켜진 주문 번호판 아래에서 기다리는 로봇 손님 — 무한 로딩을 번호판에 빗댄 그림 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 22편 · 5부 만들고 나서가 더 어렵다<br>대상: 무한 로딩 화면이 왜 생기는지 궁금한 분<br>① ‘워밍업 중’이 끝나지 않은 두 번의 원인<br>② 실패·시간 초과를 끝으로 만든 수정<br>③ 모든 상태에 끝을 두는 규칙 여섯 가지<br>2026년 10월 1일 기준 · 중계기 개발 기록</div>
+<hr>
+<h2 id="1-번호판으로-보는-상태와-끝-상태">1. 번호판으로 보는 상태와 끝 상태</h2>
+<p><strong>번호판의 칸 하나하나를 상태(state)라고 하고, 더 기다릴 일이 없는 칸을 끝 상태(terminal state)라고 해요.</strong> 주문은 늘 어느 한 칸에 있고, 일이 진행되면 화살표를 따라 다음 칸으로 옮겨 가요.</p>
+<p>① 주문 접수에서 조리 중으로<br>
+② 조리 중에서 완료로 (잘 만들었을 때)<br>
+③ 조리 중에서 취소로 (엎었거나 재료가 떨어졌을 때)</p>
+<p>칸과 화살표로 그린 이런 그림을 개발자들은 흔히 상태 기계(state machine)라고 불러요. 번호판이 믿을 만하려면 ‘조리 중’에서 나가는 화살표가 모든 경우에 있어야 해요. 잘 만든 경우, 엎은 경우, 주방이 아무 대답도 없는 경우까지요.</p>
+<p>중계기 화면에도 이런 번호판이 있어요. 6편에서 말한 대로 중계기는 AI 프로그램을 미리 데워 둔 엔진처럼 켜 두고 써요. 화면에는 AI마다 준비 표시줄이 있고, 화면은 <strong>1.5초</strong>마다 중계기에 “지금 어때?”를 물어 ‘워밍업 중’이나 ‘준비 완료’로 표시를 바꿔요.</p>
+<h2 id="2-첫-번째-23-준비에서-멈춘-밤">2. 첫 번째: ‘2/3 준비’에서 멈춘 밤</h2>
+<p><strong>개발 첫날 밤을 넘긴 7월 14일 새벽 1시 8분, v0.1.17의 저장 기록에 이 증상이 적혀 있어요.</strong> Claude는 실제로 연결이 끝났는데, 화면은 ‘2/3 준비 · 워밍업 중’에 영원히 머물렀다. 21편에서 좀비 프로세스를 고친 지 세 시간쯤 뒤였어요.</p>
+<p>그때 중계기는 Claude를 연결하면 가장 가벼운 모델로 연결을 확인하고, 나머지 두 모델은 뒤에서 미리 데웠어요. 그런데 데우던 모델 하나의 세션이 오류로 끝나면 이런 일이 생겼어요.</p>
+<p>① 오류로 끝난 세션은 목록에서 그냥 지워졌어요<br>
+② 그 모델의 보고는 ‘데워져 있지 않음’ 한 줄뿐이었어요. ‘데우는 중’도 ‘실패’도 아니었어요<br>
+③ 화면의 규칙은 ‘일부만 준비됐으면 워밍업 중’이었어요</p>
+<p>결국 화면은 실패한 모델을 ‘아직 데우는 중’으로 읽었어요. 엎은 음료를 ‘조리 중’으로 보여 준 번호판과 같아요. 기록의 말로는 준비된 모델을 세는 장치에 ‘실패’라는 끝이 아예 없었어요. 화면은 1.5초마다 다시 묻기를 끝없이 되풀이했고요.</p>
+<p>같은 때 Codex는 멀쩡해 보였는데, 기록은 보통 모델이 하나뿐이라 ‘1/1’이었기 때문이라고 적었어요. 모델이 하나면 ‘일부만 준비된’ 상황이 생길 틈이 없죠.</p>
+<h2 id="3-한-일-실패와-시간-초과도-끝으로">3. 한 일: 실패와 시간 초과도 끝으로</h2>
+<p><strong>그날 새벽의 수정은 ‘영원히 대기’를 구조적으로 불가능하게 만드는 쪽이었어요.</strong></p>
+<p>① 모델마다 데우는 일에 제한 시간을 둘렀어요. 성공하면 ‘준비 완료’, 오류가 나도 제한 시간을 넘겨도 ‘실패’예요. 첫 세션을 켜는 데 꽤 걸릴 수 있어서 기본 <strong>150초</strong>로 넉넉히 잡았어요<br>
+② 이 규칙을 Claude 전용이 아니라, 어떤 AI 연결 부품이든 가져다 쓰는 공용 도구로 만들었어요<br>
+③ 실패한 모델은 이유를 함께 보고하고, 화면은 그 모델 이름과 이유를 보여 줘요<br>
+④ 화면이 끝나는 조건을 ‘전부 준비 완료’에서 ‘워밍업 중인 모델이 하나도 없음’으로 바꿨어요. 끝에 닿으면 화면은 더 묻지 않아요</p>
+<p><mark>실패도 끝 상태예요</mark>. 실패는 숨길 일이 아니라 도착점이에요.</p>
+<p><img alt="탄 팬을 든 요리사 로봇이 번호판의 불을 빨간 X로 바꾸는 장면 — 실패도 끝 상태 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-burnt-pan.Di3eLVQY_ZgCisK.webp" ></p>
+<p class="cap">탄 팬을 든 요리사 로봇이 번호판의 불을 빨간 X로 바꾸는 장면 — 실패도 끝 상태 (GPT 이미지 생성)</p>
+<p><strong>‘고장 하나에 검사 하나’ 습관대로 ‘영구 대기 금지’라는 검사도 붙였어요.</strong> 가짜 모델 셋 중 하나는 성공하고, 하나는 일부러 오류를 내고, 하나는 영원히 대답하지 않게 만들어요.</p>
+<p>그래도 제한 시간 안에 셋 다 끝 상태에 닿고 ‘워밍업 중’이 0개여야 통과예요. 대답하지 않은 모델은 ‘시간 초과’라는 이유와 함께 ‘실패’로 끝나야 하고요.</p>
+<p>실제 화면으로도 확인했어요. 일부러 두 모델이 시간 초과가 나게 하자 표시는 <strong>준비 완료 1/3 · 일부 실패</strong>로 끝났어요. 평소처럼 연결했을 때는 초록색 ‘준비 완료 (3/3 warm)’ 표시에 도착했어요. 두 경우 모두 ‘워밍업 중’은 하나도 남지 않았어요.</p>
+<h2 id="4-두-번째-03-준비에서-멈춘-표시">4. 두 번째: ‘0/3 준비’에서 멈춘 표시</h2>
+<p><strong>한 달여 뒤인 8월 19일, v0.1.71의 기록에 거의 같은 증상이 다시 나와요.</strong> 이번엔 숫자가 0이었어요. AI 연결도 성공했고 채팅도 정상인데, 화면이 ‘워밍업 중… (0/3 준비)’에서 영원히 멈췄어요.</p>
+<p>이번에는 화면 규칙이 아니라 보고가 틀렸어요. 그사이 설계가 바뀌어 있었거든요. 중계기는 이제 연결할 때 모든 모델을 미리 데우지 않고, 요청이 오면 그때 필요한 프로그램만 켜요. 5분 동안 요청이 없으면 켜 둔 프로그램을 정리하고요.</p>
+<p>상태 보고는 이 변화를 따라오지 못했어요. 기록이 꼽은 원인은 두 가지예요.</p>
+<p><strong>첫째, ‘모르면 워밍업 중’이라는 기본값이에요.</strong> 데운 적도 없고 데우는 중도 아닌 모델의 기본 보고가 ‘워밍업 중’이었어요. 뒤에서 미리 데우던 시절엔 잠깐 맞는 말이었지만, 아무도 데우지 않게 되자 영원한 거짓말이 됐어요.</p>
+<p><strong>둘째, 5분 정리 뒤의 빈칸이에요.</strong> 정리가 돌면 ‘연결 확인을 마쳤다’는 기록까지 지워졌어요. 채팅은 그 기록 없이도 잘 돌아서 아무도 다시 채우지 않았고, 상태 보고는 그 기록을 기준으로 모든 모델을 ‘워밍업 중’(0/3)으로 남겼어요.</p>
+<p>검사 하나도 ‘연결 직후 다른 모델은 워밍업 중’을 정답으로 적어 두고 있었어요. 뒤에서 데우던 시절의 정답이 그대로 남아 있었던 거예요. 번호판으로 치면 주방 불은 꺼졌고 요리사는 쉬러 갔는데 ‘조리 중’이 켜져 있는 셈이에요.</p>
+<h2 id="5-한-일-진행-중일-때만-워밍업-중">5. 한 일: 진행 중일 때만 ‘워밍업 중’</h2>
+<p><strong>수정의 원칙은 기록에 한 줄로 적혀 있어요. ‘warming은 실제 진행 중일 때만.’</strong> 진행 중인 일이 없는 모델에는 새 끝 상태 ‘준비 전’을 줬어요. 지금 각 모델은 아래 넷 중 하나를 직접 이름으로 보고해요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>상태</th><th>언제</th></tr></thead><tbody><tr><td>준비 완료</td><td>데워져 있어 바로 대답할 때 — 살아 있는 세션이 있는 모델</td></tr><tr><td>워밍업 중</td><td>지금 실제로 데우는 일이 돌고 있을 때만</td></tr><tr><td>실패</td><td>오류나 시간 초과 — 이유를 함께 보여 줌</td></tr><tr><td>준비 전</td><td>진행 중인 일 없음 — 첫 요청이 오면 그때 데움</td></tr></tbody></table>
+<p>Codex도 쉬는 동안 앱 서버가 내려가 있으면 ‘준비 전’이에요. 앱 서버를 켜는 중일 때만 ‘워밍업 중’이고요. 화면도 이제 언제나 끝나요. 전부 데워져 있으면 ‘준비 완료’, 일부만이면 ‘사용 가능 — n/m warm · k개는 첫 요청 시 자동 워밍업’이라고 써요. 경고 색은 진짜 실패가 있을 때만이에요.</p>
+<p>릴리스 노트는 이 수정이 표시의 약속만 고친 것이라고 적었어요. 요청을 어디로 보내는지, 언제 데우는지는 그대로이고 바뀐 건 화면이 하는 말뿐이에요. 틀린 정답을 지키던 검사는 ‘준비 전’으로 고쳤고, ‘준비 전’을 확인하는 검사도 더했어요.</p>
+<p><img alt="준비 표시의 상태 — 끝이 없던 전과, 어느 길로 가도 끝 상태에 닿는 후 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5480" src="/_astro/diagram-terminal-states.CEkjQSUb_Z1U5EJD.webp" ></p>
+<p class="cap">준비 표시의 상태 — 끝이 없던 전과, 어느 길로 가도 끝 상태에 닿는 후 (직접 제작)</p>
+<h2 id="6-같은-병-적용-중에-멈춘-업데이트">6. 같은 병: ‘적용 중’에 멈춘 업데이트</h2>
+<p><strong>끝나지 않는 표시는 워밍업에만 생기지 않았어요.</strong> 9월 29일 v0.1.108의 기록은 자동 업데이트 이야기예요. 새 버전을 찾고 내려받기까지 했는데, 설치가 진행되지 않고 ‘적용 중’에서 멈췄어요.</p>
+<p>중계기의 업데이트는 화면에서 적용을 누르면 서버가 “설치를 시작해”라는 신호를 자기 출력에 한 줄로 적어요. 그 서버를 띄운 트레이(화면 구석의 작은 아이콘 프로그램)가 그 줄을 읽고 설치 프로그램을 실행하는 구조예요.</p>
+<p>그날은 같은 문 번호에 개발하면서 띄워 둔 다른 중계기 서버가 먼저 떠 있었어요. 지난 실행에서 남은 서버도 같은 일을 일으킬 수 있어요. 설치된 트레이는 자기 서버를 띄우지 않고 그 서버에 조용히 붙었고, 신호를 읽을 트레이가 없어 ‘적용 중’은 끝나지 않았어요.</p>
+<p><strong>이번엔 끝을 만들어 주는 대신, 끝낼 주체가 없는 일은 시작하지 않게 했어요.</strong> 설치된 트레이가 띄운 서버만 업데이트를 적용해요. 다른 서버는 ‘적용 중’으로 들어가지 않고 바로 거절하고, 상태는 ‘대기’에 머물러요.</p>
+<p>화면은 버튼 대신 ‘이 서버를 종료하고 설치된 중계기를 다시 실행하세요’라는 뜻의 안내를 보여 줘요. 트레이도 다른 서버에 붙으면 알림을 띄우고요.</p>
+<h2 id="7-남긴-규칙-모든-상태에는-끝이-있다">7. 남긴 규칙: 모든 상태에는 끝이 있다</h2>
+<p><strong>세 번의 일에서 남은 규칙을 번호판의 말로 정리하면 이래요.</strong></p>
+<p>① 진행 중에서 나가는 화살표를 모두 그린다 — 성공, 실패, 아무 대답이 없는 경우까지. 대답이 없으면 정한 시간이 지났을 때 ‘실패’로 옮겨요<br>
+② 실패도 끝이다 — 이유를 함께 보여 주면 기다리던 사람이 다음 행동을 고를 수 있어요<br>
+③ 모르면 ‘진행 중’이라고 하지 않는다 — 아무 일도 진행되지 않으면 ‘준비 전’이에요<br>
+④ 화면이 짐작하게 두지 않는다 — 각 모델이 네 상태 중 하나를 직접 이름으로 보고해요<br>
+⑤ 끝낼 주체가 없으면 시작하지 않는다 — 시작 전에 거절하고 이유를 말해요<br>
+⑥ 검사로 지킨다 — 실패와 무응답을 섞어도 ‘워밍업 중’이 0개로 끝나는지 봐요</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>기본값을 ‘진행 중’으로 두면, 설계가 바뀌는 날 그 기본값이 영원한 거짓말이 돼요.</div>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 나가는 화살표가 빠지면 표시는 끝나지 않아요<br>② 7월엔 실패 칸이 없었고, 8월엔 거짓 ‘워밍업 중’<br>③ 실패·시간 초과도 끝, 진행이 없으면 ‘준비 전’<br>④ 끝낼 주체가 없는 일은 시작 전에 거절해요</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 제한 시간을 넉넉히 잡으면 그만큼 느려지지 않나요?</summary><p>아니요. 제한 시간은 ‘이 시간이 지나도 대답이 없으면 실패로 끝낸다’는 상한이에요. 대답이 오면 그 즉시 끝 상태로 가서 평소 속도는 그대로예요.</p></details>
+<details class="faq"><summary>Q. 두 번째 수정으로 실제 동작도 바뀌었나요?</summary><p>아니요. 릴리스 노트에 따르면 요청을 보내는 곳, 데우는 시점, 세션을 나누는 방식은 그대로예요. 화면이 하는 말만 정직하게 바꿨어요.</p></details>
+<details class="faq"><summary>Q. ‘준비 전’인 모델에 질문하면 어떻게 되나요?</summary><p>첫 요청이 오면 그때 자동으로 데우고 대답해요. 그래서 화면도 ‘k개는 첫 요청 시 자동 워밍업’이라고 알려 줘요.</p></details>
+<p>다음 23편은 자동 업데이트가 계속 되돌아간 이야기예요. 이번 편과 반대로, ‘실패’라는 끝을 너무 일찍 정해 버려서 새 버전이 자꾸 옛 버전으로 되돌아갔어요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>사이트 첫 발행 2026년 10월 1일<br>다시 대조·수정 2026년 10월 7일<br>제가 만든 중계기의 저장 기록·릴리스 노트로<br>제휴 없음 · OpenAI·앤트로픽과 관계 없음<br>삽화는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">연재 LLM 중계기 개발기 — <a href="/docs/tech/20261001-llmgw-21-zombies/">← 지난 편(21편)</a> · <a href="/docs/tech/20261001-llmgw-23-update-rollback/">다음 편(23편) →</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-21-zombies/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 21편</span> <span class="t" data-astro-cid-l6a6buid>좀비 프로세스, 껐는데 남은 프로그램이 다음 실행을 막을 때</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-23-update-rollback/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 23편 →</span> <span class="t" data-astro-cid-l6a6buid>자동 업데이트 롤백, 업데이트했는데 버전이 그대로인 이유</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

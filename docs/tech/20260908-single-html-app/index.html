@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>HTML 파일 하나로 앱 만들기, 코딩 몰라도 되는 45줄 템플릿</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20260908-single-html-app/"><meta name="description" content="앱스토어·서버·개발자 없이 HTML 파일 하나로 실제로 쓰는 앱을 만드는 법. 직접 만들어 쓰고 있는 앱 3개(여행 앱·비용 계산기·관제판)의 크기, 되는 것과 안 되는 것, 45줄짜리 체크리스트 템플릿과 AI에게 시키는 프롬프트까지 정리했다."><meta property="og:title" content="HTML 파일 하나로 앱 만들기, 코딩 몰라도 되는 45줄 템플릿"><meta property="og:description" content="앱스토어·서버·개발자 없이 HTML 파일 하나로 실제로 쓰는 앱을 만드는 법. 직접 만들어 쓰고 있는 앱 3개(여행 앱·비용 계산기·관제판)의 크기, 되는 것과 안 되는 것, 45줄짜리 체크리스트 템플릿과 AI에게 시키는 프롬프트까지 정리했다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20260908-single-html-app/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BXR7NmHW_gX0oA.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20260908-single-html-app/" data-title="HTML 파일 하나로 앱 만들기, 코딩 몰라도 되는 45줄 템플릿" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-파일-하나로-앱이-되는-이유" data-toc="1-파일-하나로-앱이-되는-이유" data-astro-cid-f3qesd3f>1. 파일 하나로 앱이 되는 이유</a></li><li data-astro-cid-f3qesd3f><a href="#2-실제로-쓰는-앱-3개의-크기" data-toc="2-실제로-쓰는-앱-3개의-크기" data-astro-cid-f3qesd3f>2. 실제로 쓰는 앱 3개의 크기</a></li><li data-astro-cid-f3qesd3f><a href="#3-되는-것과-안-되는-것" data-toc="3-되는-것과-안-되는-것" data-astro-cid-f3qesd3f>3. 되는 것과 안 되는 것</a></li><li data-astro-cid-f3qesd3f><a href="#4-45줄-템플릿으로-첫-앱-만들기" data-toc="4-45줄-템플릿으로-첫-앱-만들기" data-astro-cid-f3qesd3f>4. 45줄 템플릿으로 첫 앱 만들기</a></li><li data-astro-cid-f3qesd3f><a href="#5-ai에게-앱-만들기-시키기" data-toc="5-ai에게-앱-만들기-시키기" data-astro-cid-f3qesd3f>5. AI에게 앱 만들기 시키기</a></li><li data-astro-cid-f3qesd3f><a href="#6-파일-하나라서-생기는-함정" data-toc="6-파일-하나라서-생기는-함정" data-astro-cid-f3qesd3f>6. 파일 하나라서 생기는 함정</a></li><li data-astro-cid-f3qesd3f><a href="#막힐-때" data-toc="막힐-때" data-astro-cid-f3qesd3f>막힐 때</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li><li data-astro-cid-f3qesd3f><a href="#템플릿-전체-코드" data-toc="템플릿-전체-코드" data-astro-cid-f3qesd3f>템플릿 전체 코드</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 활용 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 9개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-파일-하나로-앱이-되는-이유" data-astro-cid-l6a6buid>1. 파일 하나로 앱이 되는 이유</a></li><li data-astro-cid-l6a6buid><a href="#2-실제로-쓰는-앱-3개의-크기" data-astro-cid-l6a6buid>2. 실제로 쓰는 앱 3개의 크기</a></li><li data-astro-cid-l6a6buid><a href="#3-되는-것과-안-되는-것" data-astro-cid-l6a6buid>3. 되는 것과 안 되는 것</a></li><li data-astro-cid-l6a6buid><a href="#4-45줄-템플릿으로-첫-앱-만들기" data-astro-cid-l6a6buid>4. 45줄 템플릿으로 첫 앱 만들기</a></li><li data-astro-cid-l6a6buid><a href="#5-ai에게-앱-만들기-시키기" data-astro-cid-l6a6buid>5. AI에게 앱 만들기 시키기</a></li><li data-astro-cid-l6a6buid><a href="#6-파일-하나라서-생기는-함정" data-astro-cid-l6a6buid>6. 파일 하나라서 생기는 함정</a></li><li data-astro-cid-l6a6buid><a href="#막힐-때" data-astro-cid-l6a6buid>막힐 때</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li><li data-astro-cid-l6a6buid><a href="#템플릿-전체-코드" data-astro-cid-l6a6buid>템플릿 전체 코드</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다. 캐릭터 삽화는 GPT 이미지 생성으로 제작했고, 앱 화면은 직접 캡처했습니다.</blockquote> <h1 id="html-파일-하나로-앱-만들기-코딩-몰라도-되는-45줄-템플릿">HTML 파일 하나로 앱 만들기, 코딩 몰라도 되는 45줄 템플릿</h1>
+<p><img alt="HTML 하나로 앱 만들기 — 코딩 몰라도 되는 45줄 템플릿 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BXR7NmHW_Z1e4DsS.webp" ></p>
+<p class="cap">HTML 하나로 앱 만들기 — 코딩 몰라도 되는 45줄 템플릿 (캐릭터는 GPT 이미지 생성)</p>
+<p>‘앱을 만든다’고 하면 앱스토어 등록, 서버, 개발자부터 떠오르죠. “코딩도 모르는데 내가 쓸 앱을 가질 수 있을까?” 그런데 저는 지금 실제로 쓰는 앱이 셋 있고, 전부 HTML 파일 하나예요. 셋 다 설치도 서버도 없이 더블클릭이면 열려요.</p>
+<p>HTML 파일은 악보 한 장과 비슷해요. 악보만 있으면 피아노가 있는 곳 어디서나 같은 곡을 칠 수 있죠. HTML 파일이 악보, 브라우저가 피아노예요. 그리고 그 피아노는 이미 모든 폰과 PC에 있어요.<br>
+<strong>브라우저가 곧 실행기라서, 파일 하나에 화면·모양·동작을 담으면 그게 앱이에요.</strong></p>
+<p><img alt="종이 한 장 같은 HTML 파일이 브라우저에서 앱이 되는 장면 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-one-file-app.DYcqCfEq_Z13us9s.webp" ></p>
+<p class="cap">종이 한 장 같은 HTML 파일이 브라우저에서 앱이 되는 장면 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: 코딩 없이 내가 쓸 앱이 필요한 분<br>① 파일 하나로 앱이 되는 이유와 한계<br>② 바로 쓰는 45줄 체크리스트 템플릿<br>③ AI에게 앱을 시키는 프롬프트<br>준비물: 메모장과 브라우저가 있는 PC<br>2026년 10월 기준 · Windows 11 · 엣지</div>
+<hr>
+<h2 id="1-파일-하나로-앱이-되는-이유">1. 파일 하나로 앱이 되는 이유</h2>
+<p><strong>HTML 파일 안에 화면·모양·동작 세 가지를 다 넣으면, 브라우저가 그대로 실행해요.</strong> 폰 앱은 iOS·안드로이드가, PC 프로그램은 윈도우가 실행해 주죠. HTML 파일은 브라우저가 실행해요.</p>
+<p>HTML 파일에 들어가는 세 가지예요.<br>
+<strong>HTML (뼈대)</strong> — 화면에 뭐가 있는지. 제목, 목록, 버튼<br>
+<strong>CSS (옷)</strong> — 어떻게 보이는지. 색, 크기, 배치<br>
+<strong>자바스크립트 (근육)</strong> — 누르면 뭐가 일어나는지. 계산, 저장</p>
+<p>보통은 이 셋을 파일 여러 개로 나누지만, 한 파일에 다 넣어도 브라우저는 똑같이 읽어요. 그래서 <mark>설치도 서버도 없이 파일이 곧 앱</mark>이에요.</p>
+<h2 id="2-실제로-쓰는-앱-3개의-크기">2. 실제로 쓰는 앱 3개의 크기</h2>
+<p><strong>제가 만든 HTML 앱의 크기를 정한 건 코드가 아니라 그림과 데이터였어요.</strong> 이 저장소의 실제 파일을 2026년 10월 7일에 다시 재서 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>앱</th><th>크기와 안에 든 것</th></tr></thead><tbody><tr><td>여행 앱 첫 버전</td><td>약 19KB — 3일 일정, 맛집 5곳 전화·지도, 준비물 체크리스트</td></tr><tr><td>여행 앱 최종판</td><td>약 22MB — 보물지도 그림 6장을 파일 안에</td></tr><tr><td>OpenAI 비용 계산기</td><td>약 5.8KB — 입력 4개, 계산, 결과 표</td></tr><tr><td>블로그 관제판</td><td>약 63KB — 표·배지·탭, 접힘 상태 기억</td></tr></tbody></table>
+<p>표에서 세 가지가 보여요.</p>
+<p><strong>동작 코드는 생각보다 적어요.</strong> 관제판의 자바스크립트는 <strong>571자</strong>뿐이고, 모양을 정하는 CSS가 9,711자예요.</p>
+<p><strong>크기는 그림과 데이터가 정해요.</strong> 여행 앱은 그림 6장을 넣자 1,000배 넘게 커졌어요. 관제판은 9월 8일 약 30KB에서 담긴 기록이 늘어 63KB가 됐지만, 코드는 한 글자도 그대로예요.</p>
+<p><strong>실패는 기능이 아니라 읽히는지에서 와요.</strong> 여행 앱 첫 버전은 기능은 다 됐는데, 아무도 안 읽어서 버렸어요.</p>
+<h2 id="3-되는-것과-안-되는-것">3. 되는 것과 안 되는 것</h2>
+<p><strong>혼자 쓰는 앱이면 대부분 되고, 여러 사람이 데이터를 같이 쓰는 순간부터 안 돼요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>되는 것</th><th>안 되는 것</th></tr></thead><tbody><tr><td>화면·버튼·탭·목록</td><td>여러 사람이 같은 데이터 공유</td></tr><tr><td>계산기·변환기·체크리스트</td><td>푸시 알림</td></tr><tr><td>내 기기에 저장</td><td>비밀 보관 (코드가 다 보임)</td></tr><tr><td>전화·지도·카톡 공유 링크</td><td>앱스토어 등록</td></tr><tr><td>그림 넣기, 인터넷 없이 실행</td><td>기기끼리 자동 동기화</td></tr></tbody></table>
+<p><strong>핵심은 ‘내 기기에 저장’이에요.</strong> 브라우저에는 로컬스토리지(localStorage)라는 작은 저장 공간이 있어서, 체크한 항목이나 입력값을 기억해 둘 수 있어요. 여행 앱의 준비물 체크리스트도, 관제판의 접힘 상태도 이걸로 기억해요.</p>
+<p>반대로 5가족이 같은 체크리스트를 같이 체크하는 건 안 돼요. 각자 자기 폰의 저장 공간에만 기록되니까요.</p>
+<p><img alt="같은 체크리스트 앱인데 엄마 폰과 아이 폰의 체크가 다른 장면 — 저장은 기기마다 따로 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-own-phones.DuQaUJFd_Fmpdv.webp" ></p>
+<p class="cap">같은 체크리스트 앱인데 엄마 폰과 아이 폰의 체크가 다른 장면 — 저장은 기기마다 따로 (GPT 이미지 생성)</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>혼자 쓰는 앱은 파일 하나로 충분해요. 여럿이 같은 데이터를 써야 할 때가 서버가 필요한 때예요.</div>
+<h2 id="4-45줄-템플릿으로-첫-앱-만들기">4. 45줄 템플릿으로 첫 앱 만들기</h2>
+<p><strong>여행 준비물 체크리스트 템플릿이에요. 체크하면 줄이 그어지고, 항목을 추가할 수 있고, 닫았다 열어도 그대로 남아요.</strong> 2026년 10월 7일 엣지에서 다시 열어 체크·추가·새로고침까지 확인했어요.</p>
+<p><img alt="템플릿을 실제로 연 화면 — 체크·추가 뒤 새로고침해도 그대로 (직접 캡처)" loading="lazy" decoding="async" fetchpriority="auto" width="780" height="720" src="/_astro/screenshot-starter.CJXs73w-_NxJhT.webp" ></p>
+<p class="cap">템플릿을 실제로 연 화면 — 체크·추가 뒤 새로고침해도 그대로 (직접 캡처)</p>
+<ol class="steps"><li>사이트판 맨 아래 <b>템플릿 전체 코드</b>를 복사 버튼으로 복사하세요.<span class="then">→ 45줄짜리 HTML 코드가 복사돼요.</span></li><li><b>메모장</b>에 붙여 넣고 <b>파일 > 다른 이름으로 저장</b>을 고르세요.<span class="then">→ 저장 창이 떠요.</span></li><li>파일 형식은 <b>모든 파일</b>, 인코딩은 <code>UTF-8</code>로 두고 이름을 <code>checklist.html</code>로 저장하세요.<span class="then">→ 확장자가 .html인 파일이 생겨요.</span></li><li>저장한 파일을 <b>더블클릭</b>하세요.<span class="then">→ 브라우저에 체크리스트가 열려요. 이게 앱이에요.</span></li></ol>
+<p>코드 안의 ‘구명조끼’, ‘우비·방수팩’, ‘상비약’을 바꾸면 내 목록이 되고, ‘여행 준비물’을 바꾸면 제목이 바뀌어요. 이 두 군데만 고쳐도 이미 내 앱이에요.</p>
+<p><strong>오래 쓸 앱이나 폰에서 쓸 앱은 주소로 여는 게 확실해요.</strong> MDN 문서는 더블클릭으로 연 파일(file: 주소)의 로컬스토리지 동작은 정해져 있지 않고, 브라우저마다 다를 수 있다고 적어요. 제가 확인한 건 엣지예요.</p>
+<p><strong>깃허브 페이지(GitHub Pages)</strong> 같은 무료 호스팅에 올리면 폰 브라우저에서도 주소로 열 수 있어요. 공개 저장소라면 깃허브 무료 계정으로도 돼요. 제 비용 계산기도 이렇게 배포한 이 사이트의 주소로 열어요.</p>
+<h2 id="5-ai에게-앱-만들기-시키기">5. AI에게 앱 만들기 시키기</h2>
+<p><strong>직접 고치기 번거로우면 AI에게 시키세요.</strong> 여행 앱 두 개를 코덱스로 만들며 배운 조건을 프롬프트 하나로 줄였어요. 대괄호 안만 바꿔 쓰면 돼요.</p>
+<p class="plabel">📋 그대로 복사해 쓰세요</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>HTML 파일 하나로 [우리 가족 주간 식단표] 앱을 만들어줘. 외부 라이브러리 없이, 폰 세로 화면에 큼직하게. 입력한 내용은 localStorage에 저장해줘. 쓸 사람은 [초등학생 아이], 화면은 [요일별 카드 7장]으로. 완성 파일 전체를 코드블록 하나로 줘.</span></span></code></pre>
+<p><strong>‘쓸 사람’과 ‘화면 모양’ 두 조건이 핵심이에요.</strong> 여행 앱 첫 버전이 버려진 건 기능 때문이 아니라, 누가 볼 물건인지를 안 적어서였어요.</p>
+<p class="plabel">❌ 이렇게 말고</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>여행 일정 앱을 만들어줘</span></span></code></pre>
+<p>기능은 다 들어가도, 누가 어떻게 볼지가 빠져 있어요.</p>
+<p class="plabel">⭕ 이렇게</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>초등학생 10명도 들여다볼 여행 일정 앱을 만들어줘. 글자 대신 지도 그림으로</span></span></code></pre>
+<p>여행 앱도 ‘초등학생 10명도 들여다볼 것’이라고 바꾸는 순간 결과가 달라졌어요. <mark>기능 목록보다 누가 볼지를 적으세요.</mark></p>
+<h2 id="6-파일-하나라서-생기는-함정">6. 파일 하나라서 생기는 함정</h2>
+<p><strong>편하지만, 파일 하나라서 생기는 함정이 세 가지 있어요.</strong></p>
+<div class="callout warn"><b class="ttl">⚠️ 주의</b>API 키·비밀번호·개인정보는 HTML 파일에 넣지 마세요. 파일을 연 사람은 누구나 코드를 볼 수 있어요.</div>
+<p>제 비용 계산기도 API 키 없이 요금표만 넣었어요.</p>
+<p><strong>그림을 넣으면 급격히 커져요.</strong> 여행 앱은 그림 6장에 19KB가 22MB가 됐어요. 카톡으로 보내기 부담스러운 크기였어요. 사진이 많으면 링크로 대신하거나 호스팅에 올리세요.</p>
+<p><strong>브라우저 데이터를 지우면 저장한 것도 사라져요.</strong> 로컬스토리지는 브라우저 안에 있어서, 브라우저 설정에서 사이트 데이터를 지우면 같이 지워져요. 오래 둘 데이터는 내보내기 버튼을 달거나 따로 백업하세요.</p>
+<h2 id="막힐-때">막힐 때</h2>
+<p><strong>더블클릭했더니 한글이 깨져요</strong><br>
+원인: 저장할 때 인코딩이 UTF-8이 아니었을 수 있어요.<br>
+해결: 메모장에서 다시 열고 <strong>다른 이름으로 저장</strong>에서 인코딩을 <code>UTF-8</code>로 골라 저장하세요.</p>
+<p><strong>더블클릭했더니 메모장으로 열려요</strong><br>
+원인: 파일 이름이 checklist.html.txt처럼 저장됐을 수 있어요.<br>
+해결: 저장할 때 파일 형식을 <strong>모든 파일</strong>로 고르고 다시 저장하세요.</p>
+<p><strong>AI가 준 코드가 안 돌아가요</strong><br>
+원인: 한 번에 완성된 코드가 나오지 않을 때도 있어요.<br>
+해결: 받은 파일을 열어 본 증상을 그대로 말하고 고쳐 달라고 하세요. 바이브 코딩의 기본 순서예요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>이 파일을 열었더니 [증상]이 나와. 고쳐줘</span></span></code></pre>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 브라우저가 실행기라 파일 하나가 앱<br>② 여럿이 데이터를 같이 쓰면 서버가 필요<br>③ 템플릿 저장 후 항목만 바꾸면 첫 앱<br>④ AI에게는 기능보다 누가 볼지를 적기<br>⑤ 파일 안에 비밀은 넣지 않기</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 코딩을 전혀 몰라도 되나요?</summary><p>템플릿은 복사해서 저장만 하면 돼요. 고치는 건 5번의 프롬프트로 AI에게 시키면 되고요. 제 여행 앱 두 개도 코덱스와 대화로 만들었어요.</p></details>
+<details class="faq"><summary>Q. 폰에서도 쓸 수 있나요?</summary><p>네. 깃허브 페이지 같은 무료 호스팅에 올려 주소로 열면 폰 브라우저에서 쓸 수 있어요. 템플릿도 폰 세로 화면에 맞춰 두었어요.</p></details>
+<details class="faq"><summary>Q. 저장한 내용은 어디에 남나요?</summary><p>그 브라우저의 로컬스토리지에 남아요. 다른 기기나 다른 브라우저에서는 보이지 않고, 브라우저 설정에서 사이트 데이터를 지우면 함께 지워져요.</p></details>
+<details class="faq"><summary>Q. 앱스토어에 올릴 수 있나요?</summary><p>HTML 파일 하나로는 안 돼요. 대신 주소만 있으면 설치 없이 바로 열 수 있어요.</p></details>
+<p>여행 앱을 코덱스로 만들고 첫 버전을 버린 과정은 이 글에 자세히 적었어요.</p>
+<p class="nextpost">→ <a href="/docs/tech/20260904-codex-travel-app/">챗GPT로 여행 앱 만들기, 일정부터 19명 가족여행 실전까지</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>MDN — Window.localStorage · <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">developer.mozilla.org/en-US/docs/Web/API/Window/localStorage</a></li>
+<li>MDN — 저장 용량과 삭제 기준 · <a href="https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria">developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria</a></li>
+<li>GitHub 문서 — GitHub Pages란 · <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages">docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 발행 2026년 9월 8일<br>다시 확인·수정 2026년 10월 7일<br>직접 만들어 쓰는 앱 3개의 실제 파일 크기<br>템플릿은 엣지에서 동작 확인 · Windows 11<br>제휴 없음 · 캐릭터는 GPT 생성, 앱 화면은 직접 캡처</div>
+<h2 id="템플릿-전체-코드">템플릿 전체 코드</h2>
+<p>메모장에 붙여 넣고 <strong>checklist.html</strong>로 저장하세요. 오른쪽 위 복사 버튼으로 가져갈 수 있어요.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">doctype</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ko"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"utf-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>여행 준비물&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#85E89D">  body</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">font-family</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">sans-serif</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">max-width</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">480</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">margin</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">24</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> auto</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">padding</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">0</span><span style="color:#79B8FF"> 16</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#85E89D">  h1</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">font-size</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">22</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#85E89D">  label</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">display</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">flex</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">gap</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">10</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">align-items</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">center</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">padding</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">10</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">border-bottom</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">1</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> solid</span><span style="color:#79B8FF"> #eee</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">font-size</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">17</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#85E89D">  input</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">checkbox</span><span style="color:#E1E4E8">]{</span><span style="color:#79B8FF">width</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">22</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">height</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">22</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">  .done</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">color</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">#999</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">text-decoration</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">line-through</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">  #add</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">display</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">flex</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">gap</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">8</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">margin-top</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">16</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">  #add</span><span style="color:#85E89D"> input</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">flex</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">font-size</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">16</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">padding</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">8</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#85E89D">  button</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">font-size</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">16</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span><span style="color:#79B8FF">padding</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">8</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> 14</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>🧳 여행 준비물&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"list"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">form</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"add"</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> placeholder</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"항목 추가"</span><span style="color:#B392F0"> required</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">>추가&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> KEY</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'trip-checklist'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> items </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(localStorage.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">KEY</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> 'null'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  {t:</span><span style="color:#9ECBFF">'구명조끼'</span><span style="color:#E1E4E8">, d:</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">}, {t:</span><span style="color:#9ECBFF">'우비·방수팩'</span><span style="color:#E1E4E8">, d:</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">}, {t:</span><span style="color:#9ECBFF">'상비약'</span><span style="color:#E1E4E8">, d:</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">}];</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> list</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'list'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> save</span><span style="color:#E1E4E8">(){ localStorage.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">KEY</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(items)); }</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> render</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#E1E4E8">  list.innerHTML </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  items.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">it</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> l</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'label'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    l.className </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> it.d </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'done'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> c</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'input'</span><span style="color:#E1E4E8">); c.type </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'checkbox'</span><span style="color:#E1E4E8">; c.checked </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> it.d;</span></span>
+<span class="line"><span style="color:#E1E4E8">    c.</span><span style="color:#B392F0">onchange</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { it.d </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> c.checked; </span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(); </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">(); };</span></span>
+<span class="line"><span style="color:#E1E4E8">    l.</span><span style="color:#B392F0">append</span><span style="color:#E1E4E8">(c, it.t); list.</span><span style="color:#B392F0">append</span><span style="color:#E1E4E8">(l);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'add'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">onsubmit</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> e</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">(); </span><span style="color:#F97583">const</span><span style="color:#79B8FF"> inp</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> e.target.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'input'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  items.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">({t: inp.value.</span><span style="color:#B392F0">trim</span><span style="color:#E1E4E8">(), d:</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">}); inp.value </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">; </span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">(); </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#B392F0">render</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260904-codex-travel-app/">19명 대가족 여행, Codex로 앱까지</a> · <a href="/tools/openai-cost/">OpenAI 비용 계산기</a> · <a href="/docs/tech/20260905-vibe-coding-guide/">바이브 코딩이 뭐길래</a> · <a href="/docs/tech/20260908-ai-agent-intro/">AI 에이전트 만들기 입문</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 활용 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-prompt-pack/" data-astro-cid-f3qesd3f>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261016-ai-code-motion-project-intro/" data-astro-cid-f3qesd3f>프로젝트 소개 모션그래픽, 프롬프트부터 렌더까지 직접 만들기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261013-ai-motion-graphics/" data-astro-cid-f3qesd3f>AI 모션그래픽 만드는 법, 영상 모델과 코드 직접 비교</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261007-aside-browser/" data-astro-cid-f3qesd3f>Aside 브라우저란, 내 계정으로 일하는 AI 에이전트 브라우저</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>세션 재사용과 워밍업, AI를 새로 켤까 켜 둔 채 쓸까 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-06-spawn-vs-resident/"><meta name="description" content="Codex와 Claude의 명령어 도구는 내 컴퓨터에서 켜야 대답하는 프로그램이라, 중계기는 요청마다 새로 켤지 켜 둔 채 다시 쓸지를 정해야 했습니다. 콜택시와 셔틀버스에 빗대어 두 방식의 속도·기억 섞임·메모리·정리 부담을 비교하고, 중계기가 Codex(앱 서버 하나에 요청마다 새 대화방)와 Claude(프로그램별 세션 최대 6개, 5분 쉬면 정리)를 어떻게 다루는지 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="세션 재사용과 워밍업, AI를 새로 켤까 켜 둔 채 쓸까 (LLM 중계기 개발기)"><meta property="og:description" content="Codex와 Claude의 명령어 도구는 내 컴퓨터에서 켜야 대답하는 프로그램이라, 중계기는 요청마다 새로 켤지 켜 둔 채 다시 쓸지를 정해야 했습니다. 콜택시와 셔틀버스에 빗대어 두 방식의 속도·기억 섞임·메모리·정리 부담을 비교하고, 중계기가 Codex(앱 서버 하나에 요청마다 새 대화방)와 Claude(프로그램별 세션 최대 6개, 5분 쉬면 정리)를 어떻게 다루는지 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-06-spawn-vs-resident/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BXWU0JqI_Z11hBek.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-06-spawn-vs-resident/" data-title="세션 재사용과 워밍업, AI를 새로 켤까 켜 둔 채 쓸까 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-문제-명령어-도구-ai는-켜야-답한다" data-toc="1-문제-명령어-도구-ai는-켜야-답한다" data-astro-cid-f3qesd3f>1. 문제: 명령어 도구 AI는 켜야 답한다</a></li><li data-astro-cid-f3qesd3f><a href="#2-콜택시-방식과-셔틀-방식" data-toc="2-콜택시-방식과-셔틀-방식" data-astro-cid-f3qesd3f>2. 콜택시 방식과 셔틀 방식</a></li><li data-astro-cid-f3qesd3f><a href="#3-워밍업-미리-데워-둔-엔진" data-toc="3-워밍업-미리-데워-둔-엔진" data-astro-cid-f3qesd3f>3. 워밍업: 미리 데워 둔 엔진</a></li><li data-astro-cid-f3qesd3f><a href="#4-codex-큰-셔틀-한-대에-새-대화방" data-toc="4-codex-큰-셔틀-한-대에-새-대화방" data-astro-cid-f3qesd3f>4. Codex: 큰 셔틀 한 대에 새 대화방</a></li><li data-astro-cid-f3qesd3f><a href="#5-claude-프로그램별-미니-셔틀" data-toc="5-claude-프로그램별-미니-셔틀" data-astro-cid-f3qesd3f>5. Claude: 프로그램별 미니 셔틀</a></li><li data-astro-cid-f3qesd3f><a href="#배운-점" data-toc="배운-점" data-astro-cid-f3qesd3f>배운 점</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>2부 · 6편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-문제-명령어-도구-ai는-켜야-답한다" data-astro-cid-l6a6buid>1. 문제: 명령어 도구 AI는 켜야 답한다</a></li><li data-astro-cid-l6a6buid><a href="#2-콜택시-방식과-셔틀-방식" data-astro-cid-l6a6buid>2. 콜택시 방식과 셔틀 방식</a></li><li data-astro-cid-l6a6buid><a href="#3-워밍업-미리-데워-둔-엔진" data-astro-cid-l6a6buid>3. 워밍업: 미리 데워 둔 엔진</a></li><li data-astro-cid-l6a6buid><a href="#4-codex-큰-셔틀-한-대에-새-대화방" data-astro-cid-l6a6buid>4. Codex: 큰 셔틀 한 대에 새 대화방</a></li><li data-astro-cid-l6a6buid><a href="#5-claude-프로그램별-미니-셔틀" data-astro-cid-l6a6buid>5. Claude: 프로그램별 미니 셔틀</a></li><li data-astro-cid-l6a6buid><a href="#배운-점" data-astro-cid-l6a6buid>배운 점</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽과 아무 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="세션-재사용과-워밍업-ai를-새로-켤까-켜-둔-채-쓸까-llm-중계기-개발기">세션 재사용과 워밍업, AI를 새로 켤까 켜 둔 채 쓸까 (LLM 중계기 개발기)</h1>
+<p><img alt="세션 재사용과 워밍업 — 새로 켤까, 켜 둔 채 쓸까 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BXWU0JqI_Z2wkg6N.webp" ></p>
+<p class="cap">세션 재사용과 워밍업 — 새로 켤까, 켜 둔 채 쓸까 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI 명령어 도구를 프로그램에서 부를 때 이런 고민이 생겨요. “부를 때마다 새로 켜야 하나, 켜 둔 채 계속 써야 하나?” 지난 5편에서는 연결 방식이 제각각인 AI를 어댑터라는 같은 약속으로 묶었어요. 이번에는 그 어댑터 뒤에서 AI 프로그램을 언제 켜고 언제 끄는지 다뤄요.</p>
+<p>역에서 집까지 가는 방법이 두 가지 있다고 해 볼게요. 콜택시는 부르면 나만을 위한 차가 오고, 내리면 떠나요. 깔끔하지만 부를 때마다 차가 올 때까지 기다려요. 정류장에 시동을 켜 둔 셔틀버스는 타기만 하면 바로 출발해요. 대신 손님이 없어도 자리를 차지하고, 앞 손님이 두고 내린 물건이 남을 수도 있어요.<br>
+<strong>제 LLM 중계기는 Codex와 Claude 모두 셔틀, 곧 켜 둔 채 다시 쓰는 쪽을 골랐어요. 다만 셔틀의 모양은 둘이 달라요.</strong></p>
+<p><img alt="콜택시를 부르는 로봇과 기다리는 셔틀버스 — 새로 켜기와 켜 두기 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-taxi-shuttle.D9qzOw46_2657rz.webp" ></p>
+<p class="cap">콜택시를 부르는 로봇과 기다리는 셔틀버스 — 새로 켜기와 켜 두기 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 6편 · 2부 여러 AI를 한 줄로<br>대상: AI 도구를 프로그램에서 불러 쓰려는 분<br>① 새로 켜기와 켜 두기의 차이<br>② 워밍업과 세션 재사용의 뜻<br>③ Codex·Claude의 서로 다른 셔틀<br>중계기 저장소 기준 · 2026년 10월 1일</div>
+<hr>
+<h2 id="1-문제-명령어-도구-ai는-켜야-답한다">1. 문제: 명령어 도구 AI는 켜야 답한다</h2>
+<p><strong>Codex와 Claude의 명령어 도구(CLI)는 내 컴퓨터에서 실행되는 프로그램이라, 먼저 켜야 질문을 받을 수 있어요.</strong></p>
+<ul>
+<li>인터넷 주소로 부르는 AI(API)는 서비스 쪽 서버에서 늘 돌아가서, 내 컴퓨터에서 켜고 끌 것이 없어요. 명령어 도구는 달라요.</li>
+<li>개발자들은 실행 중인 프로그램 하나를 ‘프로세스’라고 불러요.</li>
+</ul>
+<p>켤 때는 준비가 필요해요. 프로그램을 띄우고, 이 컴퓨터의 로그인 상태를 확인하고, 대화할 준비를 마쳐야 첫 글자가 나와요. 이 시동 시간(콜드 스타트)은 컴퓨터마다 다르고, 처음 실행이 느린 환경에서는 답을 만드는 시간보다 훨씬 길기도 했어요.</p>
+<h2 id="2-콜택시-방식과-셔틀-방식">2. 콜택시 방식과 셔틀 방식</h2>
+<p><strong>요청마다 새로 켜는 콜택시는 깔끔하고, 켜 둔 채 다시 쓰는 셔틀은 빨라요.</strong></p>
+<ul>
+<li>콜택시 방식은 요청이 오면 프로그램을 켜고, 답을 받고, 꺼요. 요청끼리 완전히 나뉘지만 열 번 부르면 열 번 켜요.</li>
+<li>셔틀 방식은 한 번 켜 둔 프로그램에 다음 요청을 이어서 태워요. 시동은 처음 한 번만이고, 두 번째 요청부터 바로 출발해요.</li>
+</ul>
+<p><img alt="세션 재사용 비교 — 요청 3개가 이어서 올 때 콜택시 방식과 셔틀 방식 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5660" src="/_astro/diagram-taxi-vs-shuttle.DwwVpOLB_Z6pxdj.webp" ></p>
+<p class="cap">세션 재사용 비교 — 요청 3개가 이어서 올 때 콜택시 방식과 셔틀 방식 (직접 제작)</p>
+<p>나란히 놓고 비교하면 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>비교</th><th>콜택시 vs 셔틀</th></tr></thead><tbody><tr><td>속도</td><td>요청마다 시동 vs 처음 한 번만</td></tr><tr><td>기억 섞임</td><td>없음(매번 새 차) vs 있음(태울 규칙 필요)</td></tr><tr><td>메모리</td><td>답하는 동안만 vs 켜 둔 만큼 계속</td></tr><tr><td>정리</td><td>필요 없음 vs 오래 빈 차는 돌려보내기</td></tr></tbody></table>
+<h2 id="3-워밍업-미리-데워-둔-엔진">3. 워밍업: 미리 데워 둔 엔진</h2>
+<p><strong>워밍업은 첫 요청이 오기 전에 프로그램을 미리 켜서 데워 두는 거예요.</strong> 추운 날 엔진을 미리 데워 두면 손님이 타자마자 출발할 수 있죠.</p>
+<p>중계기는 Claude를 연결할 때 가장 가벼운 모델로 프로그램을 한 번 켜서 “ok라고만 답해” 같은 짧은 질문을 던져요. 연결 확인 겸 엔진을 데워 두는 거예요. 나머지 모델은 첫 요청이 올 때 켜지고, 화면에는 ‘워밍업 중’, ‘준비 완료’처럼 표시돼요.</p>
+<p><img alt="작은 엔진을 미리 데우는 로봇 — 워밍업의 뜻 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-warm-engine.BetnWYvI_ZseyOw.webp" ></p>
+<p class="cap">작은 엔진을 미리 데우는 로봇 — 워밍업의 뜻 (GPT 이미지 생성)</p>
+<p>데워 둔 세션은 아직 주인이 없어요. 처음 요청을 보낸 프로그램이 그대로 가져가 자기 전용으로 써요. 아직 아무 대화도 오가지 않은 차라서 누가 먼저 타도 문제가 없어요.</p>
+<p>셔틀 방식에는 든든한 전제가 하나 있어요. 중계기는 요청마다 지금까지의 대화 전체를 AI에 다시 건네요. 쓰는 쪽 프로그램이 대화를 통째로 보내 주는 게 ‘OpenAI 호환’ 방식의 보통 사용법이거든요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>켜 둔 프로그램을 정리해도 대화 내용은 잃지 않아요. 잃는 건 다시 켜는 시간뿐이에요.</div>
+<h2 id="4-codex-큰-셔틀-한-대에-새-대화방">4. Codex: 큰 셔틀 한 대에 새 대화방</h2>
+<p><strong>Codex는 ‘앱 서버’라는 큰 셔틀 한 대를 켜 두고, 요청마다 그 안에 새 대화방을 열어요.</strong> Codex 명령어 도구의 앱 서버는 한 번 켜 두면 계속 떠 있으면서 여러 대화를 받아 줘요.</p>
+<p>대화방(thread)은 버스 안의 좌석 같은 거라, 손님이 늘어도 버스는 늘지 않아요. 이미 켜진 앱 서버에 “새 대화방 하나 열어 줘”라고 한 번 부탁하면 끝이고, 비싼 시동은 앱 서버를 켤 때 한 번만 내요.</p>
+<p>사실 Codex는 한 바퀴를 돌았어요. 처음엔 요청마다 새 대화방, 첫날 오후에는 모델마다 대화방을 하나씩 열어 두고 같이 쓰는 방식이었어요. 그리고 <strong>8월 19일</strong> 업데이트(v0.1.70)부터 다시 요청마다 새 대화방이 기본이 됐어요. 같이 쓰는 대화방에는 앞 손님의 이야기가 남거든요. 예전 방식은 설정 하나로 되돌릴 수 있게 남겨 뒀어요.</p>
+<h2 id="5-claude-프로그램별-미니-셔틀">5. Claude: 프로그램별 미니 셔틀</h2>
+<p><strong>Claude 세션 하나는 켜 둔 프로그램 하나라서, 큰 버스 대신 작은 셔틀을 여러 대 굴려요.</strong> 처음엔 Claude도 요청마다 새로 켜는 콜택시였어요. 켜는 비용이 커서 첫날 오후에 켜 둔 채 쓰는 방식을 기본으로 바꿨어요. 셔틀을 굴리는 규칙은 네 가지예요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>규칙</th><th>내용</th></tr></thead><tbody><tr><td>어떤 차에 태울지</td><td>프로그램 · 모델 · 생각 강도가 모두 같으면 같은 셔틀</td></tr><tr><td>최대 몇 대</td><td>6대 — 넘으면 쉬는 셔틀 중 가장 오래 안 쓴 것부터 돌려보냄</td></tr><tr><td>오래 쉰 차</td><td>5분 넘게 쉬었으면 새 셔틀 (처음엔 90초)</td></tr><tr><td>아무도 안 오면</td><td>5분 동안 요청이 없으면 모두 끔 — 1분·5분·15분·끄지 않음 중 선택</td></tr></tbody></table>
+<p>생각 강도는 답하기 전에 얼마나 깊이 생각할지를 정하는 값이에요. 달리는 중인 셔틀은 돌려보내지 않아요. 90초를 <strong>5분</strong>으로 늘린 건, 가끔 쓰는 프로그램이 매번 다시 데우지 않게 하려는 거였어요. ‘아무도 안 오면 끄기’는 Codex에도 똑같이 적용돼요.</p>
+<p>상한을 둔 이유는 메모리예요. 셔틀 한 대가 곧 실행 중인 프로그램 하나라서, 수를 정하지 않으면 끝없이 늘 수 있어요. 설계 메모에는 세션 하나를 대략 <code>150~300MB</code>로 어림해 뒀어요. 쓰는 쪽 프로그램이 “이번 요청은 기억 없이 따로 처리해 줘”라는 표시를 붙이면, 그 요청만 콜택시처럼 새로 켜서 처리하고 끝내요. 다른 셔틀은 영향이 없어요.</p>
+<h2 id="배운-점">배운 점</h2>
+<p><strong>켜 둔 채 쓰기로 정하고 나서 남은 것은 세 가지예요.</strong><br>
+① <strong>켜 두려면 정리 규칙도 함께 정해야 해요.</strong> 최대 6대, 5분 쉬면 정리처럼 숫자로 정해 둬야 메모리가 끝없이 늘지 않아요.<br>
+② <strong>다시 켜도 잃는 게 없게 만들면 마음이 편해요.</strong> 대화 전체를 매번 건네니, 켜 둔 세션은 속도를 위한 준비일 뿐이에요.<br>
+③ <strong>같이 쓰면 빠르지만 섞여요.</strong> Codex가 한 바퀴를 돌아 요청마다 새 대화방으로 돌아온 이유예요. 서로 다른 프로그램의 대화가 한 셔틀에서 섞인 사고는 14편에서 다뤄요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 명령어 도구 AI는 켜야 답하는 프로그램<br>② 새로 켜기는 깔끔, 켜 두기는 빠름<br>③ Codex는 앱 서버 하나에 요청마다 새 방<br>④ Claude는 프로그램별 최대 6대, 5분 정리</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 워밍업이 정확히 뭔가요?</summary><p>AI 프로그램을 미리 켜서 짧은 질문을 한 번 던져 두는 거예요. 첫 요청이 왔을 때 시동 시간 없이 바로 답하게 하려는 준비예요.</p></details>
+<details class="faq"><summary>Q. 켜 둔 프로그램을 끄면 대화가 사라지나요?</summary><p>아니요. 중계기는 요청마다 대화 전체를 다시 건네서, 다시 켜는 시간만 들고 내용은 그대로예요.</p></details>
+<details class="faq"><summary>Q. 켜 둔 프로그램이 메모리를 너무 쓰지 않나요?</summary><p>그래서 상한을 뒀어요. Claude 세션은 최대 6개이고, 5분 동안 요청이 없으면 모두 꺼서 메모리를 돌려줘요. 이 시간은 설정에서 바꿀 수 있어요.</p></details>
+<p>다음 편에서는 AI가 엉뚱한 메모를 읽고 온 사고와, 빈 책상이 필요했던 이유를 이야기해요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 1일<br>저장소 기록 다시 대조 2026년 10월 7일<br>직접 만든 중계기의 코드·설계 문서 기준<br>제휴 없음 · OpenAI·앤트로픽과 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-05-adapters/">지난 편(5편) 어댑터</a> · <a href="/docs/tech/20261001-llmgw-07-empty-desk/">다음 편(7편) 빈 책상이 필요했던 이유</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-05-adapters/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 5편</span> <span class="t" data-astro-cid-l6a6buid>어댑터 패턴, AI마다 다른 플러그를 한 창구로 묶는 법</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-07-empty-desk/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 7편 →</span> <span class="t" data-astro-cid-l6a6buid>CLAUDE.md·AGENTS.md가 질문마다 실린 사고와 빈 폴더</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

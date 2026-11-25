@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>추론 모델 max_tokens, 생각만 하다 답 0자로 끝난 이유 (LLM 중계기 개발기)</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261001-llmgw-15-thinking-budget/"><meta name="description" content="답하기 전에 속으로 생각하는 AI는 그 생각도 '답에 쓸 수 있는 글자 예산'에서 꺼내 씁니다. 제가 만든 LLM 중계기에서 생각형 AI 하나가 답 예산 8,192토큰을 생각에 전부 써 버려, 생각 33,748자에 답 0자로 돌아온 날이 있었어요. 원인을 따라가 보니 예산은 조심스럽게 작게 잡혀 있었고, 생각이 얼마나 길어질지는 미리 적어 둔 표로 알 수 없었습니다. 실제 생각 분량을 배우고, 답 몫 위에 생각 여유분을 얹고, 그래도 비면 예산을 두 배로 늘려 한 번 더 시도하고, 답에 섞여 오는 생각 꼬리표를 떼어 내는 4겹 방어를 비개발자 눈높이로 정리했습니다."><meta property="og:title" content="추론 모델 max_tokens, 생각만 하다 답 0자로 끝난 이유 (LLM 중계기 개발기)"><meta property="og:description" content="답하기 전에 속으로 생각하는 AI는 그 생각도 '답에 쓸 수 있는 글자 예산'에서 꺼내 씁니다. 제가 만든 LLM 중계기에서 생각형 AI 하나가 답 예산 8,192토큰을 생각에 전부 써 버려, 생각 33,748자에 답 0자로 돌아온 날이 있었어요. 원인을 따라가 보니 예산은 조심스럽게 작게 잡혀 있었고, 생각이 얼마나 길어질지는 미리 적어 둔 표로 알 수 없었습니다. 실제 생각 분량을 배우고, 답 몫 위에 생각 여유분을 얹고, 그래도 비면 예산을 두 배로 늘려 한 번 더 시도하고, 답에 섞여 오는 생각 꼬리표를 떼어 내는 4겹 방어를 비개발자 눈높이로 정리했습니다."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261001-llmgw-15-thinking-budget/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BKcVw05C_Z1Gj8NY.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261001-llmgw-15-thinking-budget/" data-title="추론 모델 max_tokens, 생각만 하다 답 0자로 끝난 이유 (LLM 중계기 개발기)" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-생각도-답-예산에서-꺼내-쓴다" data-toc="1-생각도-답-예산에서-꺼내-쓴다" data-astro-cid-f3qesd3f>1. 생각도 답 예산에서 꺼내 쓴다</a></li><li data-astro-cid-f3qesd3f><a href="#2-증상-생각-33748자-답-0자" data-toc="2-증상-생각-33748자-답-0자" data-astro-cid-f3qesd3f>2. 증상: 생각 33,748자, 답 0자</a></li><li data-astro-cid-f3qesd3f><a href="#3-원인-작은-연료통-모르는-예열" data-toc="3-원인-작은-연료통-모르는-예열" data-astro-cid-f3qesd3f>3. 원인: 작은 연료통, 모르는 예열</a></li><li data-astro-cid-f3qesd3f><a href="#4-한-일-4겹-방어" data-toc="4-한-일-4겹-방어" data-astro-cid-f3qesd3f>4. 한 일: 4겹 방어</a></li><li data-astro-cid-f3qesd3f><a href="#5-결과-확인한-것과-남긴-표시" data-toc="5-결과-확인한-것과-남긴-표시" data-astro-cid-f3qesd3f>5. 결과: 확인한 것과 남긴 표시</a></li><li data-astro-cid-f3qesd3f><a href="#6-남긴-규칙-네-가지" data-toc="6-남긴-규칙-네-가지" data-astro-cid-f3qesd3f>6. 남긴 규칙 네 가지</a></li><li data-astro-cid-f3qesd3f><a href="#자주-묻는-질문" data-toc="자주-묻는-질문" data-astro-cid-f3qesd3f>자주 묻는 질문</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid> <p class="series-bar" data-astro-cid-l6a6buid> <a href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>LLM 중계기 개발기</a> <span data-astro-cid-l6a6buid>4부 · 15편 / 전체 33편</span> </p> <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-생각도-답-예산에서-꺼내-쓴다" data-astro-cid-l6a6buid>1. 생각도 답 예산에서 꺼내 쓴다</a></li><li data-astro-cid-l6a6buid><a href="#2-증상-생각-33748자-답-0자" data-astro-cid-l6a6buid>2. 증상: 생각 33,748자, 답 0자</a></li><li data-astro-cid-l6a6buid><a href="#3-원인-작은-연료통-모르는-예열" data-astro-cid-l6a6buid>3. 원인: 작은 연료통, 모르는 예열</a></li><li data-astro-cid-l6a6buid><a href="#4-한-일-4겹-방어" data-astro-cid-l6a6buid>4. 한 일: 4겹 방어</a></li><li data-astro-cid-l6a6buid><a href="#5-결과-확인한-것과-남긴-표시" data-astro-cid-l6a6buid>5. 결과: 확인한 것과 남긴 표시</a></li><li data-astro-cid-l6a6buid><a href="#6-남긴-규칙-네-가지" data-astro-cid-l6a6buid>6. 남긴 규칙 네 가지</a></li><li data-astro-cid-l6a6buid><a href="#자주-묻는-질문" data-astro-cid-l6a6buid>자주 묻는 질문</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 어떤 AI 서비스와도 관계가 없습니다. 제가 직접 만든 중계기의 개발 기록을 바탕으로 썼습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="추론-모델-max_tokens-생각만-하다-답-0자로-끝난-이유-llm-중계기-개발기">추론 모델 max_tokens, 생각만 하다 답 0자로 끝난 이유 (LLM 중계기 개발기)</h1>
+<p><img alt="추론 모델 max_tokens — 생각만 하다 답 0자로 끝난 이유 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BKcVw05C_1RPl7t.webp" ></p>
+<p class="cap">추론 모델 max_tokens — 생각만 하다 답 0자로 끝난 이유 (캐릭터는 GPT 이미지 생성)</p>
+<p>LLM 중계기 개발기 15편이자, 4부 ‘AI가 이상하게 굴 때’의 첫 편이에요. 지난 14편에서는 서로 다른 프로그램의 대화가 섞여 버린 사고로 3부를 마무리했어요. 오늘은 9편에서 스펙 카드의 ‘생각 여유분’ 줄을 소개하며 미뤄 둔 바로 그 사연이에요.</p>
+<p>“분명 답을 기다렸는데, 왜 빈 답이 왔지?” 답하기 전에 속으로 먼저 생각하는 AI를 쓰다 보면 이런 일을 만날 수 있어요.</p>
+<p>추운 겨울 아침, 시동을 걸고 엔진을 데운다고 해 볼게요. 예열이 끝나지 않아 계속 데우다 보니 연료 바늘이 바닥까지 내려갔어요. 기름은 다 썼는데 달린 거리는 0km예요. 시험 시간 내내 연습장에 풀이만 쓰다가, 종이 울리고 보니 답안지가 텅 빈 학생도 같아요.<br>
+<strong>제가 만든 LLM 중계기에서 생각형 AI 하나가 생각만 33,748자를 쓰고, 정작 답은 한 글자도 내놓지 못했어요.</strong></p>
+<p><img alt="예열에 연료를 다 쓰고 차고를 못 나간 자동차 로봇 — 생각에 답 예산을 다 쓴 AI (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-garage-car.CgzSvU-O_ZQxii3.webp" ></p>
+<p class="cap">예열에 연료를 다 쓰고 차고를 못 나간 자동차 로봇 — 생각에 답 예산을 다 쓴 AI (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>연재: LLM 중계기 개발기 15편 · 4부 AI가 이상하게 굴 때<br>대상: 생각형 AI를 프로그램에 붙여 쓰는 분<br>① 생각이 답 예산(max_tokens)을 먹는 이유<br>② 생각 33,748자 · 답 0자 사고의 원인<br>③ 중계기의 4겹 방어와 남긴 규칙<br>2026년 10월 1일 중계기 코드 기준</div>
+<hr>
+<h2 id="1-생각도-답-예산에서-꺼내-쓴다">1. 생각도 답 예산에서 꺼내 쓴다</h2>
+<p><strong>생각형 AI는 생각을 따로 받은 예산이 아니라, 답에 쓸 수 있는 예산에서 꺼내 써요.</strong> 흔히 추론 모델이라고 부르는 AI들이에요. 연습장과 답안지가 한 묶음에 붙은 시험지처럼, 연습장에 많이 쓸수록 답안지로 쓸 장이 줄어요.</p>
+<p><strong>토큰</strong>(token)은 AI가 글을 세는 단위예요. 글자 하나가 토큰 하나는 아니고 낱말 조각 단위로 세요. 언어에 따라 달라지는 이야기는 19편에서 할게요.<br>
+<strong>답 예산</strong>(max_tokens)은 프로그램이 질문과 함께 “답은 이만큼까지만 써 줘” 하고 보내는 상한이에요. 3편의 ‘답 길이 제한’ 칸이에요.<br>
+<strong>끝난 이유</strong>(finish_reason)는 AI가 왜 멈췄는지 적는 칸이에요. 예산에 닿아 멈추면 ‘잘림’(length), 할 말을 다 하고 멈추면 ‘다 했음’(stop)이에요.</p>
+<p>3편에서 본 대로 생각은 답과 따로 ‘생각 칸’에 담겨 오고, 중계기는 개발 둘째 날부터 생각에 쓴 분량을 기록에 경고로 남겼어요. 그 경고가 크게 울린 날이 왔어요.</p>
+<h2 id="2-증상-생각-33748자-답-0자">2. 증상: 생각 33,748자, 답 0자</h2>
+<p><strong>8월 11일 오전, 코드 검토 결과가 텅 빈 채로 돌아온다는 문제 기록이 올라왔어요.</strong> 중계기를 쓰던 코드 검토 도구가 생각형 AI 하나에게 검토를 맡긴 요청이었어요. 함께 붙은 중계기 기록 한 줄을 풀어 쓰면 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>기록 칸</th><th>값</th></tr></thead><tbody><tr><td>답 예산</td><td>8,192토큰</td></tr><tr><td>AI가 쓴 분량</td><td>8,192토큰 — 예산을 꽉 채움</td></tr><tr><td>생각</td><td>33,748자 · ‘출력 예산 소비’ 경고</td></tr><tr><td>답</td><td>0자</td></tr><tr><td>끝난 이유</td><td>잘림(length) · ‘출력 잘림’ 경고</td></tr></tbody></table>
+<p><strong>답 예산 8,192토큰을 생각이 처음부터 끝까지 다 썼고, 답이 들어갈 자리는 남지 않았어요.</strong> 게다가 이 AI는 생각에 쓴 토큰 수를 따로 알려 주지 않았어요. 기록의 생각 토큰 칸은 0이었고 글자 수만 남아 있었죠. 생각을 얼마나 했는지 재려면 글자 수로 어림할 수밖에 없었어요. 이 사실은 4절에서 다시 쓰여요.</p>
+<h2 id="3-원인-작은-연료통-모르는-예열">3. 원인: 작은 연료통, 모르는 예열</h2>
+<p><strong>원인은 두 갈래였어요. 예산이 작게 잡혔고, 생각이 얼마나 길어질지는 미리 알 수 없었어요.</strong> 첫째, 8,192토큰은 코드 검토 도구가 고른 값이었어요. 도구는 9편의 스펙 카드를 보고 예산을 계획하는데, 그때 이 AI의 카드에는 읽을 수 있는 분량 말고는 줄이 거의 없었어요. 정보가 없으니 도구는 가장 조심스러운 기본값, 작은 예산으로 물러섰어요. 그날 고친 기록은 이걸 근본 원인으로 적었어요.</p>
+<p>둘째, 생각을 얼마나 하는지는 AI마다, 질문마다 달라요. 미리 표로 적어 둘 수도 있지만 표는 표에 없는 모델 앞에서 무력해요. 이 사고와 그 무렵의 비슷한 사고 모두, 기록에 남은 원인은 ‘표에 없던 모델이나 표보다 큰 양’이었어요.</p>
+<p>정오 무렵의 첫 수정은 최소 예산이었어요. 답 예산이 16,384토큰보다 작으면 16,384로 올려 보내고, 이 AI의 카드에 빠진 줄도 채웠어요. 그런데 두 시간쯤 뒤 방식을 바꿨어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>방법</th><th>남는 문제</th></tr></thead><tbody><tr><td>최소 예산 — 16,384로 올려 보내기</td><td>생각이 더 길면 또 잘리고, 올려 준 예산을 생각이 다 먹으면 답 몫은 또 0</td></tr><tr><td>여유분 얹기 — 답 몫 위에 생각 몫</td><td>쓰는 쪽이 정한 답 몫은 그대로 남고, 생각 몫만 따로 늘어남</td></tr></tbody></table>
+<p>시험으로 치면 “답안지는 최소 세 장”과 “답안지 몫은 그대로 두고 연습장을 따로 더 얹어 준다”의 차이예요. 중계기는 뒤의 방법으로 갔어요.</p>
+<h2 id="4-한-일-4겹-방어">4. 한 일: 4겹 방어</h2>
+<p><strong>예상보다 생각이 길어지는 경우까지 받아 내려고, 방어를 네 겹으로 쌓았어요.</strong></p>
+<p><strong>① 배운다</strong> 모든 AI의 답이 돌아올 때마다 생각에 쓴 분량을 재요. 토큰 수를 알려 주면 그 값을 쓰고, 안 알려 주면 글자 수를 3으로 나눠 일부러 넉넉하게 어림해요. 이 사고에선 실제로 토큰 하나에 4글자 남짓이었어요. 생각만 하다 잘린 경우엔 쓴 분량의 1.5배를 ‘적어도 이만큼은 필요했다’로 적고, 모델마다 지금까지 본 가장 큰 생각 분량(관찰한 최고치)을 기억해요. 다시 켜면 처음부터 다시 배워요.</p>
+<p><strong>② 얹는다</strong> 쓰는 쪽이 정한 답 예산은 답 몫으로 보고, 그 위에 생각 여유분을 더해 보내요. 여유분은 이 AI에 정해 둔 기본값 16,384토큰과 관찰한 최고치의 1.25배 중 큰 값이에요. 쓰는 쪽이 8,192토큰을 정했다면 AI에게는 <strong>8,192 + 16,384 = 24,576토큰</strong>을 보내요. 모델이 감당할 수 있는 최대치는 넘지 않게요.</p>
+<p><img alt="연료통은 그대로 두고 예비 연료통을 달아 주는 정비공 로봇 — 답 몫 위에 얹는 생각 여유분 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-fuel-can.gw45OP9V_1uagx.webp" ></p>
+<p class="cap">연료통은 그대로 두고 예비 연료통을 달아 주는 정비공 로봇 — 답 몫 위에 얹는 생각 여유분 (GPT 이미지 생성)</p>
+<p><strong>③ 한 번 더</strong> 여유분을 얹어도 생각이 더 길 수 있고, 중계기를 막 다시 켜서 배운 게 없을 때도 있어요. 그래서 ‘잘림’인데 답이 0자면 예산을 두 배로(적어도 16,384토큰) 늘려 딱 한 번 다시 보내요. 24,576이었다면 49,152로요. 답이 한 글자라도 나갔으면 겹칠 수 있어서 다시 하지 않고, 첫 시도의 잘림 표시는 쓰는 쪽에 보내지 않아요. 본 사고는 ①의 기억에 넣어 다음 요청부터 ②가 넉넉히 얹어요.</p>
+<p><strong>④ 정리한다</strong> 어떤 AI는 생각을 답 본문 맨 앞에 <code>&#x3C;think></code> 꼬리표로 감싸 보내요. 생각하다 예산이 끝나면 닫는 꼬리표가 오지 않아서, 생각 조각이 답처럼 보이고 ③도 움직이지 않아요. 그래서 답 첫머리가 이 꼬리표로 시작할 때만 떼어 생각 칸으로 옮기고, 닫는 꼬리표 없이 끝나면 남은 것도 생각으로 봐요. 이제 생각하다 잘린 답은 정확히 ‘답 0자’로 보여요.</p>
+<p>②와 ③은 사고가 난 그 AI의 길에 달았어요. ①은 모든 AI, ④는 OpenAI 호환 모양으로 답하는 AI 모두에 적용돼요. 다른 AI는 생각하는 모습이 보이면 스펙 카드에 생각 여유분을 적어 두고, 쓰는 쪽이 ‘원하는 답 분량 + 생각 여유분’으로 계획하도록 안내해요.</p>
+<p><img alt="추론 모델 답 예산의 전과 후 — 생각이 다 먹은 8,192토큰과 여유분을 얹은 24,576토큰, 그리고 4겹 방어 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="5320" src="/_astro/diagram-thinking-budget.CdlgqP9A_2uauWc.webp" ></p>
+<p class="cap">추론 모델 답 예산의 전과 후 — 생각이 다 먹은 8,192토큰과 여유분을 얹은 24,576토큰, 그리고 4겹 방어 (직접 제작)</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>쓰는 쪽이 정한 답 예산은 답 몫으로 지키고, 생각 몫은 그 위에 따로 얹어요.</div>
+<h2 id="5-결과-확인한-것과-남긴-표시">5. 결과: 확인한 것과 남긴 표시</h2>
+<p><strong>고친 뒤 확인은 흉내 낸 AI 서버로 했어요. 실제 그 AI로 다시 돌려 보는 점검은 마지막 확인으로 남겨 두었어요.</strong> 자동 시험 <strong>18건</strong>을 새로 만들거나 고쳤어요. 조금씩 받는 답의 재시도, 배운 값이 카드에서 커지는지, 최대치 제한, 끄는 스위치까지 들어 있어요.</p>
+<p><strong>쓰는 쪽이 보낸 값을 중계기가 바꿨다면, 바꿨다는 사실은 남아야 해요.</strong> 그래서 손댄 건 모두 보이게 했어요.<br>
+<strong>기록</strong> — 답마다 생각 분량과 잘림 여부가 경고로 남고, 여유분을 얹거나 다시 시도하면 얼마에서 얼마로 바꿨는지 적혀요<br>
+<strong>답장 머리글</strong> — 답을 한꺼번에 받으면 “8,192에서 24,576으로 바꿨다”, “24,576에서 49,152로 늘려 다시 시도했다” 같은 내용이 실려요<br>
+<strong>스펙 카드</strong> — 9편의 ‘생각 여유분’과 ‘관찰한 최고치’ 줄이 이날 생겼어요<br>
+<strong>끄는 스위치</strong> — 다시 시도와 꼬리표 정리는 기본으로 켜져 있지만 설정으로 끌 수 있어요</p>
+<p>4겹 방어는 그다음 날 아침 새 버전(v0.1.65)에 실렸어요. 같은 날 오후에는 중계기 자기 화면에서도 같은 버릇을 찾았어요. 질문 하나를 여러 AI에 동시에 던져 답을 나란히 보는 채팅 화면이 답 예산을 <strong>4,096토큰</strong>으로 고정해 보내고 있었거든요.<br>
+<strong>16,384토큰</strong>으로 올리고, 잘린 답은 그냥 ‘완료’가 아니라 ‘완료 · 출력 잘림’으로 표시하게 바꿨어요.</p>
+<h2 id="6-남긴-규칙-네-가지">6. 남긴 규칙 네 가지</h2>
+<p><strong>이 사고에서 남긴 규칙은 넷이에요.</strong><br>
+① 쓰는 쪽이 정한 답 예산은 답 몫으로 지킨다 — 생각 몫은 그 위에 따로 얹어요<br>
+② 미리 적은 표보다 실제로 본 값을 따른다 — 표는 출발점이고, 실제로 본 값이 더 크면 그 값을 따라요<br>
+③ 고치면 고쳤다고 알린다 — 예산을 바꾸거나 다시 시도한 사실을 기록·머리글·카드에 남겨요<br>
+④ 빈 답이나 잘린 답을 정상인 척 넘기지 않는다 — 잘렸으면 잘렸다고 표시해요</p>
+<p>생각형 AI를 직접 프로그램에 붙여 쓴다면, <mark>답 예산은 원하는 답 분량에 생각 여유분을 더해서</mark> 잡으세요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 생각형 AI는 생각도 답 예산에서 꺼내 쓴다<br>② 예산이 작으면 생각만 하다 답 0자로 끝난다<br>③ 배우고·얹고·한 번 더·정리하는 4겹 방어<br>④ 바꾼 값과 잘림은 기록·머리글·카드로 알린다</div>
+<h2 id="자주-묻는-질문">자주 묻는 질문</h2>
+<details class="faq"><summary>Q. 생각형 AI의 답이 빈 채로 오면 무엇부터 보나요?</summary><p>끝난 이유가 잘림(length)인지, 생각에 쓴 분량이 답 예산을 다 채웠는지 보세요. 이 사고처럼 생각이 예산을 다 먹었다면, 답 예산을 '원하는 답 분량 + 생각 여유분'으로 다시 잡아야 해요.</p></details>
+<details class="faq"><summary>Q. 왜 글자 수를 3으로 나눠 어림하나요?</summary><p>생각 토큰 수를 알려 주지 않는 AI가 있어서예요. 이 사고에선 실제로 토큰 하나에 4글자 남짓이었는데, 3으로 나누면 토큰 수를 넉넉하게 어림하게 돼요. 여유분을 정하는 값이라 모자란 것보다 남는 편이 안전해요.</p></details>
+<details class="faq"><summary>Q. 다시 시도하면 답이 두 번 오지 않나요?</summary><p>답이 한 글자라도 나갔으면 다시 하지 않아요. 답이 0자일 때만 예산을 두 배로 늘려 딱 한 번 보내고, 첫 시도의 잘림 표시는 쓰는 쪽에 보내지 않아요.</p></details>
+<p>다음 16편에서는 반대로, 잘렸는데도 ‘다 했음’이라고 적혀 온 답과 끝난 이유를 어디까지 믿을 수 있는지를 다뤄요.</p>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 작성 2026년 10월 1일<br>다시 확인·수정 2026년 10월 7일<br>직접 만든 중계기의 릴리스 노트·커밋·코드 기준<br>예산 숫자는 사고 기록과 설명서 예시<br>제휴 없음 · 어떤 AI 서비스와도 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">LLM 중계기 개발기: <a href="/docs/tech/20261001-llmgw-14-mixed-sessions/">← 14편</a> · <a href="/docs/tech/20261001-llmgw-16-cut-answer/">16편 →</a> · 함께 보면 좋은 편: <a href="/docs/tech/20261001-llmgw-03-openai-compatible/">3편 OpenAI 호환</a> · <a href="/docs/tech/20261001-llmgw-09-spec-cards/">9편 스펙 카드</a> · <a href="/docs/tech/20261001-llmgw-19-korean-tokens/">19편 한국어 토큰</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="series-nav" aria-label="LLM 중계기 개발기 이전 편·다음 편" data-astro-cid-l6a6buid> <a class="prev" href="/docs/tech/20261001-llmgw-14-mixed-sessions/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>← 이전 편 · 14편</span> <span class="t" data-astro-cid-l6a6buid>AI 대화 섞임, 다른 AI가 &#39;저는 Claude예요&#39;라고 한 이유</span> </a> <a class="next" href="/docs/tech/20261001-llmgw-16-cut-answer/" data-astro-cid-l6a6buid> <span class="dir" data-astro-cid-l6a6buid>다음 편 · 16편 →</span> <span class="t" data-astro-cid-l6a6buid>AI 답변 잘림, finish_reason ‘다 했음’을 믿기 전에</span> </a> <a class="toc" href="/docs/menu/#ai-project" data-astro-cid-l6a6buid>☰ LLM 중계기 개발기 전체 목차</a> </nav><nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261110-text-style-launch/" data-astro-cid-f3qesd3f>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 
