@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>적대적 증류 뜻, OpenAI·앤트로픽이 막은 AI 풀이 과정 빼내기</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261006-adversarial-distillation/"><meta name="description" content="2026년 9월 30일 OpenAI가 자사 모델의 '보호된 추론'을 빼내려던 조직적인 증류 활동을 적발해 막았다고 발표했다. 앤트로픽도 9월 10일 위협 보고서에서 중국 기반 AI 연구소 7곳의 증류 공격을 적발·차단했다고 밝혔다. 증류가 무엇인지 학원 비유로 풀고, 두 회사(와 2월 구글 보고서)가 밝힌 규모·통로·대응을 공식 발표 기준으로 정리한 뒤, AI API를 쓰는 조직이 점검할 API 키·사용량·약관을 짚었다."><meta property="og:title" content="적대적 증류 뜻, OpenAI·앤트로픽이 막은 AI 풀이 과정 빼내기"><meta property="og:description" content="2026년 9월 30일 OpenAI가 자사 모델의 '보호된 추론'을 빼내려던 조직적인 증류 활동을 적발해 막았다고 발표했다. 앤트로픽도 9월 10일 위협 보고서에서 중국 기반 AI 연구소 7곳의 증류 공격을 적발·차단했다고 밝혔다. 증류가 무엇인지 학원 비유로 풀고, 두 회사(와 2월 구글 보고서)가 밝힌 규모·통로·대응을 공식 발표 기준으로 정리한 뒤, AI API를 쓰는 조직이 점검할 API 키·사용량·약관을 짚었다."><meta property="og:url" content="https://second-syntax.com/docs/news/20261006-adversarial-distillation/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.7h-65l6d_ZmHvYj.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261006-adversarial-distillation/" data-title="적대적 증류 뜻, OpenAI·앤트로픽이 막은 AI 풀이 과정 빼내기" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-뜻-선생-모델과-학생-모델" data-toc="1-뜻-선생-모델과-학생-모델" data-astro-cid-f3qesd3f>1. 뜻: 선생 모델과 학생 모델</a></li><li data-astro-cid-f3qesd3f><a href="#2-openai가-막은-것-9월-30일" data-toc="2-openai가-막은-것-9월-30일" data-astro-cid-f3qesd3f>2. OpenAI가 막은 것 (9월 30일)</a></li><li data-astro-cid-f3qesd3f><a href="#3-앤트로픽이-밝힌-것-2월9월" data-toc="3-앤트로픽이-밝힌-것-2월9월" data-astro-cid-f3qesd3f>3. 앤트로픽이 밝힌 것 (2월·9월)</a></li><li data-astro-cid-f3qesd3f><a href="#4-구글도-먼저-겪었다-2월" data-toc="4-구글도-먼저-겪었다-2월" data-astro-cid-f3qesd3f>4. 구글도 먼저 겪었다 (2월)</a></li><li data-astro-cid-f3qesd3f><a href="#5-ai-api를-쓰는-조직이-점검할-것" data-toc="5-ai-api를-쓰는-조직이-점검할-것" data-astro-cid-f3qesd3f>5. AI API를 쓰는 조직이 점검할 것</a></li><li data-astro-cid-f3qesd3f><a href="#6-무슨-뜻인가-도입교육-관점" data-toc="6-무슨-뜻인가-도입교육-관점" data-astro-cid-f3qesd3f>6. 무슨 뜻인가: 도입·교육 관점</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 6일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-뜻-선생-모델과-학생-모델" data-astro-cid-l6a6buid>1. 뜻: 선생 모델과 학생 모델</a></li><li data-astro-cid-l6a6buid><a href="#2-openai가-막은-것-9월-30일" data-astro-cid-l6a6buid>2. OpenAI가 막은 것 (9월 30일)</a></li><li data-astro-cid-l6a6buid><a href="#3-앤트로픽이-밝힌-것-2월9월" data-astro-cid-l6a6buid>3. 앤트로픽이 밝힌 것 (2월·9월)</a></li><li data-astro-cid-l6a6buid><a href="#4-구글도-먼저-겪었다-2월" data-astro-cid-l6a6buid>4. 구글도 먼저 겪었다 (2월)</a></li><li data-astro-cid-l6a6buid><a href="#5-ai-api를-쓰는-조직이-점검할-것" data-astro-cid-l6a6buid>5. AI API를 쓰는 조직이 점검할 것</a></li><li data-astro-cid-l6a6buid><a href="#6-무슨-뜻인가-도입교육-관점" data-astro-cid-l6a6buid>6. 무슨 뜻인가: 도입·교육 관점</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI·앤트로픽·구글과 아무 관계가 없습니다. 내용은 OpenAI(2026-09-30)·앤트로픽(2026-02-23, 2026-09-10)·구글(2026-02-13) 공식 발표 기준이며, 지목된 회사와 수치는 각 회사의 발표일 뿐 제3자가 검증한 내용이 아닙니다. 공격 방법은 큰 흐름만 적었습니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="적대적-증류-뜻-openai앤트로픽이-막은-ai-풀이-과정-빼내기">적대적 증류 뜻, OpenAI·앤트로픽이 막은 AI 풀이 과정 빼내기</h1>
+<p><img alt="적대적 증류 뜻과 대응 — OpenAI·앤트로픽이 막은 풀이 과정 빼내기 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.7h-65l6d_Z1RKaQM.webp" ></p>
+<p class="cap">적대적 증류 뜻과 대응 — OpenAI·앤트로픽이 막은 풀이 과정 빼내기 (캐릭터는 GPT 이미지 생성)</p>
+<p>AI 회사들이 ‘증류 공격’을 막았다는 소식이 연달아 나왔어요. 읽다 보면 이런 질문이 남아요. “증류가 뭐고, AI를 쓰기만 하는 우리 회사와는 무슨 상관이지?”</p>
+<p>유명 일타강사의 수업을 떠올려 볼게요. 같은 학원이 그 강의로 짧은 ‘요약 강좌’를 만드는 건 흔한 일이에요. 그런데 다른 학원이 가짜 이름으로 수강생 수천 명을 등록시켜, 강사의 답과 풀이 과정을 통째로 받아 적은 뒤 자기 교재로 쓴다면 이야기가 달라지죠.<br>
+<strong>AI에서는 앞의 것을 증류, 뒤의 것을 적대적 증류라고 불러요. 남의 AI가 내놓은 답과 풀이 과정을 허락 없이 대량으로 받아 내 모델을 키우는 행위예요.</strong></p>
+<div class="callout warn"><b class="ttl">⚠️ 출처 안내</b>OpenAI(9월 30일)·앤트로픽(2월 23일, 9월 10일)·구글(2월 13일) 공식 발표를 옮긴 글이에요. 지목된 회사와 수치는 각 회사의 발표이고, 지목된 회사들의 입장은 확인하지 않았어요. 공격 방법은 큰 흐름만 적었어요.</div>
+<p><img alt="칠판에 풀이를 쓰는 로봇 선생님과, 변장하고 몰래 받아 적는 똑같은 학생들 — 적대적 증류를 학원에 빗댄 그림 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-copycat-class.DBOQiQZj_Z2kGNCr.webp" ></p>
+<p class="cap">칠판에 풀이를 쓰는 로봇 선생님과, 변장하고 몰래 받아 적는 똑같은 학생들 — 적대적 증류를 학원에 빗댄 그림 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: 회사에서 AI API를 쓰거나 도입을 맡은 분<br>① 증류와 적대적 증류의 뜻<br>② OpenAI·앤트로픽·구글이 밝힌 규모와 대응<br>③ AI API를 쓰는 조직이 점검할 것<br>2026년 10월 6일 기준 · 각 회사 공식 발표</div>
+<hr>
+<h2 id="1-뜻-선생-모델과-학생-모델">1. 뜻: 선생 모델과 학생 모델</h2>
+<p><strong>증류 자체는 정상적인 학습 방법이에요. 문제는 허락 없이 남의 모델을 선생으로 쓰는 거예요.</strong> 앤트로픽 설명으로는 더 크고 뛰어난 ‘선생’ 모델이 만든 답으로, 더 작은 ‘학생’ 모델이 선생을 흉내 내도록 훈련하는 방법이에요.</p>
+<p>AI 회사들도 자기 모델을 증류해 작고 저렴한 버전을 만들고, 구글은 클라우드에서 증류 기능을 상품으로도 제공해요.</p>
+<p>무단 증류를 부르는 말은 회사마다 조금씩 달라요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>회사·용어</th><th>뜻</th></tr></thead><tbody><tr><td>OpenAI · 적대적 증류</td><td>한 모델의 출력이나 추론을 체계적으로 무단 사용해 다른 모델의 학습·재현·개선에 쓰는 것</td></tr><tr><td>앤트로픽 · 불법 증류</td><td>모델 능력을 허가 없이 빼내 다른 모델에 옮기는 산업 규모의 은밀한 활동</td></tr><tr><td>구글 · 모델 추출 공격</td><td>정당한 접근으로 모델을 체계적으로 찔러 보고, 얻은 정보로 새 모델을 학습시키는 것</td></tr></tbody></table>
+<p>세 회사 모두 이런 무단 증류를 이용 약관 위반으로 봐요.</p>
+<p><strong>특히 노리는 건 답보다 ‘풀이 과정’이에요.</strong> 요즘 AI는 답을 내기 전에 속으로 풀이를 거쳐요. OpenAI는 이를 ‘보호된 추론’이라 부르며 “모델이 작업을 수행하는 과정의 내부 기록”이라고 설명해요. 이걸 빼내면 최종 답에서 빠진 정보가 드러나고, 다른 곳이 그 능력을 재현하는 데 도움이 된대요. 학원 비유로 치면 칠판의 답보다 강사의 풀이 노트가 더 탐나는 셈이에요.</p>
+<p>두 회사의 걱정도 같아요. <mark>빼낸 추론으로 키운 모델에는 원래 모델의 안전장치가 따라가지 않아요.</mark> OpenAI와 앤트로픽 모두 이 점을 짚었어요.</p>
+<p><img alt="적대적 증류의 흐름 — 가짜 계정, 대량 질문, 답·추론 수집, 학생 모델 학습과 회사들이 막은 곳 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="4880" src="/_astro/diagram-distillation-flow.E1pzHzXE_Zxy4wS.webp" ></p>
+<p class="cap">적대적 증류의 흐름 — 가짜 계정, 대량 질문, 답·추론 수집, 학생 모델 학습과 회사들이 막은 곳 (직접 제작)</p>
+<h2 id="2-openai가-막은-것-9월-30일">2. OpenAI가 막은 것 (9월 30일)</h2>
+<p><strong>OpenAI는 자사 모델의 보호된 추론을 빼내려던 조직적인 활동을 적발해 7월 28일 완전히 막았다고 발표했어요.</strong> 발표에 나온 흐름을 날짜순으로 옮기면 이래요.<br>
+① 7월 1일 — 활동 시작, 처음엔 소규모<br>
+② 7월 24·25일 — 4,000명이 넘는 사용자가 추출 패턴을 쓴 요청 16,000건을 보냈어요. OpenAI는 이 숫자가 시도 횟수이며 성공했다는 뜻은 아니라고 적었어요<br>
+③ 추가 조사 — 15,000명이 넘는 사용자 집단에서 관련 패턴을 확인<br>
+④ 7월 28일 — 완전 차단</p>
+<p>OpenAI는 공격자들이 암호화를 해독하거나 데이터베이스를 침해한 게 아니고, 저장된 사용자 대화에 접근한 것도 아니라고 밝혔어요. 대화를 조작해 감춰진 추론이 요청자에게 보이게 하려 했다고 해요. 모든 공격자가 한 주체인지는 불분명하다면서도, 핵심 활동 집단을 Kimi 개발사 Moonshot AI와 연관된 개인들로 판단했어요.</p>
+<p>막은 방법은 네 갈래예요. 부정 계정 차단·제한과 가입 통제 강화, 다른 사용자의 암호화된 추론을 되살릴 수 있던 경로 차단, 추론이 드러날 수 있는 출력의 전송 보류, 프런티어 모델 포럼과 정부 정보 공유 채널을 통한 정보 공유예요.</p>
+<h2 id="3-앤트로픽이-밝힌-것-2월9월">3. 앤트로픽이 밝힌 것 (2월·9월)</h2>
+<p><strong>앤트로픽은 2월에 3곳, 9월에 중국 기반 연구소 7곳의 증류 공격을 적발·차단했다고 밝혔어요.</strong> 2월 23일 첫 공개에서는 DeepSeek·Moonshot·MiniMax가 약 2만 4,000개의 부정 계정으로 Claude와 1,600만 건이 넘는 대화를 주고받았다고 했어요.</p>
+<p>9월 10일 위협 보고서는 2월 이후 7곳을 추가로 적발했다며, 특정 연구소의 소행으로 ‘높은 확신’을 갖고 판단했다고 적었어요. 보고서가 지목한 곳은 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>지목된 곳</th><th>앤트로픽 발표 내용과 관측 규모</th></tr></thead><tbody><tr><td>알리바바(Qwen)</td><td>Opus의 풀이 과정을 모아 Qwen 학습에 사용. 5월부터 7월까지 1억 5,100만 건 이상</td></tr><tr><td>문샷 AI(Kimi)</td><td>고객 요청 일부를 알리지 않고 Claude로 넘겨 추론을 뽑음. 5월부터 7월까지 2,300만 건 이상</td></tr><tr><td>딥시크</td><td>문샷과 비슷한 방식. 7월 중 14일간 1,210만 건 이상</td></tr><tr><td>즈푸(Z.ai)</td><td>부정 계정 273개로 추론을 모아 학습용으로 정제. 6·7월 중 17일간 340만 건 이상</td></tr><tr><td>샤오미</td><td>자사 모델 사용자의 대화를 Claude에 다시 돌림. 3·4월 중 20일간 40만 건 이상</td></tr><tr><td>센스타임</td><td>제3자 데이터 판매자에게서 Claude 대화 기록을 사들임. 규모 미공개</td></tr><tr><td>미니맥스</td><td>관계를 숨긴 회사로 자체 중계 서비스 운영. 규모 미공개</td></tr></tbody></table>
+<p><strong>통로는 ‘중계소’와 도난 API 키였어요.</strong> 앤트로픽에 따르면 이 연구소들은 주로 ‘중계소’(transfer stations)라 불리는 프록시 서비스로 Claude에 접속했어요. 이 서비스들은 가짜 신원, 가짜·도난 신용카드, 도난 API 키로 계정을 수천 개씩 만들었고, 정상 회사나 개인에게서 훔친 API 자격 증명을 쓰는 경우도 많았대요.</p>
+<p>사용자 데이터도 문제였어요. 중계 서비스가 사용자 몰래 대화를 저장해 팔기도 했고, 그렇게 넘어간 대화에는 이름, 이메일 주소, 회사 데이터, 실제로 쓰이는 접속 비밀번호가 들어 있었다고 해요.</p>
+<p><img alt="돋보기를 든 경비 로봇이 변장한 줄은 막고, 사원증 단 고객은 초록 통로로 보내는 장면 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-gate-guard.BSuSViOT_Z2iRxBJ.webp" ></p>
+<p class="cap">돋보기를 든 경비 로봇이 변장한 줄은 막고, 사원증 단 고객은 초록 통로로 보내는 장면 (GPT 이미지 생성)</p>
+<p>앤트로픽이 밝힌 대응은 이래요.<br>
+① 이상 신호로 중계 네트워크 계정을 찾아, 한 계정씩이 아니라 배후 조직 단위로 묶어 조치<br>
+② 추출 시도만 잡는 전용 분류기로 요청을 막고 계정을 정지<br>
+③ 응답 전에 추론을 요약하고 암호화해서, 빼낸 기록이 학습에 덜 쓸모 있게<br>
+④ 무단 재판매나 지원하지 않는 국가에서 운영되는 계정 같은 신호가 보이면 신원 확인을 요구하고, 못 하면 정지</p>
+<h2 id="4-구글도-먼저-겪었다-2월">4. 구글도 먼저 겪었다 (2월)</h2>
+<p><strong>구글 위협 인텔리전스 그룹(GTIG)은 2월 13일 보고서에서 Gemini를 노린 모델 추출 시도가 늘었다고 밝혔어요.</strong> 한 사례에서는 10만 건이 넘는 프롬프트로 Gemini의 추론 과정을 통째로 꺼내려 했는데, 구글 시스템이 실시간으로 알아채 위험을 낮췄대요.</p>
+<p>정부 배후 해킹 조직(APT)이 프런티어 모델을 직접 공격한 사례는 관측하지 못했고, 전 세계 민간 기업과 연구자들의 추출 시도를 자주 막았다고 했어요.</p>
+<p>구글 보고서에서 눈여겨볼 문장은 두 개예요.<br>
+① 모델 추출·증류 공격은 보통 일반 사용자에게 위험이 되지 않고, 위험은 모델 개발사와 서비스 제공자에게 몰린다<br>
+② AI 모델을 서비스로 제공하는 조직은 API 접근에서 추출·증류 패턴을 모니터링해야 한다</p>
+<h2 id="5-ai-api를-쓰는-조직이-점검할-것">5. AI API를 쓰는 조직이 점검할 것</h2>
+<p><strong>세 회사 발표에서 ‘이용하는 쪽’이 챙길 부분을 골라 점검표로 묶었어요.</strong> 회사들이 낸 공식 체크리스트가 아니라, 발표 내용을 바탕으로 이 글이 정리한 거예요.</p>
+<p><strong>API 키는 사원증처럼 관리해요.</strong> 앤트로픽 보고서에서 가장 마음에 걸리는 건 정상 회사의 도난 API 키가 통로로 쓰였다는 점이에요.<br>
+① 키마다 담당자와 용도를 정하고, 어디에 보관돼 있는지 목록으로 알고 있기<br>
+② 코드 저장소·문서·메신저·프롬프트에 키를 붙여 넣지 않기<br>
+③ 퇴사, 프로젝트 종료, 유출 의심 때 바로 폐기하고 새로 발급하기</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>우리 회사의 API 키가 남의 증류 공격 통로가 될 수 있어요. 키마다 담당자·보관 위치·폐기 시점을 정해 두세요.</div>
+<p><strong>사용량은 평소와 다른 급증에 알림을 걸어요.</strong> 앤트로픽은 좁은 능력에 몰린 엄청난 양과 아주 반복적인 구조를 증류 공격의 특징으로 꼽았어요.<br>
+① 월 예산 한도와 사용량 알림을 걸어 두기<br>
+② 키별·프로젝트별 사용량을 나눠 보고, 평소와 다른 급증이나 쓰지 않는 시간대의 호출 확인하기<br>
+③ 자체 AI 기능을 외부에 API로 제공한다면, 구글 말대로 우리도 추출 패턴을 지켜보는 쪽이 된다는 점 기억하기</p>
+<p><strong>경로와 약관도 확인해요.</strong><br>
+① 공식 판매 경로인지 확인하기 — 값싼 비공식 중계 서비스는 대화를 몰래 저장해 팔기도 했어요<br>
+② 프롬프트에 비밀번호·고객 정보를 넣지 않기 — 중계로 넘어간 대화에 실제 접속 비밀번호와 회사 데이터가 있었어요<br>
+③ AI 출력물로 사내 모델을 학습시킬 계획이면, 그 쓰임을 서비스 약관이 허용하는지 먼저 확인하기. 판단이 애매하면 법무 검토를 거치는 게 안전해요</p>
+<h2 id="6-무슨-뜻인가-도입교육-관점">6. 무슨 뜻인가: 도입·교육 관점</h2>
+<p><strong>이번 발표들에서 눈에 띄는 건 공격 기술보다 통로예요.</strong> 가짜 계정, 도난 카드, 정상 회사에서 새어 나간 API 키, 대화를 몰래 저장하는 중계 서비스. 모두 AI를 ‘쓰는 쪽’의 관리와 맞닿아 있어요.</p>
+<p>그래서 저는 <mark>AI 도입 교육에 API 보안 항목을 기본으로 넣어야 할 이유</mark>가 또렷해졌다고 봐요. 지금까지 도입 교육은 프롬프트 잘 쓰는 법과 업무 활용 사례가 중심이었죠. 여기에 세 가지 질문을 첫 시간부터 같이 다루면 좋겠어요.<br>
+① 키는 누가 어디에 두는가<br>
+② 사용량은 누가 보는가<br>
+③ 출력물은 어디까지 써도 되는가</p>
+<p>모델 회사들이 계정 인증과 신원 확인을 계속 강화하고 있으니, 정상 고객도 그 흐름에 맞춰 준비해 둘수록 덜 당황할 거예요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 적대적 증류 = 남의 AI 답·풀이를 무단으로 받아 학습<br>② OpenAI는 7월 활동을 7월 28일 완전 차단<br>③ 앤트로픽은 중국 기반 연구소 7곳 추가 지목<br>④ 우리 몫은 API 키·사용량·약관 점검</div>
+<p>강력한 모델일수록 ‘누가 쓰는지’를 먼저 확인하는 흐름은 이 글에서도 봤어요.</p>
+<p class="nextpost">→ <a href="/docs/news/20260908-ai-cyber-models-gated/">AI 3사가 같은 주에 '해킹 능력' 모델을 내놓고, 동시에 문을 잠갔다 — 왜 그런지, 무슨 뜻인지부터</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>OpenAI — 조직적인 모델 증류 활동 차단(9월 30일) · <a href="https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign">openai.com/index/disrupting-a-coordinated-model-distillation-campaign</a></li>
+<li>앤트로픽 — 위협 보고서 2026년 9월 · <a href="https://anthropic.com/threat-intelligence-report-september-2026">anthropic.com/threat-intelligence-report-september-2026</a></li>
+<li>앤트로픽 — 증류 공격 탐지와 방지(2월 23일) · <a href="https://anthropic.com/news/detecting-and-preventing-distillation-attacks">anthropic.com/news/detecting-and-preventing-distillation-attacks</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>사이트 첫 발행 2026년 10월 6일 · 같은 날 기준<br>OpenAI·앤트로픽·구글 공식 발표만 옮김<br>지목된 회사 입장은 확인 안 함 · 법률 판단 아님<br>제휴 없음 · 세 회사와 관계없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">함께 보면 좋은 글: <a href="/docs/news/20260908-ai-cyber-models-gated/">AI 3사가 해킹 능력 모델의 문을 잠근 이야기</a> · <a href="/docs/tech/20261001-llmgw-08-stray-key/">서랍 속 옛 열쇠(LLM 중계기 개발기)</a> · <a href="/docs/news/20261006-gemini-4-argon/">제미나이 4 아르곤 정리</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

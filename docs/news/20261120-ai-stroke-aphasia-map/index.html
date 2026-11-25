@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>AI 일부러 고장 낸 뇌 연구, 말실수로 AI 속을 알 수 있을까</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261120-ai-stroke-aphasia-map/"><meta name="description" content="미국 사우스캐롤라이나대 연구진이 AI 언어 모델의 일부를 일부러 망가뜨린 뒤, 뇌졸중으로 말이 어려워진 환자와 같은 말하기 시험을 보게 했어요. AI의 말실수가 환자의 실수와 얼마나 닮았는지, 이 방법으로 AI 속을 어떻게 들여다보려는지, 아직 조심할 점은 무엇인지 그림으로 쉽게 정리했어요."><meta property="og:title" content="AI 일부러 고장 낸 뇌 연구, 말실수로 AI 속을 알 수 있을까"><meta property="og:description" content="미국 사우스캐롤라이나대 연구진이 AI 언어 모델의 일부를 일부러 망가뜨린 뒤, 뇌졸중으로 말이 어려워진 환자와 같은 말하기 시험을 보게 했어요. AI의 말실수가 환자의 실수와 얼마나 닮았는지, 이 방법으로 AI 속을 어떻게 들여다보려는지, 아직 조심할 점은 무엇인지 그림으로 쉽게 정리했어요."><meta property="og:url" content="https://second-syntax.com/docs/news/20261120-ai-stroke-aphasia-map/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BtgE_lbT_wRb8V.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261120-ai-stroke-aphasia-map/" data-title="AI 일부러 고장 낸 뇌 연구, 말실수로 AI 속을 알 수 있을까" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-무슨-연구예요" data-toc="1-무슨-연구예요" data-astro-cid-f3qesd3f>1. 무슨 연구예요?</a></li><li data-astro-cid-f3qesd3f><a href="#2-어떻게-실험했어요" data-toc="2-어떻게-실험했어요" data-astro-cid-f3qesd3f>2. 어떻게 실험했어요?</a></li><li data-astro-cid-f3qesd3f><a href="#3-결과는-어땠어요" data-toc="3-결과는-어땠어요" data-astro-cid-f3qesd3f>3. 결과는 어땠어요?</a></li><li data-astro-cid-f3qesd3f><a href="#4-이걸로-뭘-할-수-있어요" data-toc="4-이걸로-뭘-할-수-있어요" data-astro-cid-f3qesd3f>4. 이걸로 뭘 할 수 있어요?</a></li><li data-astro-cid-f3qesd3f><a href="#5-조심할-점은-뭐예요" data-toc="5-조심할-점은-뭐예요" data-astro-cid-f3qesd3f>5. 조심할 점은 뭐예요?</a></li><li data-astro-cid-f3qesd3f><a href="#-이-글의-작성-방식" data-toc="-이-글의-작성-방식" data-astro-cid-f3qesd3f>📝 이 글의 작성 방식</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 11월 20일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-무슨-연구예요" data-astro-cid-l6a6buid>1. 무슨 연구예요?</a></li><li data-astro-cid-l6a6buid><a href="#2-어떻게-실험했어요" data-astro-cid-l6a6buid>2. 어떻게 실험했어요?</a></li><li data-astro-cid-l6a6buid><a href="#3-결과는-어땠어요" data-astro-cid-l6a6buid>3. 결과는 어땠어요?</a></li><li data-astro-cid-l6a6buid><a href="#4-이걸로-뭘-할-수-있어요" data-astro-cid-l6a6buid>4. 이걸로 뭘 할 수 있어요?</a></li><li data-astro-cid-l6a6buid><a href="#5-조심할-점은-뭐예요" data-astro-cid-l6a6buid>5. 조심할 점은 뭐예요?</a></li><li data-astro-cid-l6a6buid><a href="#-이-글의-작성-방식" data-astro-cid-l6a6buid>📝 이 글의 작성 방식</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>테크익스플로어 보도, 학술지 패턴스(Patterns) 논문 정보, 같은 연구진의 arXiv 논문 초안 요약을 대조해 정리한 글이에요. 제휴 링크는 없어요. 도식은 직접 만들었고, 제목 카드 캐릭터는 AI 이미지 생성이에요.</blockquote> <h1 id="ai-일부러-고장-낸-뇌-연구-말실수로-ai-속을-알-수-있을까">AI 일부러 고장 낸 뇌 연구, 말실수로 AI 속을 알 수 있을까</h1>
+<p><img alt="AI를 일부러 고장 내 보면 말실수를 할까? (캐릭터는 AI 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BtgE_lbT_ZXasIx.webp" ></p>
+<p class="cap">AI를 일부러 고장 내 보면 말실수를 할까? (캐릭터는 AI 이미지 생성)</p>
+<p>리모컨 속을 모르는 사람이 어느 선이 무슨 일을 하는지 알아내는 쉬운 방법이 있어요. 선을 하나씩 끊어 보고 어떤 버튼이 안 되는지 보는 거예요. 그런데 끊은 뒤 생긴 고장이 무슨 뜻인지 알려 주는 ‘고장 지도’가 이미 있다면 훨씬 빨리 알 수 있겠죠.</p>
+<p><strong>미국 사우스캐롤라이나대 연구진이 AI 언어 모델의 일부를 일부러 망가뜨린 뒤, 뇌졸중으로 말이 어려워진 환자와 같은 말하기 시험을 보게 했더니 AI의 실수가 환자의 실수와 닮아 있었다고 학술지 패턴스(Patterns)에 발표했어요.</strong></p>
+<p><img alt="AI를 일부러 고장 내 본 연구의 4단계 — 사람의 말실수 지도에 AI의 실수를 대 봤어요 (논문 초안 숫자로 직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="2700" src="/_astro/diagram-ai-injury-map.Dkqz_brh_iIj1z.webp" ></p>
+<p class="cap">AI를 일부러 고장 내 본 연구의 4단계 — 사람의 말실수 지도에 AI의 실수를 대 봤어요 (논문 초안 숫자로 직접 제작)</p>
+<div class="box info"><b class="ttl">📌 30초 요약</b>① 뇌졸중 뒤 말이 어려운 410명의 자료로 '말실수 지도'를 만들었어요<br>② AI 속 층을 일부러 흔들고, 환자와 똑같은 말하기 시험을 보게 했어요<br>③ AI 실수로 짚은 뇌 자리가 실제 환자와 우연보다 잘 맞는 경우가 많았어요<br>2026년 11월 20일 기준 · 학술지 논문 정보와 논문 초안 요약 확인</div>
+<hr>
+<h2 id="1-무슨-연구예요">1. 무슨 연구예요?</h2>
+<div class="talk kid"><b>궁금이</b>AI를 다치게 했다고요? AI도 아파요?</div>
+<div class="talk bot"><b>AI 로봇</b>아프진 않아요. 제 머릿속 계산 칸 일부를 일부러 흐트러뜨린 거예요. 리모컨 선을 하나 끊어 보는 것과 비슷해요.</div>
+<p>뇌졸중으로 뇌의 일부를 다치면 말을 하거나 알아듣기 어려워질 수 있어요. 이것을 실어증이라고 해요. 의사와 연구자들은 오랫동안 “뇌 이 자리를 다치면 이런 말실수가 생긴다”는 기록을 모아 왔어요. 이 연구를 이끈 줄리어스 프리드릭손 교수 연구실도 실어증을 연구하는 곳이에요.</p>
+<p>연구진은 이 기록을 AI를 들여다보는 데 썼어요. 테크익스플로어 보도에 따르면 이 방법을 ‘손상 기반 해석’이라고 불러요.</p>
+<h2 id="2-어떻게-실험했어요">2. 어떻게 실험했어요?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>단계</th><th>한 일</th></tr></thead><tbody><tr><td>사람 지도</td><td>뇌졸중 뒤 실어증이 있는 410명의 자료로, 말실수만 보고 다친 자리를 맞히는 모델을 만들어요</td></tr><tr><td>AI 고장</td><td>AI 언어 모델 속 층(계산 칸 묶음)을 여러 방법으로 흔들어요</td></tr><tr><td>같은 시험</td><td>환자가 보는 시험을 AI에게도 똑같이 내요</td></tr><tr><td>지도에 대기</td><td>AI 실수를 사람 지도에 올려 “어디를 다친 사람 같은지” 봐요</td></tr></tbody></table>
+<p>시험은 그림을 보고 이름 말하기, 문장 끝 채우기 같은 것이었어요. 실수의 종류도 나눠 봤어요. 예를 들면 사과를 보고 ‘배’라고 하는 건 뜻 실수, ‘사가’라고 하는 건 소리 실수예요(이해를 돕는 예시예요).</p>
+<h2 id="3-결과는-어땠어요">3. 결과는 어땠어요?</h2>
+<div class="talk kid"><b>궁금이</b>그래서 AI 실수가 진짜 사람이랑 닮았어요?</div>
+<div class="talk bot"><b>AI 로봇</b>꽤 닮았대요. 제 실수로 짚은 뇌 자리가 실제 환자가 다친 자리와 우연보다 잘 맞는 경우가 많았어요.</div>
+<p>2월에 공개된 논문 초안 요약에 따르면, 그림 이름 말하기는 흔든 조건의 67%, 문장 끝 채우기는 68.3%에서 우연보다 잘 맞았어요. 뜻 실수가 많은 AI는 뇌의 아래쪽 길, 소리 실수가 많은 AI는 위쪽 길을 다친 환자와 닮았다고 해요.</p>
+<div class="callout tip"><b class="ttl">💡 한 줄로</b>AI 속 어느 부분이 정말 말하기에 필요한지, 사람의 뇌 기록이라는 바깥 자로 재 보려는 시도예요.</div>
+<h2 id="4-이걸로-뭘-할-수-있어요">4. 이걸로 뭘 할 수 있어요?</h2>
+<p>연구진은 테크익스플로어에 “임상 신경학에서 쓰던 방법을 AI를 이해하는 데 쓸 수 있다”고 말했어요. 지금까지 AI 속을 살피는 방법은 주로 AI 안의 숫자만 봤는데, 이번에는 사람의 뇌라는 바깥 기준과 맞춰 봤다는 점이 다르다고 해요.</p>
+<p>연구진이 말한 다음 쓰임은 이렇게 있어요.</p>
+<ul>
+<li>꼭 필요하지 않은 AI 부분을 찾기</li>
+<li>실어증 환자를 흉내 낸 ‘디지털 쌍둥이’로 모의 임상 시험을 해 보기</li>
+<li>다른 뇌 질환으로 넓혀 보기</li>
+</ul>
+<p>모두 연구진의 생각이에요. 아직 환자 치료에 쓰인다는 뜻은 아니에요.</p>
+<h2 id="5-조심할-점은-뭐예요">5. 조심할 점은 뭐예요?</h2>
+<div class="talk kid"><b>궁금이</b>그럼 AI 머릿속이 사람 뇌랑 똑같은 거예요?</div>
+<div class="talk bot"><b>AI 로봇</b>아니에요! 실수하는 모양이 닮았을 뿐, 속 구조가 같다는 뜻은 아니래요.</div>
+<div class="callout warn"><b class="ttl">⚠️ 알아 둘 점</b>① 연구진도 실패 모양이 닮은 것이지 구조가 같은 것은 아니라고 밝혔어요.<br>② 67%·68.3%는 2월 arXiv 논문 초안 요약의 숫자예요. 학술지 본문은 이번에 열어 보지 못해 최종 숫자가 같은지 확인하지 못했어요.<br>③ 어떤 AI 모델을 썼는지는 이번에 확인한 자료에 나오지 않았어요.<br>④ 논문 초안에는 저자 두 명이 대학과 함께 ALLT.AI라는 회사에도 소속돼 있다고 적혀 있어요.</div>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>· 연구진이 AI 언어 모델 일부를 일부러 망가뜨려 실어증 환자와 같은 시험을 보게 했어요<br>· AI 실수로 짚은 뇌 자리가 실제 환자와 우연보다 잘 맞는 경우가 많았어요<br>· 사람 뇌 기록을 AI 속을 재는 바깥 자로 쓰자는 제안이에요<br>· 실수가 닮았을 뿐 구조가 같다는 뜻은 아니고, 치료 효과를 말하는 연구도 아니에요</div>
+<p>오늘의 큰 흐름: AI가 똑똑해질수록 ‘속이 어떻게 돌아가는지’ 확인하는 방법이 중요해지고, 그 자를 사람의 뇌 연구에서 빌려 오는 시도가 나오고 있어요.</p>
+<h2 id="-이-글의-작성-방식">📝 이 글의 작성 방식</h2>
+<p>2026년 11월 20일에 아래 자료를 직접 열어 확인했어요. 학술지 사이트는 자동 접속 확인 화면 때문에 본문을 열지 못해, 논문 정보(크로스레프)와 같은 연구진의 논문 초안 요약으로 대신 확인했어요.</p>
+<ul>
+<li><a href="https://techxplore.com/news/2026-11-brain-afflict-llms-injuries-similar.html">테크익스플로어 — Brain researchers afflict LLMs with ‘injuries’ similar to those of stroke victims</a> (11월 19일) — 연구 소개, 연구진 발언, 다음 쓰임</li>
+<li><a href="https://doi.org/10.1016/j.patter.2026.101720">패턴스 — Human lesion maps from aphasia provide an anatomical framework for language model interpretability</a> (2026년 11월호) — 학술지 게재 논문 제목·저자</li>
+<li><a href="https://arxiv.org/abs/2602.04074">arXiv — Stroke Lesions as a Rosetta Stone for Language Model Interpretability</a> (2월 3일) — 같은 연구진의 논문 초안 요약, 410명·67%·68.3%</li>
+</ul>
+<p>연구진·학술지와 제휴하지 않았고, 이 글은 의료 조언이 아니에요.</p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

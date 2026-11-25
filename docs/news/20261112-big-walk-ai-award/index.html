@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>인디 게임 빅 워크 AI 논란, 버그 하나 고쳐도 상 못 받을까</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261112-big-walk-ai-award/"><meta name="description" content="인디 게임 '빅 워크'를 만든 하우스 하우스가 버그 몇 개를 풀 때 AI 챗봇의 도움을 받았다고 밝히자, 인디 게임 상(IGF) 심사위원 일부가 'AI를 조금이라도 쓴 게임엔 표를 주지 않겠다'고 해 논쟁이 커졌어요. 무엇을 얼마나 썼는지, 왜 의견이 갈리는지 4컷 만화로 쉽게 정리했어요."><meta property="og:title" content="인디 게임 빅 워크 AI 논란, 버그 하나 고쳐도 상 못 받을까"><meta property="og:description" content="인디 게임 '빅 워크'를 만든 하우스 하우스가 버그 몇 개를 풀 때 AI 챗봇의 도움을 받았다고 밝히자, 인디 게임 상(IGF) 심사위원 일부가 'AI를 조금이라도 쓴 게임엔 표를 주지 않겠다'고 해 논쟁이 커졌어요. 무엇을 얼마나 썼는지, 왜 의견이 갈리는지 4컷 만화로 쉽게 정리했어요."><meta property="og:url" content="https://second-syntax.com/docs/news/20261112-big-walk-ai-award/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DVQg3rDu_XcOPk.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261112-big-walk-ai-award/" data-title="인디 게임 빅 워크 AI 논란, 버그 하나 고쳐도 상 못 받을까" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-빅-워크는-ai를-어디에-썼어요" data-toc="1-빅-워크는-ai를-어디에-썼어요" data-astro-cid-f3qesd3f>1. 빅 워크는 AI를 어디에 썼어요?</a></li><li data-astro-cid-f3qesd3f><a href="#2-왜-이렇게-큰-논란이-됐어요" data-toc="2-왜-이렇게-큰-논란이-됐어요" data-astro-cid-f3qesd3f>2. 왜 이렇게 큰 논란이 됐어요?</a></li><li data-astro-cid-f3qesd3f><a href="#3-다른-사람들은-뭐라고-해요" data-toc="3-다른-사람들은-뭐라고-해요" data-astro-cid-f3qesd3f>3. 다른 사람들은 뭐라고 해요?</a></li><li data-astro-cid-f3qesd3f><a href="#4-왜-지금까지-안-밝혔어요" data-toc="4-왜-지금까지-안-밝혔어요" data-astro-cid-f3qesd3f>4. 왜 지금까지 안 밝혔어요?</a></li><li data-astro-cid-f3qesd3f><a href="#5-나는-뭘-알아-두면-돼요" data-toc="5-나는-뭘-알아-두면-돼요" data-astro-cid-f3qesd3f>5. 나는 뭘 알아 두면 돼요?</a></li><li data-astro-cid-f3qesd3f><a href="#-이-글의-작성-방식" data-toc="-이-글의-작성-방식" data-astro-cid-f3qesd3f>📝 이 글의 작성 방식</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 11월 12일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-빅-워크는-ai를-어디에-썼어요" data-astro-cid-l6a6buid>1. 빅 워크는 AI를 어디에 썼어요?</a></li><li data-astro-cid-l6a6buid><a href="#2-왜-이렇게-큰-논란이-됐어요" data-astro-cid-l6a6buid>2. 왜 이렇게 큰 논란이 됐어요?</a></li><li data-astro-cid-l6a6buid><a href="#3-다른-사람들은-뭐라고-해요" data-astro-cid-l6a6buid>3. 다른 사람들은 뭐라고 해요?</a></li><li data-astro-cid-l6a6buid><a href="#4-왜-지금까지-안-밝혔어요" data-astro-cid-l6a6buid>4. 왜 지금까지 안 밝혔어요?</a></li><li data-astro-cid-l6a6buid><a href="#5-나는-뭘-알아-두면-돼요" data-astro-cid-l6a6buid>5. 나는 뭘 알아 두면 돼요?</a></li><li data-astro-cid-l6a6buid><a href="#-이-글의-작성-방식" data-astro-cid-l6a6buid>📝 이 글의 작성 방식</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>개발사 하우스 하우스의 빅 워크 공식 FAQ와 아스테크니카 보도를 대조해 정리한 글이에요. 제휴 링크는 없어요. 4컷 만화의 장면 그림과 캐릭터는 AI 이미지 생성이고, 말풍선 글자는 직접 넣었어요.</blockquote> <h1 id="인디-게임-빅-워크-ai-논란-버그-하나-고쳐도-상-못-받을까">인디 게임 빅 워크 AI 논란, 버그 하나 고쳐도 상 못 받을까</h1>
+<p><img alt="빅 워크 AI 논란 — AI 조금 써도 상 못 받을까? (캐릭터는 AI 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DVQg3rDu_ZwOO29.webp" ></p>
+<p class="cap">빅 워크 AI 논란 — AI 조금 써도 상 못 받을까? (캐릭터는 AI 이미지 생성)</p>
+<p>학교 만들기 대회에 커다란 모형 마을을 냈다고 해 볼게요. 집도 길도 나무도 다 손으로 만들었어요. 그런데 끝까지 안 맞던 작은 조각 하나를 AI에게 물어보고 고쳤어요. 이 작품은 상을 받을 자격이 있을까요?</p>
+<p><strong>인디 게임 ‘빅 워크(Big Walk)‘를 만든 회사 하우스 하우스(House House)가 버그 몇 개를 풀 때 AI 챗봇의 도움을 받았다고 밝히자, 이름난 인디 게임 상의 심사위원 일부가 ‘AI를 조금이라도 쓴 게임엔 표를 주지 않겠다’고 해 업계가 크게 갈라졌어요.</strong></p>
+<p><img alt="4컷 만화 — 손으로 만든 모형 마을의 작은 조각 하나를 AI에게 물어 고쳤더니, 심사위원 일부가 표를 주지 않겠다고 했어요 (장면 그림 AI 이미지 생성, 말풍선 글자 직접 넣음)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="3623" src="/_astro/comic-big-walk-ai.Bs9Z6_OR_Z2sbzow.webp" ></p>
+<p class="cap">4컷 만화 — 손으로 만든 모형 마을의 작은 조각 하나를 AI에게 물어 고쳤더니, 심사위원 일부가 표를 주지 않겠다고 했어요 (장면 그림 AI 이미지 생성, 말풍선 글자 직접 넣음)</p>
+<div class="box info"><b class="ttl">📌 30초 요약</b>① 빅 워크 개발사가 버그를 풀 때 AI 챗봇을 조금 썼다고 밝혔어요<br>② 개발사는 AI가 닿은 코드가 전체의 0.1%보다 훨씬 적다고 했어요<br>③ 그래도 IGF 심사위원 일부는 '어떤 식으로든' AI를 쓴 게임엔 투표하지 않겠다고 했어요<br>2026년 11월 12일 기준 · 개발사 공식 FAQ 확인</div>
+<hr>
+<h2 id="1-빅-워크는-ai를-어디에-썼어요">1. 빅 워크는 AI를 어디에 썼어요?</h2>
+<div class="talk kid"><b>궁금이</b>AI가 게임을 대신 만든 거예요?</div>
+<div class="talk bot"><b>AI 로봇</b>아니에요. 그림이나 음악이 아니라, 막힌 버그를 풀 방법을 챗봇에게 물어본 거예요.</div>
+<p>빅 워크는 친구들과 함께 걸으며 퍼즐을 푸는 게임이에요. 개발사가 게임 공식 FAQ(자주 묻는 질문)에 직접 적은 내용은 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>개발사 설명</th><th>내용</th></tr></thead><tbody><tr><td>언제, 어디에</td><td>개발 막바지, 어려운 기술 문제와 버그를 풀 때</td></tr><tr><td>얼마나</td><td>게임 코드의 0.1%보다 훨씬 적어요(개발사 추정)</td></tr><tr><td>그 밖에</td><td>다른 곳에는 생성형 AI를 쓰지 않았어요</td></tr></tbody></table>
+<p>대표 사례는 그림자 버그였어요. 해 뜰 때와 해 질 때 약 20초 동안, 보이지도 않는 그림자를 너무 멀리까지 그리느라 게임이 50% 느려졌대요. 개발사는 직접 찾아보고, 게임 엔진(게임을 만드는 바탕 프로그램) 회사 유니티의 엔지니어에게도 물었지만 “안 된다”는 답을 들었어요. 마지막으로 챗봇에게 물었고, 몇 번 헛길을 간 끝에 나온 제안을 많이 고쳐서 약 10줄의 코드로 넣었다고 해요. 4컷 만화 2번 칸의 ‘안 맞던 조각 하나’가 바로 이거예요.</p>
+<h2 id="2-왜-이렇게-큰-논란이-됐어요">2. 왜 이렇게 큰 논란이 됐어요?</h2>
+<div class="talk kid"><b>궁금이</b>10줄인데 왜 그렇게 화가 났어요?</div>
+<div class="talk bot"><b>AI 로봇</b>얼마나 썼느냐보다 '썼느냐 안 썼느냐'를 기준으로 보는 사람들이 있어서예요.</div>
+<p>아스테크니카 보도에 따르면, 이름난 인디 게임 상인 IGF(인디 게임 페스티벌 어워드) 심사위원 50여 명 가운데 19명이 11월 9일(월) 성명을 냈어요. 내용은 <strong>생성형 AI를 어떤 식으로든 쓴 게임에는 투표하지 않겠다</strong>는 것이었어요. 이들은 AI가 환경·일자리·창작자에게 해를 끼친다고 보고, IGF가 앞으로 AI로 만든 작업이 들어간 게임을 아예 받지 않도록 정하라고 요구했어요.</p>
+<p>성명은 특정 게임 이름을 대지 않았지만, 곧 빅 워크가 논란의 한가운데에 섰어요. 개발사는 다음 날인 10일 AI 사용을 공개적으로 밝혔고, 같은 보도에 따르면 스팀에는 나쁜 리뷰가 400개 넘게 달렸어요. 다만 한꺼번에 몰린 리뷰를 걸러 내는 스팀 장치 덕분에 전체 평가는 ‘매우 긍정적’을 지키고 있대요.</p>
+<h2 id="3-다른-사람들은-뭐라고-해요">3. 다른 사람들은 뭐라고 해요?</h2>
+<div class="talk kid"><b>궁금이</b>그럼 모두 빅 워크가 잘못했다고 해요?</div>
+<div class="talk bot"><b>AI 로봇</b>아니에요. 4컷 4번 칸처럼, 작은 조각과 마을 전체를 같은 무게로 보면 안 된다는 사람도 많아요.</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>이런 생각</th><th>이유</th></tr></thead><tbody><tr><td>조금도 안 돼요</td><td>작은 사용도 AI를 ‘당연한 것’으로 만들 수 있어요</td></tr><tr><td>정도를 봐야 해요</td><td>버그 10줄과 그림·음악 전부를 AI로 만든 건 달라요</td></tr></tbody></table>
+<p>같은 보도에 따르면 다른 IGF 심사위원 리즈 라이어슨은 이번 사용이 자신에게는 탈락 이유가 아니라며, “단계가 없는 것처럼 다 똑같이 취급하는 게 불편하다”고 했어요. 솔직하게 밝힌 쪽이 더 큰 벌을 받는 것 아니냐는 목소리도 나와요.</p>
+<p>개발사도 사과했어요. FAQ에 “이 공개가 AI 사용을 권하는 뜻은 아니다”라고 적고, 기준에 못 미쳤다면 미안하다고 했어요. 회사 안에 AI 사용 규칙이 없었던 것을 실패로 보고, 앞으로 규칙을 만들겠다고도 밝혔어요.</p>
+<h2 id="4-왜-지금까지-안-밝혔어요">4. 왜 지금까지 안 밝혔어요?</h2>
+<div class="callout warn"><b class="ttl">⚠️ 알아 둘 점</b>① 스팀은 AI로 만든 그림·소리 같은 '내용물'은 밝히라고 하지만, 코드 작업이나 챗봇 사용은 묻지 않아요. 그래서 개발사는 스팀에 따로 적지 않았다고 했어요.<br>② IGF에는 출품할 때 AI 사용을 밝히라는 안내가 있어서 그때 적었고, 관심이 커지자 FAQ에 공개했대요.<br>③ '0.1%보다 훨씬 적다'는 개발사 추정이고, 그림자 버그가 사람 힘으로도 고칠 수 있었다는 의견도 있어요. IGF가 공식 규칙을 바꿨는지는 아직 확인되지 않았어요.</div>
+<p>게임 상이 AI 때문에 흔들린 건 처음이 아니에요. 지난해에는 이와 다른 상인 ‘인디 게임 어워드’가 ‘클레르 옵스퀴르: 33원정대’의 상을 거둬들였어요. 게임 속 일부 무늬 그림을 AI로 만든 사실이 알려졌기 때문이에요.</p>
+<h2 id="5-나는-뭘-알아-두면-돼요">5. 나는 뭘 알아 두면 돼요?</h2>
+<ol class="steps">
+<li><b>'AI를 썼다'는 말을 들으면 어디에 얼마나 썼는지 보기</b><span class="then">그림·목소리를 AI로 만든 것과 버그 몇 줄을 물어본 건 크기가 달라요.</span></li>
+<li><b>대회·과제 규칙을 먼저 읽기</b><span class="then">같은 AI 사용도 어떤 대회는 괜찮고, 어떤 대회는 안 돼요. 미리 묻는 게 가장 안전해요.</span></li>
+<li><b>썼다면 솔직하게 적기</b><span class="then">빅 워크처럼 나중에 알려지면 더 큰 논란이 돼요. 처음부터 밝히는 습관이 중요해요.</span></li>
+</ol>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>· 빅 워크는 버그를 풀 때 AI 챗봇의 제안을 고쳐 약 10줄 썼다고 밝혔어요<br>· 개발사 추정으로 AI가 닿은 코드는 0.1%보다 훨씬 적어요<br>· IGF 심사위원 19명은 '어떤 식으로든' AI를 쓴 게임에 투표하지 않겠다고 했어요<br>· '정도를 봐야 한다'는 반대 의견도 많아, 기준을 두고 논쟁 중이에요</div>
+<p>오늘의 큰 흐름: AI를 ‘쓰느냐 마느냐’를 넘어, 어디까지를 ‘사람이 만든 작품’으로 볼지 기준을 정하는 싸움이 시작됐어요.</p>
+<h2 id="-이-글의-작성-방식">📝 이 글의 작성 방식</h2>
+<p>2026년 11월 12일에 아래 원문을 직접 열어 확인했어요. 날짜는 미국 현지 기준이에요.</p>
+<ul>
+<li>개발사가 직접 밝힌 내용이라 가장 먼저 봤어요: <a href="https://bigwalk.game/faq/ai/">빅 워크 공식 FAQ — Was AI used to make Big Walk?</a> — 사용 범위, 0.1%, 그림자 버그와 약 10줄, 스팀·IGF 공개 이유, 사과와 규칙 계획</li>
+<li>심사위원 성명과 업계 반응을 정리한 보도예요: <a href="https://arstechnica.com/gaming/2026/11/big-walk-used-ai-to-fix-a-bug-now-the-indie-gaming-world-is-having-a-reckoning/">아스테크니카 — Big Walk used AI to fix a bug. Now the indie gaming world is having a reckoning.</a> (11월 11일) — 50여 명 중 19명 성명, 스팀 리뷰 400개 넘게, 반대 의견, 지난해 인디 게임 어워드 사례</li>
+</ul>
+<p>더버지도 같은 소식을 다뤘지만 이번에는 원문을 열지 못해 내용에 쓰지 않았어요. 하우스 하우스와 제휴하지 않았고, 이 글은 특정 게임을 권하거나 깎아내리는 글이 아니에요.</p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

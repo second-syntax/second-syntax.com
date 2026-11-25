@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>OpenAI dots(닷츠) 발표, 24시간 일하는 에이전트 정리</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261004-openai-dots/"><meta name="description" content="2026년 9월 29일 OpenAI가 DevDay에서 'dots'를 발표했다. GPT-6 Astra로 움직이는 상시 작동 에이전트로, 각자 클라우드 컴퓨터를 갖고 사용자가 연결한 앱에서 24시간 일한다. 대화가 끝나도 일을 이어 가고, 계정에 영향을 주는 행동은 자동 검토를 거쳐 바로 하거나 승인을 받거나 사용자에게 넘긴다. 무엇이 새로운지, 실제로 무슨 일을 맡길 수 있는지, 안전장치와 학습 데이터 정책, 누가 언제부터 쓸 수 있는지까지 OpenAI 공식 발표 기준으로 정리했다."><meta property="og:title" content="OpenAI dots(닷츠) 발표, 24시간 일하는 에이전트 정리"><meta property="og:description" content="2026년 9월 29일 OpenAI가 DevDay에서 'dots'를 발표했다. GPT-6 Astra로 움직이는 상시 작동 에이전트로, 각자 클라우드 컴퓨터를 갖고 사용자가 연결한 앱에서 24시간 일한다. 대화가 끝나도 일을 이어 가고, 계정에 영향을 주는 행동은 자동 검토를 거쳐 바로 하거나 승인을 받거나 사용자에게 넘긴다. 무엇이 새로운지, 실제로 무슨 일을 맡길 수 있는지, 안전장치와 학습 데이터 정책, 누가 언제부터 쓸 수 있는지까지 OpenAI 공식 발표 기준으로 정리했다."><meta property="og:url" content="https://second-syntax.com/docs/news/20261004-openai-dots/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DRspQm9-_jBXVt.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261004-openai-dots/" data-title="OpenAI dots(닷츠) 발표, 24시간 일하는 에이전트 정리" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-무엇이-나왔나" data-toc="1-무엇이-나왔나" data-astro-cid-f3qesd3f>1. 무엇이 나왔나</a></li><li data-astro-cid-f3qesd3f><a href="#2-chatgpt와-다른-점" data-toc="2-chatgpt와-다른-점" data-astro-cid-f3qesd3f>2. ChatGPT와 다른 점</a></li><li data-astro-cid-f3qesd3f><a href="#3-맡길-수-있는-일" data-toc="3-맡길-수-있는-일" data-astro-cid-f3qesd3f>3. 맡길 수 있는 일</a></li><li data-astro-cid-f3qesd3f><a href="#4-통제권과-안전장치" data-toc="4-통제권과-안전장치" data-astro-cid-f3qesd3f>4. 통제권과 안전장치</a></li><li data-astro-cid-f3qesd3f><a href="#5-내-데이터와-조직용-dot" data-toc="5-내-데이터와-조직용-dot" data-astro-cid-f3qesd3f>5. 내 데이터와 조직용 dot</a></li><li data-astro-cid-f3qesd3f><a href="#6-누가-언제부터-얼마에" data-toc="6-누가-언제부터-얼마에" data-astro-cid-f3qesd3f>6. 누가, 언제부터, 얼마에</a></li><li data-astro-cid-f3qesd3f><a href="#7-그래서-무슨-뜻인가" data-toc="7-그래서-무슨-뜻인가" data-astro-cid-f3qesd3f>7. 그래서 무슨 뜻인가</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 4일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 7개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-무엇이-나왔나" data-astro-cid-l6a6buid>1. 무엇이 나왔나</a></li><li data-astro-cid-l6a6buid><a href="#2-chatgpt와-다른-점" data-astro-cid-l6a6buid>2. ChatGPT와 다른 점</a></li><li data-astro-cid-l6a6buid><a href="#3-맡길-수-있는-일" data-astro-cid-l6a6buid>3. 맡길 수 있는 일</a></li><li data-astro-cid-l6a6buid><a href="#4-통제권과-안전장치" data-astro-cid-l6a6buid>4. 통제권과 안전장치</a></li><li data-astro-cid-l6a6buid><a href="#5-내-데이터와-조직용-dot" data-astro-cid-l6a6buid>5. 내 데이터와 조직용 dot</a></li><li data-astro-cid-l6a6buid><a href="#6-누가-언제부터-얼마에" data-astro-cid-l6a6buid>6. 누가, 언제부터, 얼마에</a></li><li data-astro-cid-l6a6buid><a href="#7-그래서-무슨-뜻인가" data-astro-cid-l6a6buid>7. 그래서 무슨 뜻인가</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI와 아무 관계가 없습니다. 내용은 OpenAI 공식 발표(2026-09-29)와 ChatGPT의 dots 소개 페이지 기준이며, 직접 써 본 후기는 아닙니다. 삽화는 GPT 이미지 생성, 도식은 직접 제작했습니다.</blockquote> <h1 id="openai-dots닷츠-발표-24시간-일하는-에이전트-정리">OpenAI dots(닷츠) 발표, 24시간 일하는 에이전트 정리</h1>
+<p><img alt="OpenAI dots(닷츠) 발표 — 24시간 일하는 ChatGPT 에이전트 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DRspQm9-_Z1bpEV0.webp" ></p>
+<p class="cap">OpenAI dots(닷츠) 발표 — 24시간 일하는 ChatGPT 에이전트 (캐릭터는 GPT 이미지 생성)</p>
+<p>OpenAI가 dots를 발표했다는 소식을 보면 이 질문부터 들어요. “ChatGPT랑 뭐가 다르고, 혼자 어디까지 한다는 거지?”</p>
+<p>신입 직원이 첫 출근을 했다고 해 볼게요. 회사는 자리와 컴퓨터, 사원증을 내주고 쓸 수 있는 권한을 정해 줘요. 익숙해지면 시키지 않은 일도 알아서 챙기지만, 돈이 나가거나 밖으로 나가는 일은 결재를 받죠. OpenAI 소개 글에도 ‘dots는 신입 직원에게 제공할 거의 모든 것을 갖추고 업무를 시작합니다’라는 문장이 있어요.<br>
+<strong>dots는 각자 클라우드 컴퓨터를 갖고 내가 연결한 앱에서 24시간 일하는, GPT-6 Astra 기반의 상시 작동 에이전트예요.</strong></p>
+<div class="callout warn"><b class="ttl">⚠️ 출처 안내</b>2026년 9월 29일 OpenAI 공식 발표와 ChatGPT의 dots 소개 페이지를 옮긴 거예요. 직접 써 본 후기가 아니고, 발표 속 사례는 OpenAI가 든 예시예요.</div>
+<p><img alt="내가 쉬는 동안에도 일하는 dot — 밤에 노트북으로 일하는 로봇 비서 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-desk-buddy.Cukd9G7A_1z6UMN.webp" ></p>
+<p class="cap">내가 쉬는 동안에도 일하는 dot — 밤에 노트북으로 일하는 로봇 비서 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: ChatGPT를 쓰며 dots가 궁금한 분<br>① ChatGPT와 다른 점, 맡길 수 있는 일<br>② 혼자 하는 일·승인받는 일·내가 할 일<br>③ 누가, 언제부터, 얼마에 쓰나<br>2026년 10월 4일 기준 · 9월 29일 발표</div>
+<hr>
+<h2 id="1-무엇이-나왔나">1. 무엇이 나왔나</h2>
+<p><strong>9월 29일 OpenAI가 개발자 행사 DevDay에서 상시 작동 에이전트 dots를 발표했어요.</strong> 하나하나를 dot(닷)이라고 부르고, 내 dot을 만들어 이름도 붙일 수 있어요. 움직이는 모델은 GPT-6 Astra예요.</p>
+<p>지금까지의 ChatGPT는 물어보면 답하는 쪽이었고, 대화창을 닫으면 일도 멈췄어요. OpenAI는 dots를 ‘늘 여러분을 대신해 일하는’ 에이전트라고 소개해요. OpenAI가 꼽은 dots의 진가는 이 문장에 있어요. “미처 부탁할 생각도 하기 전에, 여러분이 직접 했을 법한 방식으로 완성된 결과물을 가져다줄 때.”</p>
+<h2 id="2-chatgpt와-다른-점">2. ChatGPT와 다른 점</h2>
+<p><strong>대화가 끝나도 일을 이어 가고, 자기 컴퓨터로 일한다는 게 가장 큰 차이예요.</strong> 공식 발표에서 꼽은 특징을 표로 정리했어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>특징</th><th>내용</th></tr></thead><tbody><tr><td>스스로 시작</td><td>목표와 범위를 주면 다음 단계를 스스로 찾고, 대화가 끝나도 계속</td></tr><tr><td>자기 컴퓨터</td><td>자체 클라우드 컴퓨터와 브라우저, 필요하면 코드 작성·테스트</td></tr><tr><td>앱 연결</td><td>플러그인으로 4,000개 넘는 앱, 어떤 앱을 쓸지는 내가 고름</td></tr><tr><td>나를 배워 감</td><td>ChatGPT 메모리로 시작, 함께 일할수록 내 기준을 배움</td></tr><tr><td>여러 일 동시에</td><td>여러 프로젝트를 한꺼번에 진행하며 새 일도 맡음</td></tr></tbody></table>
+<p>언제든 dot의 컴퓨터를 열어 무엇을 하는지 볼 수 있어요.</p>
+<p><strong>대화는 ChatGPT 웹·모바일·데스크톱에서 해요.</strong> 메시지를 주고받거나 전화를 걸 수 있고, dot도 진행 상황이나 질문을 먼저 보내요. Slack·Teams는 안내가 엇갈려요. OpenAI 소개 글에는 된다고, ChatGPT 소개 페이지에는 ‘곧’이라고 적혀 있어요. 문자 메시지는 두 곳 모두 ‘곧’이에요.</p>
+<h2 id="3-맡길-수-있는-일">3. 맡길 수 있는 일</h2>
+<p><strong>OpenAI가 공식 발표에서 든 예시를 직업별로 옮겼어요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>직업</th><th>맡기는 일</th></tr></thead><tbody><tr><td>앱 개발자</td><td>고객 피드백에서 작은 개선·버그 수정을 골라 구현·테스트하고, 변경 영상을 붙인 PR(코드 변경 요청)로 가져옴</td></tr><tr><td>제품 출시 담당</td><td>범위가 바뀌면 영향을 검토하고 출시 자료·문서 변경 초안 준비</td></tr><tr><td>과학자</td><td>새 데이터가 오면 분석을 다시 돌리고 논문 도표 업데이트</td></tr><tr><td>영업 책임자</td><td>고객 요구사항을 제품 문서와 대조하고 제안서·테스트 계획 업데이트</td></tr><tr><td>콘텐츠 크리에이터</td><td>인터뷰에서 클립 후보를 찾고 소셜 게시물 초안을 만들어 승인받기</td></tr><tr><td>재무 책임자</td><td>사용량·매출 변화를 표시하고, 승인하면 최신 수치를 팀에 공유</td></tr></tbody></table>
+<p>실제 사례도 소개했어요. OpenAI 안에서는 Slack에 버그가 올라오면 dots가 조사를 시작하고, 새 디자인이 오면 작동하는 앱으로 만든대요. 외부 초기 테스터의 dot은 테스터가 한 매체에 <strong>청구서 보내는 걸 잊은 걸 알아차리고, 작성한 뒤 승인을 받아 발송</strong>했대요.</p>
+<h2 id="4-통제권과-안전장치">4. 통제권과 안전장치</h2>
+<p><strong>계정에 영향을 주는 행동은 자동 검토를 거쳐 바로 하거나, 승인을 받거나, 나에게 넘겨요.</strong> 혼자 일하는 AI라서 발표의 상당 부분이 ‘어디까지 혼자 하느냐’에 쓰였어요.</p>
+<p><img alt="OpenAI dots가 혼자 하는 일과 묻는 일 — 작업 공간, 자동 검토, 세 갈래 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="3340" src="/_astro/diagram-dots-control.RBgafRlz_Z1UDObC.webp" ></p>
+<p class="cap">OpenAI dots가 혼자 하는 일과 묻는 일 — 작업 공간, 자동 검토, 세 갈래 (직접 제작)</p>
+<p><strong>내 컴퓨터와 분리</strong> — dot은 자체 클라우드 컴퓨터에서 일하고, 내 컴퓨터와 파일은 내가 연결하기로 할 때만 써요. 지원되는 사이트에 로그인할 때 저장된 비밀번호를 모델에 보여 주지 않는대요.<br>
+<strong>선제적 조사는 읽기 전용</strong> — 내가 대화하지 않는 동안 뒤에서 도울 일을 찾을 때는 연결한 앱을 읽기만 해요. 메시지 발송, 앱 내용 변경, 브라우저·컴퓨터 조작은 못 해요.<br>
+<strong>맞춤 규칙</strong> — 특정 행동을 허용·승인 필요·차단으로 정할 수 있고, 기본 안전 요건은 늘 적용돼요.<br>
+<strong>내가 직접</strong> — 비밀번호 변경 같은 민감한 일은 늘 사용자가 해요.<br>
+<strong>감시와 중단</strong> — 악의적인 지시를 막는 장치가 있고, 우려가 감지되면 작업을 일시 중지하거나 중단해요. 활동 보기에서 뒤에서 하는 일까지 확인할 수 있어요.</p>
+<p><img alt="중요한 일은 승인 버튼을 내가 — 완성한 문서를 들고 온 dot (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-approval-bell.CQUz9H-N_1cmCFi.webp" ></p>
+<p class="cap">중요한 일은 승인 버튼을 내가 — 완성한 문서를 들고 온 dot (GPT 이미지 생성)</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>dot도 실수할 수 있어요. 중요한 결과가 걸린 작업은 항상 검토하라는 게 OpenAI의 공식 안내예요.</div>
+<h2 id="5-내-데이터와-조직용-dot">5. 내 데이터와 조직용 dot</h2>
+<p><strong>ChatGPT Business·Enterprise·Edu 워크스페이스의 콘텐츠는 기본적으로 모델 개선에 쓰지 않아요.</strong><br>
+<strong>개인 요금제</strong> — dot과의 대화와 작업을 모델 개선에 쓸지 내가 설정해요.<br>
+<strong>선제적 조사·혼자 적은 메모</strong> — 직접 학습에 쓰지 않는대요. 다만 학습 대상인 대화나 작업에 참고 자료로 쓰였다면 설정에 따라 학습에 쓰일 수 있다고 밝혀 두었어요.</p>
+<p>조직용 <strong>전문 dot</strong>은 특정 업무를 맡아요. 회사가 dot마다 고유한 ID와 인증 정보를 주고, 필요한 시스템에 접근하게 설정해요. OpenAI는 내부의 조달, 청구서 처리, 이메일 마케팅, 고객 지원, 상업 계약 업무에서 초기 테스트를 했대요. 처음에는 기업 파일럿으로 시작하고, Microsoft Agent 365와 통합해 기업이 쓰던 Microsoft 도구로 dot을 관리하게 하는 게 목표래요.</p>
+<h2 id="6-누가-언제부터-얼마에">6. 누가, 언제부터, 얼마에</h2>
+<p><strong>9월 29일부터 지원 지역의 Pro·Business Premium 사용자에게 순차 제공되고, 첫 dot은 추가 비용 없이 포함돼요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>제공 대상</td><td>지원 지역의 Pro · Business Premium (순차 제공)</td></tr><tr><td>Enterprise 요금제</td><td>관리자가 베타를 켜면 사용 (Edu·Healthcare 포함)</td></tr><tr><td>비용</td><td>첫 dot은 추가 비용 없음, 출시 첫 한 달은 한도 확대</td></tr><tr><td>사용 한도</td><td>dot과의 대화는 ChatGPT 한도에 안 들어감</td></tr><tr><td>시작</td><td>데스크톱 앱이나 데스크톱 브라우저에서 첫 dot 만들기</td></tr></tbody></table>
+<p>다만 dot에게 Codex나 ChatGPT Work 작업을 시작하게 하면 그 작업은 평소처럼 한도에 들어가요. 처음 설정을 마치면 모바일 앱에서도 메시지를 보낼 수 있고, 앞으로 dot을 더 추가하거나 속도·작업량을 늘릴 수 있게 된대요.</p>
+<p><strong>한국이 지원 지역인지는 OpenAI의 지원 지역 안내에서 확인해야 해요.</strong> Pro 요금 금액도 쓰지 않았어요. DevDay에서 월 500달러 Pro 등급이 새로 나왔지만, dots 안내의 Pro가 그 등급만 뜻하는지는 확인하지 못했어요.</p>
+<h2 id="7-그래서-무슨-뜻인가">7. 그래서 무슨 뜻인가</h2>
+<p><strong>dots는 ‘AI에게 물어보기’보다 ‘AI에게 맡기기’에 가까운 서비스예요.</strong></p>
+<p>일을 대신 해 주는 AI는 여럿 나왔지만, dots는 ChatGPT 안에 들어가고 GPT-6 Astra를 쓴다는 점이 달라요. 써 보기 전에 알아 둘 점을 발표 내용에서 꼽으면 이래요.</p>
+<p><strong>연결할 앱은 꼭 필요한 것만</strong> — dot이 볼 수 있는 범위가 곧 일할 수 있는 범위예요. <mark>앱 선택과 맞춤 규칙이 내 통제권</mark>이에요.<br>
+<strong>승인 요청은 꼼꼼히</strong> — OpenAI 스스로 dot도 실수할 수 있다고 했어요.<br>
+<strong>학습 설정 확인</strong> — 개인 요금제라면 dot과의 대화·작업을 모델 개선에 쓸지 설정에서 정할 수 있어요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 각자 컴퓨터로 24시간 일하는 에이전트<br>② 혼자·승인 후·내가 직접, 세 갈래<br>③ 선제적 조사는 읽기 전용<br>④ 지원 지역 Pro·Business Premium부터</div>
+<p>같은 DevDay에서 나온 모델 소식은 GPT-6.1 Sol 발표 글에 있어요.</p>
+<p class="nextpost">→ <a href="/docs/news/20261001-gpt-6-1-sol/">GPT-6.1 Sol 발표, 가격·성능과 Sonnet 5.5 비교</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>OpenAI 발표 — dots를 소개합니다 · <a href="https://openai.com/ko-KR/index/introducing-dots">openai.com/ko-KR/index/introducing-dots</a></li>
+<li>ChatGPT — dots 소개 페이지 · <a href="https://chatgpt.com/ko-KR/features/dots">chatgpt.com/ko-KR/features/dots</a></li>
+<li>OpenAI 발표 — DevDay 2026 주요 발표 · <a href="https://openai.com/index/devday-2026-recap">openai.com/index/devday-2026-recap</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>2026년 10월 4일 기준 (발표 9월 29일)<br>OpenAI 공식 발표 2건 + 소개 페이지<br>직접 써 본 후기 아님<br>제휴 없음 · OpenAI와 관계 없음<br>캐릭터는 GPT 생성, 도식은 직접 제작</div>
+<p class="related">함께 보면 좋은 글: <a href="/docs/tech/20260927-personal-ai-agents-four/">AI 에이전트 4종 비교</a> · <a href="/docs/news/20260907-gpt6-astra-agi/">GPT-6 Astra</a> · <a href="/docs/news/20261001-gpt-6-1-sol/">GPT-6.1 Sol 발표</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

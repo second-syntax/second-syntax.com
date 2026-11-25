@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>시그널 AI 비서 화면 읽기 차단, 내 비밀 대화 지킬 수 있을까</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261122-signal-ai-screen-block/"><meta name="description" content="보안 메신저 시그널이 11월 20일, 아이폰(iOS 27)과 안드로이드에서 휴대폰 속 AI 비서가 대화 화면을 찍어 가지 못하게 막는다고 알렸어요. 왜 막는지, 어디까지 막을 수 있고 무엇은 못 막는지, 캡처가 필요할 때 무엇을 알아 두면 되는지 4컷 만화로 쉽게 정리했어요."><meta property="og:title" content="시그널 AI 비서 화면 읽기 차단, 내 비밀 대화 지킬 수 있을까"><meta property="og:description" content="보안 메신저 시그널이 11월 20일, 아이폰(iOS 27)과 안드로이드에서 휴대폰 속 AI 비서가 대화 화면을 찍어 가지 못하게 막는다고 알렸어요. 왜 막는지, 어디까지 막을 수 있고 무엇은 못 막는지, 캡처가 필요할 때 무엇을 알아 두면 되는지 4컷 만화로 쉽게 정리했어요."><meta property="og:url" content="https://second-syntax.com/docs/news/20261122-signal-ai-screen-block/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.BWvmE4zx_GS2A5.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261122-signal-ai-screen-block/" data-title="시그널 AI 비서 화면 읽기 차단, 내 비밀 대화 지킬 수 있을까" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-무엇이-바뀌었어요" data-toc="1-무엇이-바뀌었어요" data-astro-cid-f3qesd3f>1. 무엇이 바뀌었어요?</a></li><li data-astro-cid-f3qesd3f><a href="#2-왜-막는-거예요" data-toc="2-왜-막는-거예요" data-astro-cid-f3qesd3f>2. 왜 막는 거예요?</a></li><li data-astro-cid-f3qesd3f><a href="#3-처음-있는-일이에요" data-toc="3-처음-있는-일이에요" data-astro-cid-f3qesd3f>3. 처음 있는 일이에요?</a></li><li data-astro-cid-f3qesd3f><a href="#4-이제-완전히-안전해요" data-toc="4-이제-완전히-안전해요" data-astro-cid-f3qesd3f>4. 이제 완전히 안전해요?</a></li><li data-astro-cid-f3qesd3f><a href="#5-나는-뭘-하면-돼요" data-toc="5-나는-뭘-하면-돼요" data-astro-cid-f3qesd3f>5. 나는 뭘 하면 돼요?</a></li><li data-astro-cid-f3qesd3f><a href="#-이-글의-작성-방식" data-toc="-이-글의-작성-방식" data-astro-cid-f3qesd3f>📝 이 글의 작성 방식</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 11월 22일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-무엇이-바뀌었어요" data-astro-cid-l6a6buid>1. 무엇이 바뀌었어요?</a></li><li data-astro-cid-l6a6buid><a href="#2-왜-막는-거예요" data-astro-cid-l6a6buid>2. 왜 막는 거예요?</a></li><li data-astro-cid-l6a6buid><a href="#3-처음-있는-일이에요" data-astro-cid-l6a6buid>3. 처음 있는 일이에요?</a></li><li data-astro-cid-l6a6buid><a href="#4-이제-완전히-안전해요" data-astro-cid-l6a6buid>4. 이제 완전히 안전해요?</a></li><li data-astro-cid-l6a6buid><a href="#5-나는-뭘-하면-돼요" data-astro-cid-l6a6buid>5. 나는 뭘 하면 돼요?</a></li><li data-astro-cid-l6a6buid><a href="#-이-글의-작성-방식" data-astro-cid-l6a6buid>📝 이 글의 작성 방식</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>시그널 공식 블로그 글(11월 20일)을 직접 읽고 디코더 보도와 대조해 정리한 글이에요. 제휴 링크는 없어요. 4컷 만화의 장면 그림과 캐릭터는 AI 이미지 생성이고, 말풍선 글자는 직접 넣었어요.</blockquote> <h1 id="시그널-ai-비서-화면-읽기-차단-내-비밀-대화-지킬-수-있을까">시그널 AI 비서 화면 읽기 차단, 내 비밀 대화 지킬 수 있을까</h1>
+<p><img alt="시그널 AI 화면 차단 — 내 비밀 대화, AI가 읽어도 될까? (캐릭터는 AI 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.BWvmE4zx_ZN9Bho.webp" ></p>
+<p class="cap">시그널 AI 화면 차단 — 내 비밀 대화, AI가 읽어도 될까? (캐릭터는 AI 이미지 생성)</p>
+<p>친구와 자물쇠 달린 편지를 주고받는다고 해 볼게요. 가는 길에서는 아무도 못 열어요. 그런데 내가 방에서 편지를 펼쳐 읽는 순간, 어깨 너머로 누가 사진을 찍어 간다면 자물쇠는 소용이 없죠.</p>
+<p><strong>보안 메신저 시그널(Signal)이 11월 20일, 아이폰(iOS 27)과 안드로이드에서 휴대폰 속 AI 비서가 시그널 대화 화면을 찍어 가지 못하게 막는다고 알렸어요.</strong> 시그널은 이 문제를 “존재를 흔드는 위협”이라고까지 불렀어요.</p>
+<p><img alt="4컷 만화 — 잠긴 편지처럼 오가는 메시지도, 화면을 읽는 AI 비서 앞에서는 가림막이 필요해요 (장면 그림 AI 이미지 생성, 말풍선 글자 직접 넣음)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="3623" src="/_astro/comic-signal-screen.cxAI0Eyl_HGKqe.webp" ></p>
+<p class="cap">4컷 만화 — 잠긴 편지처럼 오가는 메시지도, 화면을 읽는 AI 비서 앞에서는 가림막이 필요해요 (장면 그림 AI 이미지 생성, 말풍선 글자 직접 넣음)</p>
+<div class="box info"><b class="ttl">📌 30초 요약</b>① 시리·제미나이 같은 휴대폰 AI 비서는 화면을 읽고 일을 도와요<br>② 시그널은 이때 대화가 AI 쪽으로 넘어가는 걸 막으려고 화면 찍기를 막아요<br>③ 설정에서 끌 수 있지만, 그러면 나와 대화 상대의 글이 AI에 보일 수 있어요<br>2026년 11월 22일 기준 · 시그널 공식 블로그 확인</div>
+<hr>
+<h2 id="1-무엇이-바뀌었어요">1. 무엇이 바뀌었어요?</h2>
+<div class="talk kid"><b>궁금이</b>시그널이 AI를 막는다고요? 어떻게요?</div>
+<div class="talk bot"><b>AI 로봇</b>휴대폰 화면 앞에 가림막을 치는 거예요. AI 비서가 화면을 찍으려 하면 빈 화면만 보이게요.</div>
+<p>시그널 공식 블로그에 따르면, 휴대폰마다 막는 방법이 조금 달라요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>휴대폰</th><th>시그널이 하는 일</th></tr></thead><tbody><tr><td>아이폰 (iOS 27)</td><td>시그널 앱 안에서 화면 찍기(스크린샷)를 막아요</td></tr><tr><td>안드로이드</td><td>AI 비서가 화면을 읽으려는 게 보이면 ‘화면 보안’ 설정을 자동으로 켜요</td></tr><tr><td>맥 컴퓨터</td><td>아직 못 막아요</td></tr></tbody></table>
+<p>시그널이 공개한 설정 화면 사진을 보면, 아이폰에는 ‘Block Siri AI(시리 AI 막기)‘라는 새 스위치가 켜져 있어요.</p>
+<h2 id="2-왜-막는-거예요">2. 왜 막는 거예요?</h2>
+<div class="talk kid"><b>궁금이</b>시그널은 원래 암호로 잠겨 있다면서요. 그런데도 위험해요?</div>
+<div class="talk bot"><b>AI 로봇</b>자물쇠는 '가는 길'을 지켜요. 내 휴대폰에서 편지를 펼친 다음은 자물쇠가 지켜 주지 못해요.</div>
+<p>요즘 구글은 제미나이, 애플은 시리 AI를 휴대폰 운영체제(휴대폰의 바탕 프로그램) 깊숙이 넣고 있어요. 이 AI 비서들은 내 질문에 답하거나 심부름을 하려고 <strong>지금 화면에 뭐가 떠 있는지 읽어요.</strong></p>
+<p>시그널은 이때 대화 내용이 찍혀서, AI가 쓰는 휴대폰 속 저장소나 멀리 있는 서버로 넘어갈 수 있다고 걱정해요. 그 뒤로는 시그널이 손쓸 수 없고, 나뿐 아니라 <strong>대화에 함께한 사람들의 비밀</strong>도 위험해진다는 거예요. 4컷 만화 2번 칸의 드론이 바로 이 장면이에요.</p>
+<div class="callout tip"><b class="ttl">💡 한 줄로</b>메시지를 잠가서 보내도, 펼쳐진 화면을 AI가 읽으면 비밀이 새어 나갈 수 있다는 게 시그널의 걱정이에요.</div>
+<h2 id="3-처음-있는-일이에요">3. 처음 있는 일이에요?</h2>
+<p>아니에요. 시그널은 지난해에도 비슷한 일을 했어요. 마이크로소프트 윈도우 11의 리콜(Recall) 기능이 몇 초마다 화면을 찍어 저장하자, 윈도우용 시그널은 기본으로 화면 찍기를 막았어요. 시그널은 이번 일이 그때와 같은 문제라고 설명했어요.</p>
+<p>시그널은 메타의 AI 비서 뮤즈처럼 다른 회사가 만든 AI 일꾼도 걱정했어요. 처음 설정할 때 받는 넓은 허락(장애가 있는 사람을 돕는 ‘접근성’ 기능 등)이 앱 속 내용을 여는 ‘만능 열쇠’가 되면 안 된다는 거예요. 뮤즈 이야기는 <a href="/docs/news/20261120-meta-muse-privacy-mixup/">지난 글 메타 뮤즈 남의 정보 노출 보도</a>에서 이어 볼 수 있어요.</p>
+<h2 id="4-이제-완전히-안전해요">4. 이제 완전히 안전해요?</h2>
+<div class="talk kid"><b>궁금이</b>그럼 이제 AI가 시그널 대화는 절대 못 봐요?</div>
+<div class="talk bot"><b>AI 로봇</b>아쉽지만 아니에요. 가림막은 앞쪽만 가려요. 뒷문으로 들어오는 길은 아직 못 막아요.</div>
+<div class="callout warn"><b class="ttl">⚠️ 알아 둘 점</b>① 시그널 스스로 이번 방법이 완전하지 않다고 밝혔어요. 휴대폰에 이미 저장된 파일을 AI가 읽는 길 같은 건 화면 막기로 못 막아요.<br>② 안드로이드는 회사마다 버전이 달라, 모든 휴대폰을 다 지키지는 못한다고 했어요.<br>③ 맥 컴퓨터는 화면 찍기를 확실히 막을 방법이 없어서 이번에 빠졌어요.<br>④ 디코더 보도에 따르면, 메타는 뮤즈가 사용자가 분명히 허락했을 때만 그렇게 동작했다고 했어요.</div>
+<p>그래서 시그널은 애플·구글·마이크로소프트에 두 가지를 요청했어요. 앱이 “우리 앱은 AI가 읽지 마세요”라고 쉽게 고를 수 있는 도구, 그리고 AI 비서가 데이터를 어떻게 읽는지 알려 주는 자세한 설명서예요.</p>
+<h2 id="5-나는-뭘-하면-돼요">5. 나는 뭘 하면 돼요?</h2>
+<ol class="steps">
+<li><b>시그널 설정에서 스위치 확인하기</b><span class="then">아이폰은 'Block Siri AI', 안드로이드는 '화면 보안(Screen security)' 스위치예요.</span></li>
+<li><b>캡처가 꼭 필요하면 끄는 대가를 알고 끄기</b><span class="then">시그널 설정에서 끌 수 있어요. 대신 내 글뿐 아니라 대화 상대의 글도 AI에 보일 수 있어요.</span></li>
+<li><b>맥에서 시그널을 쓴다면 시리 제외 목록에 넣기</b><span class="then">시그널은 macOS 27 사용자에게 '시스템 설정 → Siri'의 제외할 앱(Excluded Apps)에 시그널을 넣으라고 권했어요.</span></li>
+<li><b>AI 비서에 주는 허락을 한 번 더 보기</b><span class="then">처음 설정 때 "화면을 읽어도 될까요?"를 무심코 누르지 않았는지 살펴봐요.</span></li>
+</ol>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>· 시그널이 휴대폰 AI 비서가 대화 화면을 찍어 가지 못하게 막아요<br>· 아이폰(iOS 27)은 화면 찍기를 막고, 안드로이드는 AI 접근이 보이면 화면 보안을 켜요<br>· 설정에서 끌 수 있지만 대화 상대의 글도 함께 드러날 수 있어요<br>· 파일 읽기·맥 컴퓨터는 아직 못 막아, 시그널은 운영체제 회사에 도구를 요구했어요</div>
+<p>오늘의 큰 흐름: AI 비서가 휴대폰 화면을 ‘보고’ 일하게 되면서, 앱이 내 비밀을 어디까지 지킬 수 있느냐가 새 숙제가 됐어요.</p>
+<h2 id="-이-글의-작성-방식">📝 이 글의 작성 방식</h2>
+<p>2026년 11월 22일에 아래 원문을 직접 열어 확인했어요. 날짜는 미국 현지 기준이에요.</p>
+<ul>
+<li><a href="https://signal.org/blog/protecting-your-privacy/">시그널 공식 블로그 — Signal is Serious About Protecting Your Privacy</a> (11월 20일) — iOS 27·안드로이드 막는 방식, 설정에서 끄기, 한계(파일·맥), 운영체제 회사에 한 요청, 맥 권고</li>
+<li><a href="https://the-decoder.com/signal-blocks-screenshots-on-ios-27-and-android-to-stop-ai-agents-from-reading-private-chats/">디코더 — Signal blocks screenshots on iOS 27 and Android to stop AI agents from reading private chats</a> (11월 20일) — 해외 보도, 메타의 입장</li>
+</ul>
+<p>시그널·애플·구글과 제휴하지 않았고, 이 글은 특정 앱을 권하는 글이 아니에요.</p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

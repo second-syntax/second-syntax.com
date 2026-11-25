@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>GPT-6.1 Sol 발표, 가격·성능과 Sonnet 5.5 비교</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261001-gpt-6-1-sol/"><meta name="description" content="2026년 9월 29일 OpenAI가 DevDay에서 GPT-6.1 Sol을 발표했다. GPT-6 Sol을 크게 업그레이드한 모델로, 회사 설명으로는 최상위 모델 GPT-6 Astra에 가까운 성능을 Astra 토큰 가격의 5분의 1에 낸다. API 가격은 100만 토큰당 입력 2달러·출력 10달러로 Claude Sonnet 5.5와 같고, 캐시된 입력은 0.1달러다. 공식 발표문의 코딩·문서·업무 자동화·컴퓨터 사용·과학 연구·사실 정확성 결과와 안전 평가, Ultrafast와 새 Pro 요금제, 그리고 하루 먼저 나온 Claude Sonnet 5.5와 나란히 놓고 볼 점까지 정리했다."><meta property="og:title" content="GPT-6.1 Sol 발표, 가격·성능과 Sonnet 5.5 비교"><meta property="og:description" content="2026년 9월 29일 OpenAI가 DevDay에서 GPT-6.1 Sol을 발표했다. GPT-6 Sol을 크게 업그레이드한 모델로, 회사 설명으로는 최상위 모델 GPT-6 Astra에 가까운 성능을 Astra 토큰 가격의 5분의 1에 낸다. API 가격은 100만 토큰당 입력 2달러·출력 10달러로 Claude Sonnet 5.5와 같고, 캐시된 입력은 0.1달러다. 공식 발표문의 코딩·문서·업무 자동화·컴퓨터 사용·과학 연구·사실 정확성 결과와 안전 평가, Ultrafast와 새 Pro 요금제, 그리고 하루 먼저 나온 Claude Sonnet 5.5와 나란히 놓고 볼 점까지 정리했다."><meta property="og:url" content="https://second-syntax.com/docs/news/20261001-gpt-6-1-sol/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.DK6v0tLX_kcX0y.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261001-gpt-6-1-sol/" data-title="GPT-6.1 Sol 발표, 가격·성능과 Sonnet 5.5 비교" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-무엇이-나왔나" data-toc="1-무엇이-나왔나" data-astro-cid-f3qesd3f>1. 무엇이 나왔나</a></li><li data-astro-cid-f3qesd3f><a href="#2-가격과-캐시된-입력" data-toc="2-가격과-캐시된-입력" data-astro-cid-f3qesd3f>2. 가격과 캐시된 입력</a></li><li data-astro-cid-f3qesd3f><a href="#3-성능-발표문이-말한-것" data-toc="3-성능-발표문이-말한-것" data-astro-cid-f3qesd3f>3. 성능: 발표문이 말한 것</a></li><li data-astro-cid-f3qesd3f><a href="#4-사실-정확성과-정직함" data-toc="4-사실-정확성과-정직함" data-astro-cid-f3qesd3f>4. 사실 정확성과 정직함</a></li><li data-astro-cid-f3qesd3f><a href="#5-함께-나온-ultrafast와-pro" data-toc="5-함께-나온-ultrafast와-pro" data-astro-cid-f3qesd3f>5. 함께 나온 Ultrafast와 Pro</a></li><li data-astro-cid-f3qesd3f><a href="#6-claude-sonnet-55와-나란히" data-toc="6-claude-sonnet-55와-나란히" data-astro-cid-f3qesd3f>6. Claude Sonnet 5.5와 나란히</a></li><li data-astro-cid-f3qesd3f><a href="#7-누구에게-무슨-뜻인가" data-toc="7-누구에게-무슨-뜻인가" data-astro-cid-f3qesd3f>7. 누구에게 무슨 뜻인가</a></li><li data-astro-cid-f3qesd3f><a href="#부록-발표문에서-더-짚을-것" data-toc="부록-발표문에서-더-짚을-것" data-astro-cid-f3qesd3f>부록: 발표문에서 더 짚을 것</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 10월 1일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 8개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-무엇이-나왔나" data-astro-cid-l6a6buid>1. 무엇이 나왔나</a></li><li data-astro-cid-l6a6buid><a href="#2-가격과-캐시된-입력" data-astro-cid-l6a6buid>2. 가격과 캐시된 입력</a></li><li data-astro-cid-l6a6buid><a href="#3-성능-발표문이-말한-것" data-astro-cid-l6a6buid>3. 성능: 발표문이 말한 것</a></li><li data-astro-cid-l6a6buid><a href="#4-사실-정확성과-정직함" data-astro-cid-l6a6buid>4. 사실 정확성과 정직함</a></li><li data-astro-cid-l6a6buid><a href="#5-함께-나온-ultrafast와-pro" data-astro-cid-l6a6buid>5. 함께 나온 Ultrafast와 Pro</a></li><li data-astro-cid-l6a6buid><a href="#6-claude-sonnet-55와-나란히" data-astro-cid-l6a6buid>6. Claude Sonnet 5.5와 나란히</a></li><li data-astro-cid-l6a6buid><a href="#7-누구에게-무슨-뜻인가" data-astro-cid-l6a6buid>7. 누구에게 무슨 뜻인가</a></li><li data-astro-cid-l6a6buid><a href="#부록-발표문에서-더-짚을-것" data-astro-cid-l6a6buid>부록: 발표문에서 더 짚을 것</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없고 OpenAI와 아무 관계가 없습니다. 성능·가격 수치는 OpenAI 공식 발표(2026-09-29) 기준이며 독립 검증 전입니다. 삽화는 GPT 이미지 생성, 차트는 직접 제작했습니다.</blockquote> <h1 id="gpt-61-sol-발표-가격성능과-sonnet-55-비교">GPT-6.1 Sol 발표, 가격·성능과 Sonnet 5.5 비교</h1>
+<p><img alt="GPT-6.1 Sol 발표 — Astra의 5분의 1 가격, 성능 정리 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.DK6v0tLX_Z1aOFQU.webp" ></p>
+<p class="cap">GPT-6.1 Sol 발표 — Astra의 5분의 1 가격, 성능 정리 (캐릭터는 GPT 이미지 생성)</p>
+<p>GPT-6.1 Sol 발표를 보면 이 질문이 먼저 들어요. “Astra로 하던 일을 이걸로 바꿔도 될까?” 가격·성능·쓸 수 있는 곳을 발표문 그대로 모아 보면 판단이 쉬워요.</p>
+<p>이름난 식당에 저녁 코스가 있다고 해 볼게요. 같은 셰프가 점심 정식을 내놨는데, 맛은 저녁 코스에 거의 붙었고 값은 5분의 1이에요. 매일 먹을 건 점심 정식이 되겠죠.<br>
+<strong>GPT-6.1 Sol은 최상위 모델 GPT-6 Astra에 가까운 성능을 Astra 토큰 가격의 5분의 1에 내겠다는 OpenAI의 새 모델이에요.</strong></p>
+<div class="callout warn"><b class="ttl">⚠️ 출처 안내</b>성능·가격 수치는 2026년 9월 29일 OpenAI 공식 발표를 옮긴 거예요. 회사가 잰 값이라 독립 검증 전이고, 경쟁사 값은 OpenAI가 공개 보고서에서 인용한 거예요.</div>
+<p><img alt="같은 셰프의 저녁 코스와 점심 정식 — Astra와 GPT-6.1 Sol (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-lunch-course.C19XA-fz_2laxXg.webp" ></p>
+<p class="cap">같은 셰프의 저녁 코스와 점심 정식 — Astra와 GPT-6.1 Sol (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: ChatGPT·Codex·OpenAI API를 쓰는 분<br>① 가격과 캐시된 입력 95% 할인<br>② 발표문이 말한 성능과 사실 정확성<br>③ Claude Sonnet 5.5와 나란히 본 점<br>2026년 10월 1일 기준 · 9월 29일 발표</div>
+<hr>
+<h2 id="1-무엇이-나왔나">1. 무엇이 나왔나</h2>
+<p><strong>GPT-6.1 Sol은 9월 29일 OpenAI 개발자 행사 DevDay에서 발표된, GPT-6 Sol의 업그레이드 모델이에요.</strong> 9월 한 달 동안 GPT-6 계열이 차례로 나왔어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>날짜</th><th>나온 모델</th></tr></thead><tbody><tr><td>9월 3일</td><td>최상위 모델 GPT-6 Astra</td></tr><tr><td>9월 22일</td><td>GPT-6 Sol과 GPT-6 Luna</td></tr><tr><td>9월 29일</td><td>GPT-6.1 Sol (DevDay)</td></tr></tbody></table>
+<p>발표문은 이 모델을 ‘중요한 작업을 더 자주 돌리려는 사용자와 큰 서비스를 운영하는 API 고객을 위한, 역량과 비용의 새 균형점’이라고 소개해요.</p>
+<p>ChatGPT에서는 Plus·Pro·Business·Enterprise·Edu 사용자가 <strong>Work 화면과 Codex</strong>에서 바로 쓸 수 있어요. 일반 대화(Chat) 화면에는 아직 없어요. API 이름은 <code>gpt-6.1-sol</code>이에요.</p>
+<h2 id="2-가격과-캐시된-입력">2. 가격과 캐시된 입력</h2>
+<p><strong>100만 토큰당 입력 2달러·출력 10달러로, 최상위 모델 Astra의 5분의 1이에요.</strong> Claude 두 모델과 나란히 놓으면 이래요(100만 토큰당 입력 / 캐시된 입력 / 출력).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>모델</th><th>입력 / 캐시된 입력 / 출력</th></tr></thead><tbody><tr><td>GPT-6.1 Sol (이번 모델)</td><td>$2 / $0.10 / $10</td></tr><tr><td>GPT-6 Astra (계산값)</td><td>$10 / — / $50</td></tr><tr><td>Claude Sonnet 5.5 (앤트로픽)</td><td>$2 / $0.20 / $10</td></tr><tr><td>Claude Opus 5.5 (앤트로픽)</td><td>$4 / $0.20 / $20</td></tr></tbody></table>
+<p>Astra 칸은 발표문의 ‘5분의 1’로 거꾸로 계산한 값이에요. Claude Sonnet 5.5와 입력·출력 단가가 같고, 캐시된 입력만 GPT-6.1 Sol이 절반이에요.</p>
+<p><img alt="이미 읽은 부분엔 책갈피 — 캐시된 입력 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-bookmark.CXNYCgdj_Z1XxVci.webp" ></p>
+<p class="cap">이미 읽은 부분엔 책갈피 — 캐시된 입력 (GPT 이미지 생성)</p>
+<p><strong>캐시된 입력</strong>은 AI 에이전트가 매번 다시 보내는 긴 지시문에 책갈피를 꽂아 두는 기능이에요. 그 부분은 값을 95% 깎아 줘요. 입력 100만·출력 20만 토큰짜리 일로 계산하면 캐시 없이는 <strong>4달러</strong>, 입력의 90%가 캐시에서 나오면 <strong>약 2.29달러</strong>예요. 같은 일을 Astra 단가로 하면 20달러예요. 모델마다 같은 일에 쓰는 토큰 수가 달라서 단가 비교일 뿐이에요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>같은 앞부분을 수십 번 다시 보내는 에이전트 작업이라면, 캐시 단가가 청구서를 크게 좌우해요.</div>
+<h2 id="3-성능-발표문이-말한-것">3. 성능: 발표문이 말한 것</h2>
+<p><strong>점수표 대신 ‘누구보다 몇 %포인트 높고, 비용은 몇 분의 1’ 같은 상대 비교로 발표했어요.</strong> 그 문장을 분야별로 모았어요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>분야 (평가)</th><th>발표문 내용</th></tr></thead><tbody><tr><td>코딩 (DeepSWE v1.1)</td><td>약 5분의 1 비용으로 Astra와 대등. 이전 Sol 최고점보다 6.4%포인트 높음</td></tr><tr><td>문서 이해 (GDP.pdf)</td><td>폴백을 쓰는 Claude Opus 5.5보다 높고 비용은 절반 미만. 약 5분의 1 비용으로 Astra에 근접</td></tr><tr><td>업무 자동화 (AutomationBench)</td><td>Opus 5.5보다 2.2%포인트 높고 비용 약 3분의 1. 같은 설정의 이전 Sol보다 4.8%포인트 높음</td></tr><tr><td>컴퓨터 사용 (OSWorld 2.0)</td><td>이전 Sol보다 7%포인트 높음. Astra와 2.1%포인트 차에 비용 약 7분의 1</td></tr><tr><td>과학 연구 (Terminal-Bench Science)</td><td>이전 Sol 점수의 2배 이상. 작업 1건 평균 $5.47 (Opus 5.5 $23.21, Astra $23.80)</td></tr></tbody></table>
+<p><img alt="GPT-6.1 Sol 발표문에 숫자로 나온 두 항목 — 과학 작업 1건 비용과 검색 고장 미고지율 (직접 제작)" loading="lazy" decoding="async" fetchpriority="auto" width="2160" height="2540" src="/_astro/chart-cost-honesty.B2G_ZSC1_Z210KDh.webp" ></p>
+<p class="cap">GPT-6.1 Sol 발표문에 숫자로 나온 두 항목 — 과학 작업 1건 비용과 검색 고장 미고지율 (직접 제작)</p>
+<p>읽을 때 짚어 둘 점이 있어요.<br>
+<strong>추론 강도가 항목마다 달라요</strong> — 코딩은 ‘더 낮은 강도’, 업무 자동화는 ‘중간’, 컴퓨터 사용과 과학 연구는 ‘최대’예요. 같은 모델도 강도를 올리면 점수와 비용이 함께 올라요.<br>
+<strong>‘폴백’은 설명이 없어요</strong> — 보통 일부 요청을 다른 모델이 대신 처리하게 하는 장치를 말해요.<br>
+<strong>과학 연구 점수 1위는 Astra(68.1%)</strong> — 가장 어려운 과학 작업은 OpenAI도 Astra를 권해요.</p>
+<h2 id="4-사실-정확성과-정직함">4. 사실 정확성과 정직함</h2>
+<p><strong>틀린 사실이 섞인 답의 비율이 이전 Sol보다 줄어 Astra와 비슷해졌어요.</strong> 발표문의 두 시험 결과예요(GPT-6.1 Sol / 이전 Sol / Astra).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>시험</th><th>6.1 Sol / 이전 Sol / Astra</th></tr></thead><tbody><tr><td>틀린 사실이 섞인 답</td><td>4.1% / 4.5% / 4.0%</td></tr><tr><td>검색 고장을 말하지 않음</td><td>2.1% / 4.9% / 1.5% (Luna 28.7%)</td></tr></tbody></table>
+<p>사실 오류 시험은 이전 모델이 틀렸다고 사용자가 신고한 대화(개인 정보를 지운 것)로, 추론 강도 ‘매우 높음’에서 쟀어요. 작업당 비용은 Astra보다 약 83% 낮았대요. 검색 시험은 검색이 안 될 때 추측으로 답하지 않고 ‘검색이 안 됩니다’라고 알리는지 보는 거예요. 두 시험 모두 일부러 어려운 과제를 모은 거라 평소 대화의 비율은 아니에요.</p>
+<p>자동 안전 검토를 우회하려는 시도는 관찰되지 않았고, 자세한 평가는 별도 시스템 카드에 있어요.</p>
+<h2 id="5-함께-나온-ultrafast와-pro">5. 함께 나온 Ultrafast와 Pro</h2>
+<p><strong>속도 우선 등급 Ultrafast와 월 500달러 Pro 요금제가 함께 발표됐어요.</strong><br>
+<strong>Ultrafast 등급</strong> — Codex에서 최대 8배(초당 300토큰), API에서 최대 6배 빠르게 답을 내놔요. GPT-6 Astra Ultrafast는 발표 당일부터 API와 새 Pro·Enterprise에서 쓸 수 있어요.<br>
+<strong>6.1 Sol Ultrafast 출시 시점</strong> — 소개 글은 함께 출시라고, DevDay 요약 글은 ‘곧 출시’라고 적었어요. 쓰기 전에 API 모델 목록을 확인하세요.<br>
+<strong>새 Pro 요금제</strong> — 월 500달러, 가장 높은 사용 한도에 Astra Ultrafast가 들어 있어요.</p>
+<h2 id="6-claude-sonnet-55와-나란히">6. Claude Sonnet 5.5와 나란히</h2>
+<p><strong>두 모델은 하루 차이로 나왔고 API 단가도 같아요.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목</th><th>GPT-6.1 Sol · Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>발표일</td><td>9월 29일 · 9월 28일</td></tr><tr><td>입력 / 출력</td><td>둘 다 $2 / $10</td></tr><tr><td>캐시된 입력</td><td>$0.10 · $0.20</td></tr><tr><td>쓰는 곳</td><td>ChatGPT Work·Codex · Claude 앱·Claude Code</td></tr><tr><td>회사가 그은 선</td><td>종합 1위는 Astra · 긴 판단은 Opus 5.5</td></tr></tbody></table>
+<p>점수로 바로 비교하긴 어려워요. 두 회사가 쓴 평가 목록이 거의 겹치지 않고, 앤트로픽 표에는 이전 GPT-6 Sol이, OpenAI 차트에는 Claude Opus 5.5가 들어가 있어요. 결국 기준은 점수표보다 <mark>내가 쓰는 도구</mark>예요.</p>
+<p><strong>ChatGPT·Codex를 쓴다면</strong> — GPT-6.1 Sol<br>
+<strong>Claude 앱·Claude Code를 쓴다면</strong> — Claude Sonnet 5.5 API로 둘 다 쓸 수 있다면 내 일을 직접 맡겨 비교해 보는 게 가장 정확해요.</p>
+<h2 id="7-누구에게-무슨-뜻인가">7. 누구에게 무슨 뜻인가</h2>
+<p><strong>쓰는 방식에 따라 달라지는 점이에요.</strong><br>
+<strong>ChatGPT 유료 사용자</strong> — Work 화면과 Codex에서 GPT-6.1 Sol을 고를 수 있어요. 모델 목록에 안 보이면 화면부터 확인하세요.<br>
+<strong>Codex로 코딩한다면</strong> — 코딩 평가에서 Astra와 대등하다는 설명이 맞다면, 평소 작업은 6.1 Sol로 돌리고 정말 막히는 일만 Astra로 올려 사용량을 아낄 수 있어요.<br>
+<strong>API로 서비스를 만든다면</strong> — 모델 이름을 <code>gpt-6.1-sol</code>로 바꾸면 돼요. 긴 지시문을 반복해 보내는 에이전트라면 캐시 단가 0.1달러가 가장 큰 변화예요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① Astra 5분의 1 값에 Astra 바로 아래까지<br>② 캐시된 입력 0.1달러로 95% 할인<br>③ Sonnet 5.5와 입력·출력 단가가 같음<br>④ 종합 1위는 회사도 여전히 Astra</div>
+<p>하루 먼저 나온 경쟁 모델 이야기는 Claude Sonnet 5.5 출시 글에 있어요.</p>
+<p class="nextpost">→ <a href="/docs/news/20261001-claude-sonnet-5-5/">Claude Sonnet 5.5 출시, 가격·성능과 Opus 5.5 비교</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>OpenAI 발표 — GPT-6.1 Sol 소개 · <a href="https://openai.com/index/introducing-gpt-6-1-sol">openai.com/index/introducing-gpt-6-1-sol</a></li>
+<li>OpenAI 발표 — DevDay 2026 주요 발표 · <a href="https://openai.com/index/devday-2026-recap">openai.com/index/devday-2026-recap</a></li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>2026년 10월 1일 기준 (발표 9월 29일)<br>OpenAI 공식 발표 2건 기준<br>회사가 잰 값 · 독립 검증 전<br>Astra 가격은 ‘5분의 1’로 계산한 값<br>제휴 없음 · OpenAI와 관계 없음<br>캐릭터는 GPT 생성, 차트는 직접 제작</div>
+<h2 id="부록-발표문에서-더-짚을-것">부록: 발표문에서 더 짚을 것</h2>
+<ul>
+<li><strong>AutomationBench의 Claude Fable 5.1 값</strong> — 작업의 약 40%에서 생긴 폴백 비용이 빠져 있어서 실제보다 싸게 표시돼 있다고 발표문에 각주가 달려 있어요</li>
+<li><strong>OSWorld 수치</strong> — 2026년 8월 8일 판 오프라인 세트의 부분 점수 기준이에요</li>
+<li><strong>GPT-6.1 Sol Ultrafast</strong> — 소개 글 설명으로는 기존 Astra와 거의 같은 API 비용으로 Astra에 가까운 지능을 최대 8배 빠르게 쓸 수 있대요</li>
+<li><strong>캐시 계산</strong> — 캐시 없이: 입력 $2 + 출력 $2 = $4. 입력의 90%가 캐시: 캐시 90만 토큰 $0.09 + 새 입력 10만 토큰 $0.20 + 출력 $2 = 약 $2.29. Astra 단가: $10 + $10 = $20</li>
+</ul>
+<p class="related">함께 보면 좋은 글: <a href="/docs/news/20261001-claude-sonnet-5-5/">Claude Sonnet 5.5 출시</a> · <a href="/docs/news/20260907-gpt6-astra-agi/">GPT-6 Astra</a> · <a href="/docs/news/20261004-openai-dots/">OpenAI dots 발표</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

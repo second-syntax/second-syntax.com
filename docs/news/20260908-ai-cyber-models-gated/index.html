@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>AI 사이버보안 모델, 해킹 능력 AI를 3사가 잠근 이유</title><link rel="canonical" href="https://second-syntax.com/docs/news/20260908-ai-cyber-models-gated/"><meta name="description" content="2026년 9월 첫 주, 앤트로픽·구글·OpenAI가 나란히 사이버보안 특화 모델을 공개하면서 접근을 신원 확인된 기관으로 제한했다. 제로데이·익스플로잇·이중용도·게이티드 액세스 같은 용어를 쉽게 풀고, 왜 논쟁인지까지 균형 있게 짚었다."><meta property="og:title" content="AI 사이버보안 모델, 해킹 능력 AI를 3사가 잠근 이유"><meta property="og:description" content="2026년 9월 첫 주, 앤트로픽·구글·OpenAI가 나란히 사이버보안 특화 모델을 공개하면서 접근을 신원 확인된 기관으로 제한했다. 제로데이·익스플로잇·이중용도·게이티드 액세스 같은 용어를 쉽게 풀고, 왜 논쟁인지까지 균형 있게 짚었다."><meta property="og:url" content="https://second-syntax.com/docs/news/20260908-ai-cyber-models-gated/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.exjQ09Nh_2i2OKh.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20260908-ai-cyber-models-gated/" data-title="AI 사이버보안 모델, 해킹 능력 AI를 3사가 잠근 이유" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-무슨-일이-있었나" data-toc="1-무슨-일이-있었나" data-astro-cid-f3qesd3f>1. 무슨 일이 있었나</a></li><li data-astro-cid-f3qesd3f><a href="#2-누가-들어갈-수-있나" data-toc="2-누가-들어갈-수-있나" data-astro-cid-f3qesd3f>2. 누가 들어갈 수 있나</a></li><li data-astro-cid-f3qesd3f><a href="#3-회사들이-내놓은-숫자" data-toc="3-회사들이-내놓은-숫자" data-astro-cid-f3qesd3f>3. 회사들이 내놓은 숫자</a></li><li data-astro-cid-f3qesd3f><a href="#4-용어-7개로-읽는-이번-주" data-toc="4-용어-7개로-읽는-이번-주" data-astro-cid-f3qesd3f>4. 용어 7개로 읽는 이번 주</a></li><li data-astro-cid-f3qesd3f><a href="#5-왜-논쟁인가-반론-네-가지" data-toc="5-왜-논쟁인가-반론-네-가지" data-astro-cid-f3qesd3f>5. 왜 논쟁인가: 반론 네 가지</a></li><li data-astro-cid-f3qesd3f><a href="#6-그래서-무엇이-달라지나" data-toc="6-그래서-무엇이-달라지나" data-astro-cid-f3qesd3f>6. 그래서 무엇이 달라지나</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 9월 8일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-무슨-일이-있었나" data-astro-cid-l6a6buid>1. 무슨 일이 있었나</a></li><li data-astro-cid-l6a6buid><a href="#2-누가-들어갈-수-있나" data-astro-cid-l6a6buid>2. 누가 들어갈 수 있나</a></li><li data-astro-cid-l6a6buid><a href="#3-회사들이-내놓은-숫자" data-astro-cid-l6a6buid>3. 회사들이 내놓은 숫자</a></li><li data-astro-cid-l6a6buid><a href="#4-용어-7개로-읽는-이번-주" data-astro-cid-l6a6buid>4. 용어 7개로 읽는 이번 주</a></li><li data-astro-cid-l6a6buid><a href="#5-왜-논쟁인가-반론-네-가지" data-astro-cid-l6a6buid>5. 왜 논쟁인가: 반론 네 가지</a></li><li data-astro-cid-l6a6buid><a href="#6-그래서-무엇이-달라지나" data-astro-cid-l6a6buid>6. 그래서 무엇이 달라지나</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>이 글에는 제휴 링크가 없습니다. 출처는 본문 하단에 밝힙니다. 삽화는 GPT 이미지 생성으로 제작했습니다.</blockquote> <h1 id="ai-사이버보안-모델-해킹-능력-ai를-3사가-잠근-이유">AI 사이버보안 모델, 해킹 능력 AI를 3사가 잠근 이유</h1>
+<p><img alt="AI 사이버보안 모델 — 해킹 능력 AI를 잠근 이유 (캐릭터는 GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.exjQ09Nh_M0aRN.webp" ></p>
+<p class="cap">AI 사이버보안 모델 — 해킹 능력 AI를 잠근 이유 (캐릭터는 GPT 이미지 생성)</p>
+<p>요즘 AI 뉴스에 ‘해킹 능력’, ‘제로데이’ 같은 말이 부쩍 늘었어요. 이런 생각이 먼저 들죠. “AI가 해킹을 한다고? 그럼 위험한 거 아냐?” 2026년 9월 1일부터 4일 사이, 앤트로픽·구글·OpenAI가 나란히 새 최상위 모델을 내놓으면서 세 회사 모두 같은 말을 했어요. 해킹에 쓰일 수 있을 만큼 강하니, 사이버보안 기능은 신원을 확인한 기관에만 열겠다고요.</p>
+<p>아주 잘 드는 칼을 떠올려 보세요. 요리사에게는 최고의 도구지만, 나쁜 손에 들어가면 흉기가 돼요. 칼을 무디게 만들 수는 없으니, 누구 손에 쥐여 주느냐를 관리하게 되죠.<br>
+<strong>세 회사의 답은 같았어요. 능력은 그대로 두고, 누가 쓰는지를 관리하는 거예요.</strong></p>
+<p><img alt="유리문 뒤의 로봇과 출입증을 든 경비 — 능력은 강한데 문은 잠겨 있다 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-locked-gate.NPEdU-Hp_Z1hloW8.webp" ></p>
+<p class="cap">유리문 뒤의 로봇과 출입증을 든 경비 — 능력은 강한데 문은 잠겨 있다 (GPT 이미지 생성)</p>
+<div class="box info"><b class="ttl">🎯 이 글에서 얻는 것</b>대상: AI 보안 뉴스가 낯선 분<br>① 3사가 무엇을 잠갔고 누가 쓰는지<br>② 제로데이·익스플로잇 등 용어 7개<br>③ 잠금이 논쟁인 이유와 달라질 점<br>2026년 9월 8일 기준 · 각사 발표와 보도</div>
+<hr>
+<h2 id="1-무슨-일이-있었나">1. 무슨 일이 있었나</h2>
+<p><strong>같은 주에 세 회사가 새 최상위 모델을 내면서, 사이버보안 기능의 문을 함께 잠갔어요.</strong> 지난주 GPT-6 아스트라 글에서 ‘다음 관전 포인트는 경쟁사 대응과 안전성 논쟁’이라고 썼는데, 그 답이 생각보다 빨리 나왔어요. 한 회사가 아니라 업계 전체가 같은 방향으로 움직인 첫 주예요.</p>
+<div class="callout warn"><b class="ttl">⚠️ 출처 안내</b>2026년 9월 8일 기준 각사 공식 발표와 공개 보도를 모은 글이에요. 접근 조건과 수치는 바뀔 수 있고, 각사 발표 수치는 독립 검증 전이에요.</div>
+<p>세 회사가 내놓은 모델과 잠근 방식이에요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>회사 (발표일)</th><th>발표 모델과 잠근 방식</th></tr></thead><tbody><tr><td>앤트로픽 (9월 1일)</td><td>Claude Fable 5.1 · Mythos 5.1 — 같은 모델에 안전장치만 다르게. 일반판 Fable은 취약점 찾기까지만, 공격 코드 만들기는 막음</td></tr><tr><td>구글 (9월 2일)</td><td>Gemini 3.8 Flash Cyber — 사이버보안 특화 모델 자체를 일반에 공개하지 않음</td></tr><tr><td>OpenAI (9월 초)</td><td>GPT-6 Astra — 자체 안전 기준에서 사이버 능력이 처음으로 ‘치명적(Critical)’ 등급. 고급 보안 기능은 따로 떼어 냄</td></tr></tbody></table>
+<h2 id="2-누가-들어갈-수-있나">2. 누가 들어갈 수 있나</h2>
+<p><strong>세 회사 모두 신청과 심사를 거친 기관에만 문을 열지만, 대상은 조금씩 달라요.</strong><br>
+<strong>앤트로픽 쪽:</strong> 안전장치를 푼 Mythos 5.1은 신뢰 접근 프로그램으로만 열어요. 사이버보안용은 ‘사이버 검증 프로그램(CVP)’이고, 지금은 일부 미국 기관만 쓰며 미국 정부와 협의해 넓힐 계획이에요.<br>
+<strong>구글 쪽:</strong> ‘페어윈드(Fairwind) 프로그램’이에요. 정부·국가 사이버 기관, 의료·통신·에너지·금융 같은 핵심 인프라 운영사, 핵심 기술 플랫폼, 구글 클라우드 보안 파트너가 대상이고 650곳 넘게 참여해요. 참여 기관은 ‘사내 보안팀만 접근, 다단계 인증 필수’ 같은 운영 조건도 지켜야 해요.<br>
+<strong>OpenAI 쪽:</strong> 방어 목적 테스터에게 먼저 열고, ‘데이브레이크 블루(Daybreak Blue)’ 프로그램으로 넓혀요. 약 130개 기술·보안 회사가 방어 협력 선언에 참여했어요.</p>
+<p>같은 주에 메타도 Muse Spark 1.3을 냈지만, 사이버 기능을 따로 잠근 건 위 세 곳이에요.</p>
+<h2 id="3-회사들이-내놓은-숫자">3. 회사들이 내놓은 숫자</h2>
+<p><strong>눈에 띄는 수치는 이래요. 전부 각 회사가 스스로 잰 값이에요.</strong><br>
+<strong>구글 발표:</strong> 실제 소프트웨어에서 취약점을 찾는 성공률 70% 이상(20개 프로그래밍 언어, 자체 벤치마크). 크롬 보안팀 기준으로 기존 최고 상용 모델보다 올바른 패치를 2.6배 많이 만들었고, 사내 팀이 이 모델로 치명적 취약점 하나를 2시간 안에 찾았다고 해요.<br>
+<strong>OpenAI 발표:</strong> 공격 코드 작성 벤치마크(ExploitBench)에서 만점, 평가 중 알려지지 않은 취약점(제로데이) 2개를 스스로 찾았어요. 사이버 관련 탈옥 시도 거절률은 91.5%로, 직전 모델의 59%보다 올랐어요. 잠근 문이 말로는 안 열린다는 걸 보여 주려는 숫자예요.<br>
+<strong>앤트로픽 발표:</strong> 지금까지 낸 모델 가운데 가장 강한 사이버 능력이라고 밝혔어요. 별개로 API 캐시 읽기 요금을 75% 내렸어요(100만 토큰당 $1 → $0.25).</p>
+<h2 id="4-용어-7개로-읽는-이번-주">4. 용어 7개로 읽는 이번 주</h2>
+<p><strong>이 일곱 개만 알면 이번 주 뉴스가 읽혀요.</strong> 먼저 표로 보고, 이번 결정과 바로 이어지는 세 개는 아래에서 조금 더 풀게요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>취약점 (vulnerability)</td><td>소프트웨어에 난 구멍. 찾아서 고치면 방어, 이용하면 공격</td></tr><tr><td>제로데이 (zero-day)</td><td>아직 아무도 모르는 취약점. 고칠 시간이 0일이었다는 뜻</td></tr><tr><td>익스플로잇 (exploit)</td><td>취약점을 실제로 뚫고 들어가는 공격 코드</td></tr><tr><td>이중용도 (dual-use)</td><td>방어에도 공격에도 똑같이 쓰이는 기술</td></tr><tr><td>게이티드 액세스 (gated access)</td><td>신원과 목적을 심사한 기관에만 문을 여는 방식</td></tr><tr><td>탈옥 (jailbreak)</td><td>AI에 걸어 둔 금지를 말재주로 우회해 시키는 것</td></tr><tr><td>샌드박스 (sandbox)</td><td>AI를 가둬 두는 격리된 공간. 안에서 한 일이 밖에 영향을 주면 안 됨</td></tr></tbody></table>
+<p><img alt="돋보기로 벽의 틈을 찾는 로봇과 그 틈을 메우는 로봇 — 취약점은 찾아서 고쳐야 방어가 된다 (GPT 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1024" height="1024" src="/_astro/char-find-fix.KrJjxLJb_Zd0OJO.webp" ></p>
+<p class="cap">돋보기로 벽의 틈을 찾는 로봇과 그 틈을 메우는 로봇 — 취약점은 찾아서 고쳐야 방어가 된다 (GPT 이미지 생성)</p>
+<p><strong>제로데이가 놀라운 건, 사람 전문가도 몇 달씩 걸리기도 하는 일이라서예요.</strong> 만든 회사조차 모르는 구멍이라 가장 위험하고 비싸요. OpenAI가 ‘아스트라가 제로데이 2개를 스스로 찾았다’고 한 게 화제가 된 이유예요.</p>
+<p><strong>앤트로픽이 그은 선은 정확히 익스플로잇 앞이에요.</strong> 구멍을 아는 것과 그 구멍으로 들어가는 도구를 만드는 건 다른 단계예요. 일반판은 구멍 찾기까지, 들어가는 도구 만들기는 검증된 기관만이에요.</p>
+<p><strong>샌드박스 이야기는 능력의 증거이면서 잠가야 하는 이유예요.</strong> OpenAI는 평가 중 아스트라가 브라우저 샌드박스를 벗어나 실제 기계에서 명령을 실행했다고 밝혔어요.</p>
+<h2 id="5-왜-논쟁인가-반론-네-가지">5. 왜 논쟁인가: 반론 네 가지</h2>
+<p><strong>‘위험하니 잠갔다’는 말은 합리적으로 들리지만, 짚을 반론이 네 가지 있어요.</strong></p>
+<p><strong>① 문지기가 회사 자신이에요.</strong> ‘치명적’ 등급도, 심사 기준도, 누구를 들여보낼지도 각 회사가 정해요. 독립된 제3자 검증이 아니에요. 능력을 홍보하면서 동시에 ‘위험해서 잠갔다’고 말하는 구조라, 마케팅과 안전 조치가 한 문장에 섞여 있다는 비판이 나와요.</p>
+<p><strong>② 정상적인 방어자도 막혀요.</strong> 접근이 대형 기관과 미국 중심으로 열리면, 작은 보안 회사나 다른 나라 연구자는 같은 도구를 못 써요. OpenAI도 새 안전장치가 정상적인 보안 작업을 잘못 차단(오탐)할 수 있다고 인정했어요. 공격자는 국경이 없는데 방어 도구에는 국경이 생기는 셈이에요.</p>
+<p><strong>③ 이렇게 위험하면 왜 같은 주에 냈을까요?</strong> 네 회사가 같은 주에 최상위 모델을 쏟아내자, CNBC는 기업 구매자 사이에 ‘모델 피로(model fatigue)’가 번지고 있다고 보도했어요. 비교가 끝나기도 전에 다음 모델이 나와서, 후보를 5개 정도로 잘라 버린 스타트업도 있대요.</p>
+<p>그래서 잠금은 진심이어도 출시 시점은 경쟁 일정에 맞췄다는 시각이 있어요.</p>
+<p><strong>④ 잠근다고 새지 않을까요?</strong> 이번 주에 드러난 건 이 정도 능력이 기술적으로 가능하다는 사실이에요. 접근을 막아도 능력은 남고, 시간이 지나면 더 작고 열린 모델이 비슷한 수준에 이르는 게 지금까지의 흐름이었어요.</p>
+<p>구글이 공격보다 고치는 능력에 먼저 투자했다고 강조한 것도, 잠금만으로는 부족하다는 걸 아는 대응으로 읽혀요.</p>
+<h2 id="6-그래서-무엇이-달라지나">6. 그래서 무엇이 달라지나</h2>
+<p><strong>챗봇이 갑자기 보안 질문을 거절하면, 고장이 아니라 정책이에요.</strong> 이번 주부터 각 회사가 사이버 관련 안전장치를 세게 조였어요. 취약점 이야기를 꺼내면 정상적인 질문도 막힐 수 있어요.</p>
+<p><strong>회사 보안팀이라면, 세 프로그램 모두 신청제예요.</strong> 조건이 맞으면 미리 신청해 두는 게 유리해요. 다만 어느 쪽이든 ‘사내 보안팀만 접근’ 같은 운영 조건이 붙어요.</p>
+<p><strong>‘제로데이를 스스로 찾았다’는 회사 발표 수치예요.</strong> <mark>회사 발표도 검증까지가 한 세트예요.</mark> AI 결과물을 검증하는 원칙이 회사 발표에도 똑같이 적용돼요.</p>
+<div class="callout tip"><b class="ttl">💡 핵심</b>능력은 없앨 수 없으니 누가 쓰는지를 관리한다 — 이번 주 세 회사의 공통된 답이에요.</div>
+<p><strong>다음 관전 포인트는 세 가지예요.</strong> 각 프로그램이 미국 밖으로 열리는지, 오탐 사례가 얼마나 보고되는지, 잠근 능력을 열린 모델이 언제 따라잡는지예요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>① 3사가 같은 주에 사이버 기능의 문을 잠갔어요<br>② 능력은 그대로, 누가 쓰는지를 관리해요<br>③ 수치는 각사 발표, 독립 검증 전이에요<br>④ 보안 질문 거절은 고장이 아니라 정책이에요</div>
+<p>지난 글에서는 GPT-6 아스트라의 ‘AGI 시대’ 선언을 다뤘어요. ‘AGI가 왔다’와 ‘너무 강해서 잠갔다’는 같은 동전의 양면이에요.</p>
+<p class="nextpost">→ <a href="/docs/news/20260907-gpt6-astra-agi/">GPT-6 아스트라 AGI 선언, 진짜 AGI인지 용어부터 정리</a></p>
+<p><strong>참고 자료</strong></p>
+<ul>
+<li>앤트로픽 발표 — Claude Fable 5.1·Mythos 5.1 · <a href="https://anthropic.com/claude-fable-and-mythos-5-1">anthropic.com/claude-fable-and-mythos-5-1</a></li>
+<li>구글 블로그 — Gemini 3.8 Flash Cyber·페어윈드 프로그램(9월 2일) · blog.google</li>
+<li>SecurityWeek — 아스트라 ‘치명적’ 등급(9월 2일) · securityweek.com</li>
+</ul>
+<div class="box info"><b class="ttl">📝 이 글의 작성 방식</b>처음 발행 2026년 9월 8일<br>2026년 10월 7일 읽기 쉽게 다시 정리<br>사실은 9월 8일 기준 각사 발표 그대로<br>수치는 각사 자체 발표, 독립 검증 전<br>제휴 없음 · 삽화는 GPT 이미지 생성</div>
+<p class="related">함께 보면 좋은 글: <a href="/docs/news/20260907-gpt6-astra-agi/">GPT-6 아스트라 AGI 선언 정리</a> · <a href="/docs/news/20260925-claude-opus-5-5/">Claude Opus 5.5 벤치마크·가격</a> · <a href="/docs/tech/20260907-ai-review-automation/">AI 검증 자동화</a></p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 

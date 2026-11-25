@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>메타 뮤즈 스페이스 공개, 말로 만드는 나만의 앱 칸은 괜찮을까</title><link rel="canonical" href="https://second-syntax.com/docs/news/20261107-meta-muse-spaces/"><meta name="description" content="메타가 11월 6일, AI 앱 뮤즈(Muse) 안에 말로 설명하면 나만의 작은 앱 칸을 만들어 주는 스페이스(spaces)를 내놨어요. 무엇을 만들 수 있는지, 앱을 연결하면 무엇이 저절로 바뀌는지, 아직 모르는 점과 조심할 점을 4컷 만화로 쉽게 정리했어요."><meta property="og:title" content="메타 뮤즈 스페이스 공개, 말로 만드는 나만의 앱 칸은 괜찮을까"><meta property="og:description" content="메타가 11월 6일, AI 앱 뮤즈(Muse) 안에 말로 설명하면 나만의 작은 앱 칸을 만들어 주는 스페이스(spaces)를 내놨어요. 무엇을 만들 수 있는지, 앱을 연결하면 무엇이 저절로 바뀌는지, 아직 모르는 점과 조심할 점을 4컷 만화로 쉽게 정리했어요."><meta property="og:url" content="https://second-syntax.com/docs/news/20261107-meta-muse-spaces/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/titlecard.ClXwbkUd_zGzTx.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.X0JYjGJW.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>238</span> </a><a href="/docs/tech/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>76</span> </a><a href="/docs/news/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>162</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/news/" data-back data-astro-cid-f3qesd3f>📰 뉴스</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/news/20261107-meta-muse-spaces/" data-title="메타 뮤즈 스페이스 공개, 말로 만드는 나만의 앱 칸은 괜찮을까" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" aria-current="true" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#1-스페이스가-뭐예요" data-toc="1-스페이스가-뭐예요" data-astro-cid-f3qesd3f>1. 스페이스가 뭐예요?</a></li><li data-astro-cid-f3qesd3f><a href="#2-일반-메모장과-뭐가-달라요" data-toc="2-일반-메모장과-뭐가-달라요" data-astro-cid-f3qesd3f>2. 일반 메모장과 뭐가 달라요?</a></li><li data-astro-cid-f3qesd3f><a href="#3-언제부터-누가-쓸-수-있어요" data-toc="3-언제부터-누가-쓸-수-있어요" data-astro-cid-f3qesd3f>3. 언제부터, 누가 쓸 수 있어요?</a></li><li data-astro-cid-f3qesd3f><a href="#4-그럼-마음-놓고-다-연결해도-돼요" data-toc="4-그럼-마음-놓고-다-연결해도-돼요" data-astro-cid-f3qesd3f>4. 그럼 마음 놓고 다 연결해도 돼요?</a></li><li data-astro-cid-f3qesd3f><a href="#5-나는-뭘-하면-돼요" data-toc="5-나는-뭘-하면-돼요" data-astro-cid-f3qesd3f>5. 나는 뭘 하면 돼요?</a></li><li data-astro-cid-f3qesd3f><a href="#-이-글의-작성-방식" data-toc="-이-글의-작성-방식" data-astro-cid-f3qesd3f>📝 이 글의 작성 방식</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 뉴스 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></nav></div></aside><a class="float-back" href="/docs/news/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 11월 7일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 6개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#1-스페이스가-뭐예요" data-astro-cid-l6a6buid>1. 스페이스가 뭐예요?</a></li><li data-astro-cid-l6a6buid><a href="#2-일반-메모장과-뭐가-달라요" data-astro-cid-l6a6buid>2. 일반 메모장과 뭐가 달라요?</a></li><li data-astro-cid-l6a6buid><a href="#3-언제부터-누가-쓸-수-있어요" data-astro-cid-l6a6buid>3. 언제부터, 누가 쓸 수 있어요?</a></li><li data-astro-cid-l6a6buid><a href="#4-그럼-마음-놓고-다-연결해도-돼요" data-astro-cid-l6a6buid>4. 그럼 마음 놓고 다 연결해도 돼요?</a></li><li data-astro-cid-l6a6buid><a href="#5-나는-뭘-하면-돼요" data-astro-cid-l6a6buid>5. 나는 뭘 하면 돼요?</a></li><li data-astro-cid-l6a6buid><a href="#-이-글의-작성-방식" data-astro-cid-l6a6buid>📝 이 글의 작성 방식</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>메타 공식 발표(11월 6일)와 더버지 보도를 대조해 정리한 글이에요. 뮤즈 스페이스를 직접 써 보지는 않았어요. 제휴 링크는 없어요. 4컷 만화의 장면 그림과 캐릭터는 AI 이미지 생성이고, 말풍선 글자는 직접 넣었어요.</blockquote> <h1 id="메타-뮤즈-스페이스-공개-말로-만드는-나만의-앱-칸은-괜찮을까">메타 뮤즈 스페이스 공개, 말로 만드는 나만의 앱 칸은 괜찮을까</h1>
+<p><img alt="메타 뮤즈 스페이스 — 말로 만드는 나만의 앱 칸, 괜찮을까? (캐릭터는 AI 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/titlecard.ClXwbkUd_ZUl3WV.webp" ></p>
+<p class="cap">메타 뮤즈 스페이스 — 말로 만드는 나만의 앱 칸, 괜찮을까? (캐릭터는 AI 이미지 생성)</p>
+<p>냉장고 문을 떠올려 볼게요. 학교 안내문, 장보기 메모, 생일 선물 목록이 자석으로 이리저리 붙어 있어요. 필요한 종이를 찾으려면 한참 뒤적여야 하죠. 그런데 “선물 고르는 판 하나 만들어 줘”라고 말하면 로봇이 딱 맞는 게시판을 만들어 걸어 준다면 어떨까요?</p>
+<p><strong>메타(Meta)가 11월 6일, AI 앱 뮤즈(Muse) 안에서 말로 설명만 하면 나만의 작은 앱 칸을 만들어 주는 ‘스페이스(spaces)‘를 내놨어요.</strong> 메타는 뮤즈를 쓸 수 있는 모든 곳에서 이날부터 쓸 수 있다고 밝혔어요.</p>
+<p><img alt="4컷 만화 — 흩어진 메모를 말 한마디로 나만의 게시판(스페이스)으로 모았어요 (장면 그림 AI 이미지 생성, 말풍선 글자 직접 넣음)" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="3623" src="/_astro/comic-muse-spaces.DS6wDqaO_RutwQ.webp" ></p>
+<p class="cap">4컷 만화 — 흩어진 메모를 말 한마디로 나만의 게시판(스페이스)으로 모았어요 (장면 그림 AI 이미지 생성, 말풍선 글자 직접 넣음)</p>
+<div class="box info"><b class="ttl">📌 30초 요약</b>① 뮤즈에게 말로 설명하면 나만의 앱 칸(스페이스)을 만들어 줘요<br>② 다른 앱을 연결하면 가격·날짜 같은 내용이 저절로 바뀌어요<br>③ 11월 6일부터 뮤즈를 쓸 수 있는 곳이면 어디서나 쓸 수 있어요<br>2026년 11월 7일 기준 · 메타 공식 발표 확인</div>
+<hr>
+<h2 id="1-스페이스가-뭐예요">1. 스페이스가 뭐예요?</h2>
+<div class="talk kid"><b>궁금이</b>앱 안에 앱을 만든다는 거예요? 코딩을 해야 해요?</div>
+<div class="talk bot"><b>AI 로봇</b>코딩은 안 해도 돼요. "이런 판이 있으면 좋겠어"라고 말하면 제가 만들어 드려요.</div>
+<p>메타는 스페이스를 ‘내 아이디어를 설명해서 뮤즈 안에 만드는 나만의 공간’이라고 소개했어요. 만든 뒤에도 “이게 빠졌어”, “색을 바꿔 줘”처럼 계속 말로 고칠 수 있어요. 칸 안에서 할 일에 체크하고, 메모를 적고, 내용을 고칠 수도 있어요.</p>
+<p>메타가 든 예시는 이래요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>이런 칸을 만들면</th><th>이런 걸 모아 줘요</th></tr></thead><tbody><tr><td>선물 모음 판</td><td>선물 아이디어, 인스타그램에 저장한 물건</td></tr><tr><td>학교 일정 판</td><td>학교 메일 속 아이 행사를 찾아 달력에 넣기</td></tr><tr><td>여행 계획 판</td><td>비행기·숙소·예약과 날짜별 일정</td></tr></tbody></table>
+<p>이 밖에 좋아하는 가수의 새 노래·공연 소식 판, 결혼 준비 판, 영화 퀴즈 게임 같은 예시도 있었어요.</p>
+<h2 id="2-일반-메모장과-뭐가-달라요">2. 일반 메모장과 뭐가 달라요?</h2>
+<div class="talk kid"><b>궁금이</b>그냥 메모장에 적어 두는 거랑 뭐가 달라요?</div>
+<div class="talk bot"><b>AI 로봇</b>제가 대신 새 소식을 채워 둬요. 앱을 연결해 주면 바뀐 내용을 알아서 고쳐 놓아요.</div>
+<p>메타에 따르면 쓰던 앱을 연결하면 스페이스가 <strong>뒤에서 저절로 최신 내용으로 바뀌어요.</strong> 새 공연 날짜, 바뀐 가격, 모은 돈이 얼마인지 같은 내용이 따로 묻지 않아도 채워진다고 해요. 4컷 만화 4번 칸이 이 장면이에요.</p>
+<p>칸을 둘 자리도 고를 수 있어요. 옆 메뉴에 넣거나, 맨 앞 탭으로 올리거나, 잠시 숨기거나, <strong>보이는 시간을 정할 수도</strong> 있어요. 메타는 “평일엔 주간 계획표를 앞에 두고, 토요일엔 주말 계획으로 바꾸는” 예를 들었어요.</p>
+<h2 id="3-언제부터-누가-쓸-수-있어요">3. 언제부터, 누가 쓸 수 있어요?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>누가</th><th>언제</th></tr></thead><tbody><tr><td>뮤즈를 쓸 수 있는 모든 곳</td><td>11월 6일부터 (메타 발표)</td></tr><tr><td>다른 사람과 함께 쓰기</td><td>아직 없음, 메타가 방법을 찾는 중</td></tr></tbody></table>
+<p>메타는 같은 발표에서, 뮤즈에 쓰는 AI 모델도 ‘뮤즈 원더(Muse Wonder)‘에서 배운 점을 살린 전용 판으로 바꿔 나간다고 밝혔어요. 하루 전인 11월 5일에는 뮤즈에 목소리와 표정 있는 아바타를 주는 기능도 발표했어요.</p>
+<h2 id="4-그럼-마음-놓고-다-연결해도-돼요">4. 그럼 마음 놓고 다 연결해도 돼요?</h2>
+<div class="talk kid"><b>궁금이</b>학교 메일까지 읽어 준다니 편하겠다! 다 연결할래요.</div>
+<div class="talk bot"><b>AI 로봇</b>잠깐요! 연결하면 저도 그 내용을 보게 돼요. 꼭 필요한 것만 골라 주세요.</div>
+<div class="callout warn"><b class="ttl">⚠️ 알아 둘 점</b>① 지금까지 나온 내용은 메타의 발표예요. 실제로 얼마나 잘 맞게 만들어 주는지 써 본 평가는 아직 확인하지 못했어요.<br>② 어떤 앱을 연결할 수 있는지, 연결한 메일·일정 정보를 어떻게 다루는지는 이 발표 글에 자세히 나오지 않았어요.<br>③ 한국에서 뮤즈 스페이스를 쓸 수 있는지, 돈이 드는지도 발표에 적혀 있지 않았어요.</div>
+<h2 id="5-나는-뭘-하면-돼요">5. 나는 뭘 하면 돼요?</h2>
+<ol class="steps">
+<li><b>메일·사진처럼 민감한 앱은 나중에 연결하기</b><span class="then">처음엔 퀴즈나 여행 계획처럼 연결 없이 쓰는 칸부터 만들어 봐요.</span></li>
+<li><b>저절로 채워진 내용은 한 번 더 보기</b><span class="then">가격이나 학교 일정은 원래 앱이나 안내문에서 다시 확인해요.</span></li>
+<li><b>안 쓰는 칸과 연결은 정리하기</b><span class="then">필요 없어진 칸은 숨기거나 지우고, 연결한 앱도 끊어 둬요.</span></li>
+</ol>
+<p>비슷하게 ‘내 정보를 맡기면 AI가 챙겨 주는’ 메타 서비스는 <a href="/docs/news/20261031-meta-style-sketch/">옷장 사진으로 코디를 짜 주는 스타일 스케치 글</a>에서도 다뤘어요.</p>
+<hr>
+<div class="box info"><b class="ttl">✅ 한눈에 정리</b>· 스페이스는 말로 설명해 뮤즈 안에 만드는 나만의 앱 칸이에요<br>· 앱을 연결하면 가격·날짜 같은 내용이 저절로 바뀌어요<br>· 11월 6일부터 뮤즈를 쓸 수 있는 모든 곳에서 쓸 수 있다고 메타가 밝혔어요<br>· 연결 앱 종류와 정보 처리 방식은 발표에 자세히 없으니, 민감한 앱은 천천히 연결해요</div>
+<p>오늘의 큰 흐름: AI가 ‘물으면 답하는 대화창’에서 ‘내 생활에 맞춰 화면까지 만들어 주는 도우미’로 바뀌는 중이고, 그만큼 무엇을 맡길지 고르는 일이 중요해졌어요.</p>
+<h2 id="-이-글의-작성-방식">📝 이 글의 작성 방식</h2>
+<p>2026년 11월 7일에 아래 원문을 직접 열어 확인했어요. 날짜는 미국 현지 기준이에요.</p>
+<ul>
+<li><a href="https://about.fb.com/news/2026/11/introducing-spaces-customize-muse-app/">메타 — Design the Muse App, Just for You</a> (11월 6일) — 스페이스 소개, 만들 수 있는 칸 예시, 앱 연결과 자동 갱신, 칸 배치·시간 정하기, 공개 범위, 함께 쓰기 계획, 전용 모델</li>
+<li><a href="https://www.theverge.com/tech/1028871/meta-muse-ai-spaces">더버지 — Meta’s Muse AI can create custom ‘spaces’ for the version of the app you need right now</a> (11월 6일) — 모든 뮤즈 사용자에게 순서대로 열린다는 보도</li>
+</ul>
+<p>메타와 제휴하지 않았고, 이 글은 특정 앱을 권하는 글이 아니에요.</p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/news/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 📰 뉴스</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 뉴스 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-uk-ncsc-ai-attacks/" data-astro-cid-f3qesd3f>영국 정부 AI 해킹 급증 경고, 오래된 빈틈부터 막으면 될까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-tidal-ai-music-ban/" data-astro-cid-f3qesd3f>타이달 AI 노래 금지 발표, AI가 만든 노래 지워도 괜찮을까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-glm-5-4-loop/" data-astro-cid-f3qesd3f>Z.ai GLM-5.4 루프 구조 공개, 같은 생각 두 번 하면 더 똑똑할까</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/20261125-claude-ship-pr-agents/" data-astro-cid-f3qesd3f>앤트로픽 클로드 십 출시, AI가 코드 검사·통과까지 맡아도 될까</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 
