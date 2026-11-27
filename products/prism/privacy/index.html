@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prism 개인정보처리방침 | SECOND SYNTAX</title>
+<meta name="description" content="SECOND SYNTAX by WY가 만든 Windows 탐색기 Prism의 개인정보처리방침이에요.">
+<meta property="og:title" content="Prism 개인정보처리방침 | SECOND SYNTAX">
+<meta property="og:description" content="SECOND SYNTAX by WY가 만든 Windows 탐색기 Prism의 개인정보처리방침이에요.">
+<link rel="icon" href="/products/assets/brand/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root { --bg:#f8f7fc; --card:#ffffff; --ink:#1f1a33; --sub:#5d5873; --line:#e7e3f1; --brand:#3d2f63; --mint:#b3e1ce; --mint-ink:#1f6b55; --lav:#ece6fb;
+  --p-surface:#ffffff; --p-band:#f6f6f7; --p-text:#25262d; --p-muted:#757882; --p-stroke:#e2e2e6; --p-accent:#6d54bd; --p-select:#f0edf8; }
+* { box-sizing:border-box; margin:0; }
+html { scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { background:var(--p-surface); color:var(--p-text); font-family:Pretendard, 'Malgun Gothic', system-ui, sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; word-break:keep-all; overflow-wrap:anywhere; }
+a { color:inherit; text-decoration:none; }
+img { max-width:100%; height:auto; display:block; }
+.wrap { max-width:1120px; margin:0 auto; padding:0 20px; }
+/* 사이트 머리글 — second-syntax.com(site-ss/build.py)과 같다. 따라붙지 않는다 */
+header.site { background:var(--card); border-bottom:1px solid var(--line); }
+header.site .wrap { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; height:68px; }
+.logo { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.04em; color:var(--ink); }
+.logo img { width:34px; height:34px; }
+.logo small { display:block; font-weight:600; font-size:11px; letter-spacing:.08em; color:var(--sub); }
+nav.gnb { display:flex; gap:6px; justify-content:center; }
+/* 메뉴 표시 두 가지를 나눈다(2026-11-27 happy_various: "Prism 을 선택하고 다른 메뉴를 다시 선택 했을 때 Prism 선택 색이 해제가 안되고 있어. 메뉴를 전체적으로 다시 손봐줘")
+   - 지금 보고 있는 페이지: 글자색 + 아래 짧은 밑줄(배경 없음) — 다른 칸을 누르거나 펼쳐도 겹쳐 칠해지지 않는다
+   - 가리킴·펼침: 연보라 알약 — 마우스가 있는 기기의 :hover, 그리고 펼친 Docs 만. 터치 기기는 :hover 를 쓰지 않아 누른 뒤 색이 남지 않는다 */
+nav.gnb > a, nav.gnb summary { position:relative; padding:8px 14px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; list-style:none; color:var(--ink); -webkit-tap-highlight-color:transparent; }
+@media (hover: hover) { nav.gnb > a:hover, nav.gnb summary:hover { background:var(--lav); } }
+nav.gnb > a[aria-current] { color:var(--brand); }
+nav.gnb > a[aria-current]::after { content:""; position:absolute; left:14px; right:14px; bottom:3px; height:2px; border-radius:2px; background:var(--brand); }
+nav.gnb > a:focus-visible, nav.gnb summary:focus-visible, nav.gnb .menu a:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+nav.gnb summary::-webkit-details-marker { display:none; }
+nav.gnb details { position:relative; }
+nav.gnb details[open] summary { background:var(--lav); }
+nav.gnb .menu { position:absolute; top:44px; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px; min-width:160px; box-shadow:0 10px 30px rgba(40,30,80,.12); z-index:5; }
+nav.gnb .menu a { display:block; padding:9px 12px; border-radius:10px; font-size:14px; }
+@media (hover: hover) { nav.gnb .menu a:hover { background:var(--lav); } }
+/* 공통 */
+.band { padding:88px 0; }
+.band.alt { background:var(--p-band); }
+.label { font-size:14px; font-weight:700; letter-spacing:.06em; color:var(--p-accent); }
+.badge { display:inline-block; padding:4px 12px; border-radius:999px; background:var(--p-select); color:var(--p-accent); font-size:13px; font-weight:700; }
+h1, h2, h3 { letter-spacing:-.02em; line-height:1.25; }
+.btn { display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:700; font-size:16px; border:1px solid transparent; }
+.btn.primary { background:var(--p-accent); color:#fff; }
+.btn.primary:hover { filter:brightness(.94); }
+/* 내려받기 단추: 글씨 가운데, 더 굵게(2026-11-27 사용자) */
+.btn.dl { justify-content:center; text-align:center; font-weight:800; font-size:17px; letter-spacing:.01em; }
+.btn.soon { background:var(--p-select); color:var(--p-accent); cursor:default; }
+.link { color:var(--p-accent); font-weight:700; }
+.link:hover { text-decoration:underline; }
+mark.todo { background:#fff3b0; color:#6b5200; padding:0 4px; border-radius:4px; font-weight:600; font-size:.92em; }
+sup a { color:var(--p-accent); font-weight:700; font-size:.8em; padding:0 1px; }
+.shot { margin:0; }
+.shot img, .shot .ph { border-radius:14px; border:1px solid var(--p-stroke); box-shadow:0 18px 50px rgba(37,38,45,.10); background:#fff; }
+.shot .ph { aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; color:var(--p-muted); font-weight:600; background:repeating-linear-gradient(135deg, #fafafb 0 14px, #f3f3f5 14px 28px); }
+.shot figcaption { margin-top:14px; font-size:14px; color:var(--p-muted); text-align:center; }
+/* Products 모음 */
+.hub-head { padding:80px 0 40px; text-align:center; }
+.hub-head h1 { font-size:52px; }
+.hub-head p { margin-top:12px; font-size:19px; color:var(--p-muted); }
+.lineup { padding:8px 0 72px; }
+.pcard { display:grid; grid-template-columns:1.25fr 1fr; gap:40px; align-items:center; padding:32px; border:1px solid var(--p-stroke); border-radius:24px; background:var(--p-surface); }
+.pcard h2 { font-size:40px; margin:12px 0 8px; }
+.pcard p { color:var(--p-muted); font-size:17px; }
+.pcard .btn { margin-top:24px; }
+.ways { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+.ways div { padding:24px; border-radius:18px; background:var(--p-surface); border:1px solid var(--p-stroke); }
+.ways b { display:block; font-size:18px; margin-bottom:6px; }
+.ways span { color:var(--p-muted); font-size:15px; }
+.sec-head { margin-bottom:36px; }
+.sec-head h2 { font-size:36px; }
+.sec-head p { margin-top:10px; color:var(--p-muted); font-size:17px; }
+/* Prism 히어로 */
+.hero { padding:72px 0 0; text-align:center; }
+.hero .product { font-size:22px; font-weight:800; color:var(--p-text); display:flex; gap:10px; align-items:center; justify-content:center; }
+.hero h1 { font-size:60px; margin:18px 0 18px; }
+.hero .lead { font-size:20px; color:var(--p-muted); max-width:680px; margin:0 auto; }
+.hero .cta { display:flex; gap:20px; justify-content:center; align-items:center; margin-top:30px; flex-wrap:wrap; }
+.hero .meta { margin-top:14px; font-size:14px; color:var(--p-muted); }
+.hero .shot { margin-top:56px; }
+/* 한눈에 보기 */
+.glance { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
+.glance a { display:flex; flex-direction:column; gap:6px; padding:22px; border-radius:18px; background:var(--p-surface); border:1px solid var(--p-stroke); transition:border-color .15s, box-shadow .15s; }
+.glance a:hover { border-color:var(--p-accent); box-shadow:0 8px 24px rgba(109,84,189,.10); }
+.glance b { font-size:19px; }
+.glance span { color:var(--p-muted); font-size:15px; flex:1; }
+.glance em { font-style:normal; color:var(--p-accent); font-weight:700; font-size:14px; }
+/* 장면별 기능 */
+.feature .text { display:grid; grid-template-columns:1fr 1.1fr; gap:48px; align-items:end; margin-bottom:44px; }
+.feature h2 { font-size:44px; margin-top:10px; }
+.feature .body p + p { margin-top:12px; }
+.feature .body p { font-size:18px; color:var(--p-text); }
+/* 그리고 더 */
+.more { display:grid; grid-template-columns:repeat(3, 1fr); gap:28px 32px; }
+.more div { border-top:1px solid var(--p-stroke); padding-top:16px; }
+.more b { display:block; font-size:17px; margin-bottom:4px; }
+.more span { color:var(--p-muted); font-size:15px; }
+/* AI와 개인정보 */
+.privacy { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.privacy h3 { font-size:22px; margin:28px 0 8px; }
+.privacy h3:first-child { margin-top:0; }
+.privacy p { font-size:17px; }
+.privacy p + p { margin-top:10px; }
+.sendtable { border:1px solid var(--p-stroke); border-radius:20px; background:var(--p-surface); overflow:hidden; }
+.sendtable .cap { padding:18px 22px; border-bottom:1px solid var(--p-stroke); font-weight:700; }
+.sendtable .cap span { display:block; font-weight:400; font-size:14px; color:var(--p-muted); margin-top:2px; }
+.sendtable .cols { display:grid; grid-template-columns:1fr 1fr; }
+.sendtable .col { padding:18px 22px; }
+.sendtable .col + .col { border-left:1px solid var(--p-stroke); background:#fbfbfc; }
+.sendtable h4 { font-size:15px; margin-bottom:10px; }
+.sendtable ul { list-style:none; padding:0; }
+.sendtable li { padding:6px 0 6px 26px; position:relative; font-size:15px; }
+.sendtable .yes li::before { content:"↗"; position:absolute; left:0; color:var(--p-accent); font-weight:800; }
+.sendtable .no li::before { content:"✕"; position:absolute; left:2px; color:var(--p-muted); font-weight:800; }
+.sendtable .foot { padding:14px 22px; border-top:1px solid var(--p-stroke); font-size:14px; color:var(--p-muted); }
+/* 내려받기 */
+.routes { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
+.route { padding:24px; border-radius:20px; border:1px solid var(--p-stroke); background:var(--p-surface); display:flex; flex-direction:column; gap:8px; }
+.route.rec { border-color:var(--p-accent); }
+.route h3 { font-size:20px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.route p { color:var(--p-muted); font-size:15px; flex:1; }
+.route .state { font-weight:700; color:var(--p-accent); font-size:15px; }
+.cmd { display:flex; align-items:center; gap:8px; background:#25262d; color:#e5e5eb; border-radius:12px; padding:10px 12px; font:14px/1.4 Consolas, 'D2Coding', monospace; }
+.cmd code { flex:1; overflow-x:auto; white-space:nowrap; }
+p code, li code, span code { font-family:Consolas, 'D2Coding', monospace; font-size:.92em; background:var(--lav); padding:1px 6px; border-radius:6px; overflow-wrap:anywhere; }
+.cmd button { border:0; border-radius:8px; padding:6px 10px; background:#393b43; color:#fff; font:600 13px Pretendard, sans-serif; cursor:pointer; }
+.req { margin-top:40px; width:100%; border-collapse:collapse; font-size:15px; }
+.req caption { text-align:left; font-weight:700; font-size:18px; margin-bottom:12px; }
+.req th, .req td { text-align:left; padding:13px 0; border-top:1px solid var(--p-stroke); vertical-align:top; }
+.req th { width:180px; color:var(--p-muted); font-weight:600; padding-right:16px; }
+/* 자주 묻는 질문 */
+.faq { max-width:820px; }
+.faq details { border-top:1px solid var(--p-stroke); }
+.faq details:last-child { border-bottom:1px solid var(--p-stroke); }
+.faq summary { padding:20px 36px 20px 0; font-size:18px; font-weight:700; cursor:pointer; list-style:none; position:relative; }
+.faq summary::-webkit-details-marker { display:none; }
+.faq summary::after { content:"+"; position:absolute; right:4px; top:16px; font-size:24px; font-weight:400; color:var(--p-muted); }
+.faq details[open] summary::after { content:"−"; }
+.faq .a { padding:0 0 22px; color:var(--p-text); font-size:16px; }
+/* 마지막 버튼 */
+.closing { background:var(--brand); color:#fff; text-align:center; padding:84px 0; }
+.closing h2 { font-size:40px; }
+.closing p { color:#ddd6f3; margin:12px 0 28px; font-size:18px; }
+.closing .btn.primary { background:#fff; color:var(--brand); }
+.closing .btn.soon { background:rgba(255,255,255,.14); color:#fff; }
+/* 각주·바닥글 */
+/* 개인정보처리방침 — 읽는 글 한 단 */
+.policy { padding:64px 0 80px; }
+.policy .wrap { max-width:760px; }
+.policy .crumb { font-size:14px; }
+.policy h1 { font-size:40px; margin:14px 0 8px; }
+.policy .meta { font-size:14px; color:var(--p-muted); }
+.policy .lead { margin-top:24px; font-size:18px; }
+.policy h2 { font-size:21px; margin:40px 0 10px; }
+.policy p { font-size:16px; }
+.policy p + p { margin-top:8px; }
+.policy ul { margin:10px 0 0; padding-left:22px; }
+.policy li { font-size:16px; margin:4px 0; }
+.policy .foot { margin-top:10px; font-size:14px; color:var(--p-muted); }
+.policy .contact { user-select:all; font-weight:700; }
+@media (max-width: 600px) { .policy { padding:44px 0 56px; } .policy h1 { font-size:30px; } }
+.notes { padding:40px 0 24px; font-size:13px; color:var(--p-muted); }
+.notes ol { padding-left:20px; }
+.notes li { margin:4px 0; }
+footer.site { border-top:1px solid var(--line); padding:22px 0 30px; color:var(--sub); font-size:13px; background:var(--card); }
+footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.preview-note { background:#fff3b0; color:#6b5200; text-align:center; font-size:13px; font-weight:600; padding:6px 12px; }
+.internal-note { background:#fde2e4; color:#7a1f2b; text-align:center; font-size:13px; font-weight:700; padding:6px 12px; }
+/* 캐릭터 — 출시 해제(T43) 뒤에만 공개. 히어로 옆·자주 묻는 질문 머리·마지막 띠 위 세 자리, 화면과 겹치지 않는다 */
+.char { margin:0; flex:none; text-align:center; }
+.char img { width:auto; max-width:100%; }
+.char figcaption { margin-top:4px; font-size:11px; color:var(--p-muted); }
+.hero.has-char .intro { display:flex; align-items:center; justify-content:center; gap:40px; }
+.hero.has-char .copy { min-width:0; max-width:680px; text-align:left; }
+.hero.has-char .product, .hero.has-char .cta { justify-content:flex-start; }
+.hero.has-char .lead { margin:0; }
+.char-hero img { height:340px; }
+.sec-head.with-char { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; max-width:820px; }
+.char-faq img { height:180px; }
+.char-closing { margin-bottom:16px; }
+.char-closing img { height:230px; margin:0 auto; }
+.char-closing figcaption { color:#ddd6f3; }
+@media (max-width: 900px) {
+  .band { padding:64px 0; }
+  .hero h1 { font-size:44px; } .feature h2, .hub-head h1 { font-size:36px; } .sec-head h2 { font-size:30px; }
+  .glance { grid-template-columns:1fr 1fr; } .more { grid-template-columns:1fr 1fr; }
+  .feature .text, .privacy, .pcard { grid-template-columns:1fr; gap:20px; } .routes, .ways { grid-template-columns:1fr; }
+  .hero.has-char .intro { flex-direction:column-reverse; gap:8px; } .hero.has-char .copy { text-align:center; }
+  .hero.has-char .product, .hero.has-char .cta { justify-content:center; } .hero.has-char .lead { margin:0 auto; }
+  .char-hero img { height:220px; }
+}
+@media (max-width: 600px) {
+  header.site .wrap { grid-template-columns:1fr; height:auto; padding:12px 16px; gap:8px; justify-items:center; }
+  .wrap { padding:0 16px; } .band { padding:52px 0; }
+  .hero { padding-top:48px; } .hero h1 { font-size:34px; } .hero .lead { font-size:17px; } .feature h2 { font-size:30px; }
+  .glance, .more { grid-template-columns:1fr; } .sendtable .cols { grid-template-columns:1fr; } .sendtable .col + .col { border-left:0; border-top:1px solid var(--p-stroke); }
+  .pcard { padding:20px; } .pcard h2 { font-size:32px; } .closing h2 { font-size:30px; }
+  .req th { width:110px; }
+  .char-hero img { height:180px; } .char-faq img { height:120px; } .char-closing img { height:170px; }
+}
+/* 첫 화면(site-ss)과 같은 메뉴 다섯 칸이 320px 폰에서 넘치지 않게 — 블로그 세션 c065507a 의 값과 같게 (2026-11-27) */
+@media (max-width: 400px) {
+  nav.gnb { gap:2px; flex-wrap:wrap; }
+  nav.gnb > a, nav.gnb summary { padding:8px 9px; font-size:14px; }
+  nav.gnb > a[aria-current]::after { left:9px; right:9px; }
+}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="/"><img src="/products/assets/brand/logo.webp" alt=""><span>SECOND SYNTAX<small>by WY</small></span></a>
+  <nav class="gnb">
+    <a href="/">홈</a>
+    <details><summary>Docs ▾</summary><div class="menu"><a href="/docs/tech/">🛠️ 기술블로그</a><a href="/docs/news/">📰 뉴스</a><a href="/docs/">📚 전체 글</a></div></details>
+    <a href="/text-style/">글씨 뚝딱</a>
+    <a href="/products/prism/" aria-current="page">Prism</a>
+    <a href="/#about">About</a>
+  </nav>
+  <span></span>
+</div></header>
+<main>
+<article class="policy"><div class="wrap">
+  <p class="crumb"><a class="link" href="/products/prism/">‹ Prism</a></p>
+  <h1>Prism 개인정보처리방침</h1>
+  <p class="meta">Prism Lite 팩 0.1.2 기준 · 시행일 2026년 11월 28일</p>
+  <p class="lead">Prism에는 계정이 없고, 파일 내용·이름·경로를 밖으로 보내지 않아요. 내가 &#x27;의견 보내기&#x27;를 누르거나 메일로 문의할 때만, 내가 보낸 내용을 받아요. 아래에 받는 것과 보관하는 곳, 이 PC에 남기는 것, 인터넷을 쓰는 때를 적었어요.</p>
+  <h2>1. 이 방침이 다루는 것</h2><p>SECOND SYNTAX 사이트에서 내려받아 설치하는 Windows 앱 Prism(SECOND SYNTAX by WY가 만듦)의 Lite 팩에 관한 방침이에요.</p><p>다른 팩을 공개할 때는 이 방침을 먼저 고쳐요.</p><h2>2. 받는 개인정보</h2><p>Prism에는 계정 만들기나 로그인이 없어요. 쓰는 동안 이름·이메일 같은 정보를 스스로 모으지 않고, 사용 통계도 모으지 않아요.</p><p>개인정보를 받는 때는 두 가지뿐이에요. 앱에서 &#x27;의견 보내기&#x27;를 누를 때(3번)와 메일로 문의할 때(8번)예요.</p><p>Prism은 파일 내용이나 파일 이름, 경로, 사용 기록을 밖으로 보내지 않아요. 사진 속 글자 읽기도 이 PC 안에서 해요.</p><p>2026-11-26 0.1.2 설치본을 재어(0.05초 간격, 85초) Prism 자신의 바깥 연결은 새 버전 확인 때 GitHub로 가는 1건뿐인 것을 확인했어요. &#x27;보내기&#x27;를 누르지 않는 동안 의견 받는 주소로는 한 번도 연결하지 않았어요.</p><h2>3. 의견 보내기</h2><p>도구 메뉴의 &#x27;의견 보내기&#x27;, 업데이트 뒤에 뜨는 &#x27;바뀐 것&#x27; 카드, 오류로 꺼진 뒤 묻는 칸에서 의견을 보낼 수 있어요. <strong>&#x27;보내기&#x27;를 눌러야만</strong> 가고, Prism이 스스로 보내는 것은 없어요.</p><p>보내는 것은 아래와 같아요.</p><ul><li>의견 종류(불편해요 · 안 돼요 · 이런 게 있으면 · 좋아요)와 내가 쓴 글(4,000자까지)</li><li>답을 받을 메일 주소: 넣었을 때만 가요. 넣지 않아도 보낼 수 있어요.</li><li>의견을 쓴 자리(도구 메뉴, 바뀐 것 카드, 오류 뒤 묻기 가운데 하나). 폴더나 파일 이름이 아니에요.</li><li>프로그램 정보: 팩, 모드, 버전, Windows 빌드 번호, 화면 배율, 표시 언어. 기본으로 켜져 있고 끌 수 있어요. 보내기 전에 &#x27;내용 보기&#x27;로 보낼 글자를 그대로 볼 수 있어요.</li><li>오류 기록: Prism이 오류로 꺼진 뒤 &#x27;기록 보내기&#x27;를 누르고, 의견 칸에서 다시 &#x27;보내기&#x27;를 눌렀을 때만 가요. Prism 버전, 꺼진 때, 오류 종류 이름과 코드, 프로그램 안 함수 이름 12줄까지만 들어가요. 오류 메시지·경로·파일 이름은 빼요.</li></ul><p class="foot">파일 이름·경로·내용, 화면 그림, 계정·기기 번호는 보내지 않아요. 요청에는 고정된 이름 SECOND-SYNTAX-Prism 말고 이 PC에 대한 정보가 없고, 쿠키도 쓰지 않아요. 앱에서는 한 시간에 다섯 번까지 보낼 수 있어요.</p><h2>4. 받은 의견을 다루는 법</h2><ul><li>받은 의견은 SECOND SYNTAX가 쓰는 Cloudflare의 데이터베이스에 한 줄씩 보관해요. 받는 주소는 prism-api.second-syntax.workers.dev예요.</li><li>받은 날부터 <strong>1년</strong>이 지나면 날마다 자동으로 지워요.</li><li>의견을 받는 프로그램은 보낸 곳의 IP 주소를 저장하지 않아요. 한꺼번에 너무 많이 보내는 것을 막으려고 Cloudflare의 횟수 제한(1분에 10번)을 쓰는데, 이때 IP 주소를 잠깐 쓰고 적어 두지 않아요. 요청을 전달하는 Cloudflare 망이 처리하는 것은 Cloudflare 개인정보처리방침을 따라요.</li><li>고치기로 한 의견은 비슷한 것끼리 묶어서 SECOND SYNTAX의 비공개 작업 목록(GitHub 이슈)으로 옮겨요. 여기에는 요약과 몇 분이 말했는지, 어느 버전·도구인지만 적고, 쓴 글 그대로와 메일 주소는 옮기지 않아요. 이 요약은 1년이 지나도 남아요.</li><li>답 메일 주소는 그 의견에 답할 때만 쓰고, 사람이 직접 답해요. 자동으로 메일을 보내지 않고, 다른 곳에 넘기지 않아요.</li></ul><h2>5. 이 PC 안에만 남기는 것</h2><p>Prism은 쓰기 편하도록 아래 정보를 이 PC 안에만 저장해요. 밖으로 보내지 않아요.</p><ul><li>설정: 창 크기·왼쪽 칸·테마, 보기와 정렬, 도구 순서, 다운로드 폴더 정렬, 파일 종류별로 고른 연결 프로그램, 새 이름에 쓰는 끝말잇기 자리</li><li>지나온 자리: 최근 연 파일 10개와 폴더 10개, 고정한 폴더, 마지막으로 보던 폴더의 경로</li><li>직접 저장한 찾기 조건(폴더 안 찾기에서 ☆로 저장한 것, 12개까지)</li><li>복사·이동 기록: 최근 20건의 원본·대상 경로와 결과(완료·건너뜀·실패)</li><li>파일을 빨리 찾기 위한 파일 이름 목록(검색 색인): &#x27;전체 파일 찾기&#x27;를 처음 열 때 이 PC의 로컬 드라이브에 있는 파일·폴더의 이름과 위치로 만들어요. 임시 폴더는 빼요. 폴더 안 찾기는 색인을 만들지 않아요.</li><li>손그림에 그리던 그림(다음에 열면 이어서 그려요)</li><li>예전 판(0.1.0·0.1.1)에서 쓴 메모를 알려 드렸다는 표시(메모 번호만). &#x27;파일로 꺼내기&#x27;를 누르면 그 메모를 <code>문서\Prism 메모</code> 폴더에 .txt 파일로 써요. 누를 때만 쓰고, 밖으로 보내지 않아요.</li><li>업데이트 알림 설정(켜짐 여부, 마지막으로 확인한 시각, 닫은 알림)</li><li>업데이트하며 받은 설치 파일(새 버전이 켜지면 지워요)과 업데이트 기록(어느 버전에서 어느 버전으로, 바뀐 것)</li><li>의견을 보낸 시각(최근 다섯 번, 한 시간에 다섯 번 제한을 세는 데 써요). 보낸 글은 남기지 않아요.</li><li>오류로 꺼졌을 때 남기는 오류 기록(최근 열 개)과 그 기록을 보낼지 물어봤는지, 마지막으로 시작하지 못한 이유 하나. 오류 종류와 프로그램 안 함수 이름만 있고, 경로·파일 이름·내용은 없어요. &#x27;보내기&#x27;를 누르기 전에는 밖으로 나가지 않아요.</li><li>스타크래프트가 설치된 PC에서 지도 파일(.scm·.scx)을 미리 볼 때 쓰는 그림 색 정보</li></ul><p class="foot">메모장에 쓴 글은 남기지 않아요. Prism을 닫으면 사라지고, &#x27;파일로 저장&#x27;을 눌렀을 때만 그 파일이 생겨요. 계산기 환율도 켜 있는 동안만 들고 있어요. 위 정보는 대부분 이 PC의 <code>%LOCALAPPDATA%\SecondSyntax\Prism</code> 폴더에 있고, 시작하지 못한 이유는 Prism을 설치한 폴더에 남아요. HTML·한글 미리보기, 손그림, 터미널이 잠깐 쓰는 임시 파일은 Windows 임시 폴더에 생겼다가 그 보기가 끝나면 지워요. Prism을 지워도 다시 설치할 때를 위해 남겨 두니, 완전히 지우려면 Prism을 지운 뒤 <code>%LOCALAPPDATA%\SecondSyntax\Prism</code> 폴더를 지워 주세요.</p><h2>6. 인터넷에 접속하는 때</h2><p>Prism은 아래 경우에만 인터넷을 써요. 마지막 항목은 미리보기 엔진이 스스로 접속하는 경우예요.</p><ul><li>계산기의 환율 탭을 열 때(받아 둔 환율이 없거나 1시간이 지났을 때) 또는 &#x27;환율 새로고침&#x27;을 누를 때: 유럽중앙은행이 공개하는 환율 자료를 받아요. 보통의 인터넷 접속처럼 이 PC의 IP 주소가 그 서버에 전달될 수 있어요. Prism은 다른 정보를 보내지 않아요.</li><li>OneDrive 같은 클라우드 저장소의 파일을 열 때: 아직 이 PC에 없는 파일은 그 서비스가 내려받아요. 이 과정은 그 서비스의 개인정보처리방침을 따라요.</li><li>새 버전 확인: 하루 한 번, Prism을 켜고 20초쯤 뒤 GitHub(api.github.com)에서 내려받기 저장소의 릴리스 목록을 읽어요. 요청 자체(이 PC의 IP 주소와 고정된 이름 SECOND-SYNTAX-Prism)만 가고, 파일·경로·설정·기기 정보·버전은 보내지 않아요. 도구 더 보기(…) → &#x27;업데이트 알림 받기&#x27;를 끄면 확인하지 않아요. 이 접속은 GitHub의 개인정보처리방침을 따라요.</li><li>알림에서 &#x27;업데이트&#x27;를 누를 때: GitHub(github.com, 파일은 githubusercontent.com에서 내려와요)에서 새 버전의 설치 파일과 SECOND SYNTAX가 서명한 목록을 받아요. 받은 파일이 그 목록의 크기·확인값과 같을 때만 설치해요. 누르지 않으면 아무것도 받지 않아요. 이 접속은 GitHub의 개인정보처리방침을 따라요.</li><li>&#x27;의견 보내기&#x27;에서 &#x27;보내기&#x27;를 누를 때: 3번의 내용을 Cloudflare(prism-api.second-syntax.workers.dev)로 보내요.</li><li>HTML·한글 미리보기를 열 때: 미리보기를 그리는 Windows의 Microsoft Edge WebView2 엔진이 켜질 때마다 Microsoft Edge 설정 서버(config.edge.skype.com)에서 설정을 받아요. 이때 엔진·Windows 버전과 Microsoft가 정한 기기 식별 번호가 가고, 파일 이름·내용·경로는 가지 않아요. 앱에서 끌 수 있는 공식 설정이 없고, 이 접속은 Microsoft 개인정보처리방침을 따라요. 0.1.1부터 이 엔진의 SmartScreen 확인과 충돌 기록 전송은 꺼요.</li></ul><p class="foot">2026-11-26 0.1.2 설치본을 재어 보니, 아무것도 누르지 않은 동안의 바깥 연결은 Prism의 새 버전 확인 1건(GitHub)과 미리보기 엔진이 설정 서버에 연결한 2건뿐이었어요. 엔진은 같은 때 UDP 연결도 두 개 열었는데, 어디로 갔는지는 측정에 나오지 않아요. 업데이트와 의견 보내기는 누를 때만 연결돼요.</p><h2>7. 설치 파일 내려받기와 Windows</h2><p>설치 파일은 GitHub(second-syntax/prism-download)에서 내려받아요. 알림에서 &#x27;업데이트&#x27;를 누를 때 받는 설치 파일도 같은 곳에서 와요. 내려받을 때의 접속 기록은 GitHub의 개인정보처리방침을 따르고, SECOND SYNTAX는 설치 파일별 내려받기 횟수만 봐요.</p><p>설치·제거는 Windows가 처리해요. 내려받은 설치 파일을 열 때 Windows가 파일을 검사하는 일(SmartScreen 등)은 Microsoft 개인정보처리방침과 Windows 설정을 따라요.</p><h2>8. 문의 메일</h2><p>의견이나 버그를 메일로 보내 주시면, 보낸 메일 주소와 내용을 받아요.</p><p>이 정보는 답장과 문제 해결에만 쓰고, 다른 곳에 넘기지 않아요. 메일은 Google의 Gmail에 보관돼요.</p><p>문의 처리가 끝나면 1년 안에 지워요. 그 전이라도 지워 달라고 하시면 바로 지워요.</p><h2>9. 맡기는 곳과 국외 이전</h2><p>의견과 문의 메일을 받고 보관하려고 아래 회사의 서비스를 써요. 두 회사 모두 미국 회사라서, 보내신 정보가 국외로 옮겨질 수 있어요.</p><ul><li><strong>Cloudflare, Inc.(미국)</strong> — 옮겨지는 것: 3번의 의견(답 메일 주소를 넣었으면 그것도). 언제·어떻게: &#x27;보내기&#x27;를 누를 때 인터넷으로 보내져요. 저장 위치는 아시아·태평양 지역으로 정해 두었지만, Cloudflare는 이 위치를 보장하지 않아요. 보관: 받은 날부터 1년. 연락처: privacyquestions@cloudflare.com</li><li><strong>Google LLC(미국, Gmail)</strong> — 옮겨지는 것: 문의 메일의 주소와 내용, 의견에 답할 때 주고받는 메일. 언제·어떻게: 메일을 주고받을 때 인터넷으로 보내져요. 보관: 문의 처리가 끝나고 1년 안에 지워요. 연락처: Google 개인정보처리방침(https://policies.google.com/privacy)</li></ul><p class="foot">옮겨지는 것이 싫으면 의견을 보내지 않거나 답 메일 칸을 비워 두시면 돼요. 의견을 보내지 않아도 Prism의 기능은 모두 그대로 쓸 수 있어요. 이 국외 이전은 개인정보 보호법 제28조의8 제1항 제3호에 따라, 의견과 문의에 답하는 서비스를 위해 처리를 맡기고 보관하는 것으로서 이 방침에 공개하는 것이에요.</p><h2>10. 요청할 수 있는 것</h2><p>보내신 의견과 문의 메일을 확인하거나, 고치거나, 지워 달라고 아래 메일로 요청할 수 있어요.</p><p>Prism에는 계정이 없어서, 의견을 찾을 때는 넣으신 답 메일 주소나 보낸 때와 글 내용을 알려 주시면 돼요. 이미 묶어서 옮긴 요약(4번)에는 보내신 분을 알 수 있는 것이 들어 있지 않아요.</p><h2>11. 방침이 바뀔 때</h2><p>AI 기능이 든 팩을 공개할 때는, 무엇을 어디로 보내는지 이 방침과 소개 페이지에 먼저 적어요.</p><p>방침을 바꾸면 이 페이지에 바뀐 내용과 시행일을 함께 올려요.</p><h2>12. 책임자와 연락처</h2><p>SECOND SYNTAX by WY (happy_various)</p><p>메일: secondsyntax.official@gmail.com</p>
+  <p class="foot">문의: <span class="contact">secondsyntax.official@gmail.com</span></p>
+</div></article>
+</main>
+<footer class="site"><div class="wrap"><span>© 2026 SECOND SYNTAX by WY</span><span>상표는 각 소유자의 것이에요</span></div></footer>
+<script>
+(function () {
+  function closeMenus(except) {
+    document.querySelectorAll('nav details[open]').forEach(function (d) { if (d !== except) d.removeAttribute('open'); });
+  }
+  document.addEventListener('click', function (e) {
+    var d = e.target.closest ? e.target.closest('nav details') : null;
+    closeMenus(d);
+    if (d && e.target.closest('.menu a')) d.removeAttribute('open');
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(null); });
+  // 아이폰 사파리는 빈 곳을 탭하면 click 을 document 까지 올리지 않을 때가 있다(블로그 세션 site-ss 와 같은 줄, 11/27)
+  document.addEventListener('pointerdown', function (e) { closeMenus(e.target.closest ? e.target.closest('nav details') : null); });
+})();
+</script></body>
+</html>

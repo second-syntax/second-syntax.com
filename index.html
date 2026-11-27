@@ -24,14 +24,20 @@ header .wrap { display:grid; grid-template-columns:1fr auto 1fr; align-items:cen
 .logo img { width:34px; height:34px; }
 .logo small { display:block; font-weight:600; font-size:11px; letter-spacing:.08em; color:var(--sub); }
 nav { display:flex; gap:6px; justify-content:center; }
-nav > a, nav summary { padding:8px 14px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; list-style:none; }
-nav > a:hover, nav summary:hover { background:var(--lav); }
+/* (2026-11-27 happy_various "지금 프리즘을 선택하고 다른 메뉴을 다시 선택 했을 때 Prism 선택 색이 해제가 안되고 있어. 메뉴를 전체적으로 다시 손봐줘")
+   마케팅 키트 9c61543 과 같은 메뉴 표시 — 지금 보는 페이지 = 글자색 + 아래 짧은 밑줄(배경 없음),
+   연보라 알약 = 마우스가 있는 기기의 :hover 와 펼친 Docs 만. 터치 기기는 :hover 를 쓰지 않아 누른 칸 색이 남지 않는다 */
+nav > a, nav summary { position:relative; padding:8px 14px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; list-style:none; color:var(--ink); -webkit-tap-highlight-color:transparent; }
+@media (hover: hover) { nav > a:hover, nav summary:hover { background:var(--lav); } }
+nav > a[aria-current] { color:var(--brand); }
+nav > a[aria-current]::after { content:""; position:absolute; left:14px; right:14px; bottom:3px; height:2px; border-radius:2px; background:var(--brand); }
+nav > a:focus-visible, nav summary:focus-visible, nav .menu a:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
 nav summary::-webkit-details-marker { display:none; }
 nav details { position:relative; }
 nav details[open] summary { background:var(--lav); }
 nav .menu { position:absolute; top:44px; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px; min-width:160px; box-shadow:0 10px 30px rgba(40,30,80,.12); z-index:5; }
 nav .menu a { display:block; padding:9px 12px; border-radius:10px; font-size:14px; }
-nav .menu a:hover { background:var(--lav); }
+@media (hover: hover) { nav .menu a:hover { background:var(--lav); } }
 .hero { padding:64px 0 40px; }
 .hero .wrap { display:grid; grid-template-columns:1.2fr .8fr; gap:32px; align-items:center; }
 .eyebrow { font-size:13px; font-weight:700; letter-spacing:.14em; color:var(--mint-ink); }
@@ -44,8 +50,18 @@ h1 em { font-style:normal; color:var(--brand); background:linear-gradient(transp
 .hero-art { position:relative; display:flex; justify-content:center; }
 .hero-art::before { content:""; position:absolute; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--lav), transparent 70%); top:20px; }
 .hero-art img { position:relative; width:250px; height:auto; }
-/* (2026-11-03) 첫 도구 글씨 뚝딱 — 도구 목록 없이 바로 들어간다. NEON 9 은 첫 화면에 쓰지 않는다(제품 페이지에만) */
+/* 제품 칸 — Prism Lite, 글씨 뚝딱 */
 .product { padding:0 0 28px; }
+.prod.prism { grid-template-columns:auto 1fr auto; margin-bottom:14px; }
+.prod.prism.nochar { grid-template-columns:1fr auto; }
+.prod.prism:hover { box-shadow:none; }
+.prod-char { display:flex; justify-content:center; margin:-6px 0; }
+.prod-char img { height:118px; width:auto; }
+.prod-act { display:flex; flex-direction:column; align-items:flex-end; gap:8px; max-width:310px; }
+.prod-btns { display:flex; align-items:center; gap:14px; }
+.btn.lite { display:inline-flex; align-items:center; justify-content:center; text-align:center; font-weight:800; font-size:17px; letter-spacing:.01em; white-space:nowrap; }
+.prod-act small { font-size:12px; color:var(--sub); text-align:right; word-break:keep-all; line-height:1.45; }
+.prod-act .nw { white-space:nowrap; }
 .prod { display:grid; grid-template-columns:auto 1fr auto auto; gap:18px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:18px 20px; transition:box-shadow .15s; }
 .prod:hover { box-shadow:0 8px 24px rgba(40,30,80,.10); }
 .prod-mark { display:grid; place-items:center; width:56px; height:56px; border-radius:17px; background:var(--brand); color:#dcf78b; font:italic 700 30px Georgia, serif; }
@@ -112,6 +128,9 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   .hero .wrap { grid-template-columns:1fr; text-align:left; } .hero-art { order:-1; } .hero-art img { width:180px; }
   h1 { font-size:34px; } .grid, .values .wrap, .chs { grid-template-columns:1fr 1fr; } .rows { grid-template-columns:1fr; }
   .prod { grid-template-columns:auto 1fr; } .prod-sample, .prod .btn { grid-column:1 / -1; } .prod .btn { text-align:center; }
+  .prod.prism { grid-template-columns:auto 1fr; } .prod.prism.nochar { grid-template-columns:1fr; }
+  .prod-act { grid-column:1 / -1; align-items:stretch; max-width:none; } .prod-btns .btn { flex:1; } .prod-act small { text-align:left; }
+  .prod-char img { height:100px; }
 }
 @media (max-width: 600px) {
   header .wrap { grid-template-columns:1fr; height:auto; padding:12px 16px; gap:8px; justify-items:center; }
@@ -119,15 +138,21 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   .about .box { grid-template-columns:1fr; } .about img { width:90px; } h1 { font-size:30px; }
   .slide .head { flex-direction:column; align-items:flex-start; gap:2px; } .slide .head p { word-break:keep-all; }
 }
+/* (2026-11-27) 메뉴에 제품(지금은 Prism)이 더해져 320~380px 폰에서 한 줄이 넘쳤다 — 칸 여백만 줄여 한 줄로 */
+@media (max-width: 400px) {
+  nav { gap:2px; } nav > a, nav summary { padding:8px 9px; font-size:14px; } nav > a[aria-current]::after { left:9px; right:9px; }
+}
+@media (max-width: 340px) { .btn.lite { padding:12px 10px; font-size:16px; letter-spacing:0; } .prod-btns { gap:10px; } }
 </style>
 </head>
 <body>
 <header><div class="wrap">
   <a class="logo" href="./"><img src="assets/logo.webp" alt=""><span>SECOND SYNTAX<small>by WY</small></span></a>
   <nav>
-    <a href="./">홈</a>
+    <a href="./" aria-current="page">홈</a>
     <details><summary>Docs ▾</summary><div class="menu"><a href="docs/tech/">🛠️ 기술블로그</a><a href="docs/news/">📰 뉴스</a><a href="docs/">📚 전체 글</a></div></details>
     <a href="text-style/">글씨 뚝딱</a>
+    <a href="products/prism/">Prism</a>
     <a href="#about">About</a>
   </nav>
   <span></span>
@@ -143,7 +168,8 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   <div class="hero-art"><img src="assets/poses/hello.webp" alt="SECOND SYNTAX 로봇 캐릭터가 손을 흔들어요"></div>
 </div></section>
 
-<section class="product"><div class="wrap"><a class="prod" href="text-style/">
+<section class="product"><div class="wrap"><div class="prod prism"><figure class="prod-char"><img src="products/assets/character/greet.webp" alt="손을 흔들며 인사하는 Prism 캐릭터" width="292" height="640"></figure><span class="prod-txt"><span class="eyebrow">NEW · Windows</span><b>Prism Lite 팩</b><span class="desc">한글·PDF를 열지 않고 탐색기 옆에서 보고, 이름만 쳐도 찾는 Windows 탐색기예요.</span></span><div class="prod-act"><div class="prod-btns"><a class="btn primary lite" href="https://github.com/second-syntax/prism-download/releases/download/simple-v0.1.2/Prism-Lite-Setup-0.1.2.exe" aria-label="Lite 팩 내려받기"><span aria-hidden="true">𝗟𝗶𝘁𝗲 팩 내려받기</span></a><a class="more" href="products/prism/">자세히 보기 →</a></div><small>Windows 11 64비트 · 약 100MB · 설치할 때 <span class="nw">'Windows의 PC 보호'</span> 창이 뜨면 <span class="nw">'추가 정보 → 실행'</span>을 눌러요.</small></div></div>
+<a class="prod" href="text-style/">
   <span class="prod-mark" aria-hidden="true">Aa</span>
   <span class="prod-txt"><span class="eyebrow">NEW · 첫 번째 도구</span><b>글씨 뚝딱</b><span class="desc">키보드에 없는 글씨를 메신저에 — 영문 글씨체 22가지, 한글은 외계어로</span></span>
   <span class="prod-sample" aria-hidden="true">𝐒𝐘𝐍𝐓𝐀𝐗 · 𝓢𝔂𝓷𝓽𝓪𝔁 · ㅅr랑ㅎH</span>
@@ -168,8 +194,8 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
       <div class="rows"><a class="row" href="https://second-syntax.com/docs/tech/20261126-text-style-mood-ai/"><span class="thumb"><img src="assets/thumbs/20261126-text-style-mood-ai.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.11.26</span></span><strong>브라우저 안에서 도는 0.9MB 분위기 AI, 글씨 뚝딱 추천을 만든 이야기</strong></span></a><a class="row" href="https://second-syntax.com/docs/tech/20261124-text-style-birthday/"><span class="thumb"><img src="assets/thumbs/20261124-text-style-birthday.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.11.24</span></span><strong>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</strong></span></a><a class="row" href="https://second-syntax.com/docs/tech/20261119-text-style-alien-hangul/"><span class="thumb"><img src="assets/thumbs/20261119-text-style-alien-hangul.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.11.19</span></span><strong>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</strong></span></a><a class="row" href="https://second-syntax.com/docs/tech/20261113-text-style-insta-profile/"><span class="thumb"><img src="assets/thumbs/20261113-text-style-insta-profile.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.11.13</span></span><strong>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</strong></span></a><a class="row" href="https://second-syntax.com/docs/tech/20261110-text-style-launch/"><span class="thumb"><img src="assets/thumbs/20261110-text-style-launch.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-project">프로젝트</span><span class="date">2026.11.08</span></span><strong>키보드로 못 치는 글씨를 메신저에, 한글도 되는 글씨 뚝딱을 만들었어요</strong></span></a><a class="row" href="https://second-syntax.com/docs/tech/20261016-ai-code-motion-prompt-pack/"><span class="thumb"><img src="assets/thumbs/20261016-ai-code-motion-prompt-pack.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-automation">활용</span><span class="date">2026.10.16</span></span><strong>모션그래픽 프롬프트 팩, 영상 AI가 아니라 코드가 그린다</strong></span></a></div>
     </div>
     <div class="slide" id="news" role="tabpanel" aria-labelledby="tab-news">
-      <div class="head"><p>발표 원문을 확인해서 쉽게 정리한 소식 168편</p><a class="more" href="docs/news/">뉴스 전체 보기 →</a></div>
-      <div class="rows"><a class="row" href="https://second-syntax.com/docs/news/20261127-singapore-punggol-robots/"><span class="thumb"><img src="assets/thumbs/20261127-singapore-punggol-robots.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>싱가포르 동네 전체가 로봇 연습장, 길에서 만나는 로봇 괜찮을까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-matrix-multiply-floor/"><span class="thumb"><img src="assets/thumbs/20261127-matrix-multiply-floor.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>오픈AI 행렬 곱셈 바닥 찾았다 주장, 57년 수수께끼 AI 답 믿어도 될까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-china-ai-construction-site/"><span class="thumb"><img src="assets/thumbs/20261127-china-ai-construction-site.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>중국 건설기계 AI 무인 공사장 시연, 말 한마디로 공사해도 될까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-chatgpt-shared-usage/"><span class="thumb"><img src="assets/thumbs/20261127-chatgpt-shared-usage.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>챗GPT 사용량 한 지갑으로 합쳐, 많이 쓰면 더 빨리 바닥날까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261126-spacex-starmind-fcc/"><span class="thumb"><img src="assets/thumbs/20261126-spacex-starmind-fcc.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.26</span></span><strong>스페이스X 우주 AI 위성 허가, 하늘 위 컴퓨터 괜찮을까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261126-claude-mcp-tasks-skills/"><span class="thumb"><img src="assets/thumbs/20261126-claude-mcp-tasks-skills.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.26</span></span><strong>클로드 MCP 기능 확장, AI에 긴 심부름 맡겨도 괜찮을까</strong></span></a></div>
+      <div class="head"><p>발표 원문을 확인해서 쉽게 정리한 소식 170편</p><a class="more" href="docs/news/">뉴스 전체 보기 →</a></div>
+      <div class="rows"><a class="row" href="https://second-syntax.com/docs/news/20261128-lablup-aigo-local-agent/"><span class="thumb"><img src="assets/thumbs/20261128-lablup-aigo-local-agent.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.28</span></span><strong>래블업 에이아이고 2.0 출시, 내 PC 속 AI 도우미 믿고 맡겨도 될까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261128-google-cogentic-factoring/"><span class="thumb"><img src="assets/thumbs/20261128-google-cogentic-factoring.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.28</span></span><strong>구글 AI 소인수분해 기록 경신 주장, 혼자 쓴 수학 논문 믿어도 될까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-singapore-punggol-robots/"><span class="thumb"><img src="assets/thumbs/20261127-singapore-punggol-robots.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>싱가포르 동네 전체가 로봇 연습장, 길에서 만나는 로봇 괜찮을까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-matrix-multiply-floor/"><span class="thumb"><img src="assets/thumbs/20261127-matrix-multiply-floor.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>오픈AI 행렬 곱셈 바닥 찾았다 주장, 57년 수수께끼 AI 답 믿어도 될까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-china-ai-construction-site/"><span class="thumb"><img src="assets/thumbs/20261127-china-ai-construction-site.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>중국 건설기계 AI 무인 공사장 시연, 말 한마디로 공사해도 될까</strong></span></a><a class="row" href="https://second-syntax.com/docs/news/20261127-chatgpt-shared-usage/"><span class="thumb"><img src="assets/thumbs/20261127-chatgpt-shared-usage.webp" alt="" loading="lazy" width="360" height="360"></span><span class="txt"><span class="meta"><span class="chip c-ai-news">뉴스</span><span class="date">2026.11.27</span></span><strong>챗GPT 사용량 한 지갑으로 합쳐, 많이 쓰면 더 빨리 바닥날까</strong></span></a></div>
     </div>
   </div>
 </div></section>
@@ -249,6 +275,25 @@ footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:
   }
   send();
   document.addEventListener('visibilitychange', send);
+})();
+</script>
+<script>
+// (2026-11-27 happy_various "지금 Docs 를 선택하고 다른 곳을 선택했을 때 그 docs 메뉴가 그대로 유지돼. 다른 곳 선택하면 메뉴가 사라지게 해줘")
+// 바깥을 누르거나 Esc, 메뉴 안 링크를 누르면 Docs ▾ 를 닫는다 — 마케팅 키트 61b5e14 의 /products/ 쪽과 같은 스크립트
+(function () {
+  function closeMenus(except) {
+    document.querySelectorAll('nav details[open]').forEach(function (d) { if (d !== except) d.removeAttribute('open'); });
+  }
+  document.addEventListener('click', function (e) {
+    var d = e.target.closest ? e.target.closest('nav details') : null;
+    closeMenus(d);
+    if (d && e.target.closest('.menu a')) d.removeAttribute('open');
+  });
+  // 아이폰 사파리는 링크·단추가 아닌 빈 곳을 누르면 문서까지 click 을 올려 보내지 않을 때가 있다 — 손가락이 닿는 순간(pointerdown)에도 바깥이면 닫는다
+  document.addEventListener('pointerdown', function (e) {
+    closeMenus(e.target.closest ? e.target.closest('nav details') : null);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(null); });
 })();
 </script>
 </body>
