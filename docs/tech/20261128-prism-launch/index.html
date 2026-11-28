@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="naver-site-verification" content="8f1411e4c57286b01ad254b6d4d651ea2c5c8ea5"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><title>Prism Lite 팩 공개, 한글·PDF를 열지 않고 보고 이름만 쳐도 찾는 Windows 탐색기</title><link rel="canonical" href="https://second-syntax.com/docs/tech/20261128-prism-launch/"><meta name="description" content="SECOND SYNTAX가 만든 Windows 탐색기 Prism의 Lite 팩을 사이트에서 내려받을 수 있게 공개했어요. 한글(HWP·HWPX)과 PDF를 프로그램을 열지 않고 탐색기에서 바로 보고, 드라이브 전체 파일을 이름으로 바로 찾고, 메모장·계산기·그림판을 탐색기 옆에서 써요. 들어 있는 것, 설치 방법, 설치할 때 뜨는 경고 창을 정리했어요."><meta property="og:title" content="Prism Lite 팩 공개, 한글·PDF를 열지 않고 보고 이름만 쳐도 찾는 Windows 탐색기"><meta property="og:description" content="SECOND SYNTAX가 만든 Windows 탐색기 Prism의 Lite 팩을 사이트에서 내려받을 수 있게 공개했어요. 한글(HWP·HWPX)과 PDF를 프로그램을 열지 않고 탐색기에서 바로 보고, 드라이브 전체 파일을 이름으로 바로 찾고, 메모장·계산기·그림판을 탐색기 옆에서 써요. 들어 있는 것, 설치 방법, 설치할 때 뜨는 경고 창을 정리했어요."><meta property="og:url" content="https://second-syntax.com/docs/tech/20261128-prism-launch/"><meta property="og:site_name" content="SECOND SYNTAX"><meta property="og:image" content="https://second-syntax.com/_astro/B1.KDTGmFpb_1cKGtw.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/_astro/index.Dh4z7vXB.css">
+<link rel="stylesheet" href="/_astro/_id_.0BOgQO6c.css">
+<style>.sec-tabs[data-astro-cid-cnlsgtkd]{display:flex;gap:6px;width:fit-content;max-width:100%;margin:6px auto 0;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;text-align:left}.sec-tabs[data-astro-cid-cnlsgtkd]::-webkit-scrollbar{display:none}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;white-space:nowrap}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd]:hover{border-color:var(--accent);color:var(--accent)}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page]{background:var(--ink);border-color:var(--ink);color:#fff}.sec-tabs[data-astro-cid-cnlsgtkd] .n[data-astro-cid-cnlsgtkd]{position:relative;margin-left:2px;font-size:.8em;color:var(--sub);font-weight:600}.sec-tabs[data-astro-cid-cnlsgtkd] a[data-astro-cid-cnlsgtkd][aria-current=page] .n[data-astro-cid-cnlsgtkd]{color:inherit;opacity:.75}.sr[data-astro-cid-cnlsgtkd]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style></head> <body class="ss"> <a class="skip" href="#main">본문으로 건너뛰기</a> <header class="site"> <div class="hdr-tools">  <nav class="ss-nav" aria-label="SECOND SYNTAX 메뉴"><a href="/">홈</a><a href="/text-style/">글씨 뚝딱</a><a href="/products/prism/">Prism</a></nav>  </div> <div class="brand-box">  <a class="brand ss-wm" href="/">SECOND SYNTAX</a> <a class="site-char" href="/" aria-hidden="true" tabindex="-1"><img class="mascot light" src="/assets/logo.webp" alt="" width="96" height="96"></a> <a class="site-name" href="/docs/">Docs</a>  </div> <div class="hero"> <nav class="sec-tabs" aria-label="Docs 소메뉴" data-astro-cid-cnlsgtkd> <a href="/docs/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🤖</span> 전체 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>248</span> </a><a href="/docs/tech/" aria-current="page" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>🛠️</span> 기술블로그 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>78</span> </a><a href="/docs/news/" data-astro-cid-cnlsgtkd> <span aria-hidden="true" data-astro-cid-cnlsgtkd>📰</span> 뉴스 <span class="n" data-astro-cid-cnlsgtkd><span class="sr" data-astro-cid-cnlsgtkd>글 </span>170</span> </a> </nav>  </div> <div class="hdr-bar" hidden></div> </header> <main id="main" tabindex="-1">  <script type="module">document.querySelectorAll("[data-share]").forEach(t=>{let o=0;const c=async a=>{try{return await navigator.clipboard.writeText(a),!0}catch{}const e=document.createElement("textarea");e.value=a,e.setAttribute("readonly",""),e.style.cssText="position:fixed;top:0;left:0;opacity:0",document.body.appendChild(e),e.select();let r=!1;try{r=document.execCommand("copy")}catch{r=!1}return e.remove(),r};t.addEventListener("click",async()=>{const a=t.dataset.url||location.href,e=t.dataset.title||document.title;if(matchMedia("(pointer: coarse)").matches&&navigator.share)try{await navigator.share({title:e,url:a});return}catch(r){if(r?.name==="AbortError")return}await c(a)?(t.classList.add("done"),clearTimeout(o),o=window.setTimeout(()=>t.classList.remove("done"),2e3)):window.prompt(t.querySelector(".lbl")?.textContent||"",a)})});</script><div class="crumb-bar" data-astro-cid-f3qesd3f><nav class="crumb" aria-label="목록" data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>📚 Docs</a><span aria-hidden="true" data-astro-cid-f3qesd3f>›</span><a href="/docs/tech/" data-back data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></nav><button type="button" class="share-btn" data-share data-url="https://second-syntax.com/docs/tech/20261128-prism-launch/" data-title="Prism Lite 팩 공개, 한글·PDF를 열지 않고 보고 이름만 쳐도 찾는 Windows 탐색기" aria-label="이 글 공유하기" title="공유하기" data-astro-cid-qan2qojn><span aria-hidden="true" data-astro-cid-qan2qojn>🔗</span><span class="lbl" aria-hidden="true" data-astro-cid-qan2qojn>링크 복사됨</span></button>  </div><script>
+      // 경로 줄은 머리글 맨 아래 줄로 — 스크롤과 상관없이 처음부터 머리글 안, 틈 없이 (2026-10-12 happy_various)
+      (function () { var c = document.currentScript.previousElementSibling, bar = document.querySelector('header.site .hdr-bar'); if (c && bar) { bar.appendChild(c); bar.hidden = false; } })();
+    </script><aside class="rail rail-l" aria-label="목록" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로</a><ul class="secs" data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/" data-astro-cid-f3qesd3f>🤖 전체 글</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/" aria-current="true" data-astro-cid-f3qesd3f>🛠️ 기술블로그</a></li><li data-astro-cid-f3qesd3f><a href="/docs/news/" data-astro-cid-f3qesd3f>📰 뉴스</a></li></ul><a class="cal" href="/docs/menu/#ai-project" data-astro-cid-f3qesd3f>☰ 연재 부별 목차</a></div></aside><aside class="rail rail-r" aria-label="이 글 목차" data-astro-cid-f3qesd3f><div class="rail-in" data-astro-cid-f3qesd3f><nav class="toc" aria-label="이 글 목차" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>이 글 목차</p><ol data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="#한눈에" data-toc="한눈에" data-astro-cid-f3qesd3f>한눈에</a></li><li data-astro-cid-f3qesd3f><a href="#-열지-않고-바로-본다" data-toc="-열지-않고-바로-본다" data-astro-cid-f3qesd3f>① 열지 않고, 바로 본다</a></li><li data-astro-cid-f3qesd3f><a href="#-이름만-쳐도-찾는다" data-toc="-이름만-쳐도-찾는다" data-astro-cid-f3qesd3f>② 이름만 쳐도, 찾는다</a></li><li data-astro-cid-f3qesd3f><a href="#-작은-일은-탐색기-옆에서" data-toc="-작은-일은-탐색기-옆에서" data-astro-cid-f3qesd3f>③ 작은 일은, 탐색기 옆에서</a></li><li data-astro-cid-f3qesd3f><a href="#-필요한-것만-남긴-화면" data-toc="-필요한-것만-남긴-화면" data-astro-cid-f3qesd3f>④ 필요한 것만 남긴 화면</a></li><li data-astro-cid-f3qesd3f><a href="#파일은-이-pc-안에서" data-toc="파일은-이-pc-안에서" data-astro-cid-f3qesd3f>파일은 이 PC 안에서</a></li><li data-astro-cid-f3qesd3f><a href="#내려받기와-설치" data-toc="내려받기와-설치" data-astro-cid-f3qesd3f>내려받기와 설치</a></li><li data-astro-cid-f3qesd3f><a href="#업데이트" data-toc="업데이트" data-astro-cid-f3qesd3f>업데이트</a></li><li data-astro-cid-f3qesd3f><a href="#다음-단계" data-toc="다음-단계" data-astro-cid-f3qesd3f>다음 단계</a></li></ol><a class="up" href="#main" data-astro-cid-f3qesd3f>↑ 맨 위로</a></nav><nav class="more" aria-label="다른 프로젝트 글" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261126-text-style-mood-ai/" data-astro-cid-f3qesd3f>브라우저 안에서 도는 0.9MB 분위기 AI, 글씨 뚝딱 추천을 만든 이야기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li></ul></nav></div></aside><a class="float-back" href="/docs/tech/" data-back aria-label="목록으로" data-astro-cid-f3qesd3f>← 목록</a><script type="module">document.querySelectorAll("[data-back]").forEach(e=>e.addEventListener("click",r=>{try{const t=new URL(document.referrer);t.origin===location.origin&&!/\/posts\/|\/docs\/(tech|news)\/[^/]+\//.test(t.pathname)&&history.length>1&&(r.preventDefault(),history.back())}catch{}}));const n=new Map([...document.querySelectorAll("[data-toc]")].map(e=>[e.dataset.toc,e]));if(n.size&&"IntersectionObserver"in window){const e=new IntersectionObserver(r=>{for(const t of r)t.isIntersecting&&(n.forEach(o=>o.removeAttribute("aria-current")),n.get(t.target.id)?.setAttribute("aria-current","true"))},{rootMargin:"0px 0px -72% 0px"});n.forEach((r,t)=>{const o=document.getElementById(t);o&&e.observe(o)})}const c=document.querySelector(".float-back");if(c){const e=()=>c.classList.toggle("show",scrollY>480);addEventListener("scroll",e,{passive:!0}),e()}</script> <article class="tech" data-astro-cid-l6a6buid>  <p class="meta" data-astro-cid-l6a6buid>2026년 11월 28일 기준</p> <details class="toc" data-astro-cid-l6a6buid> <summary data-astro-cid-l6a6buid>목차 · 9개</summary> <ol data-astro-cid-l6a6buid><li data-astro-cid-l6a6buid><a href="#한눈에" data-astro-cid-l6a6buid>한눈에</a></li><li data-astro-cid-l6a6buid><a href="#-열지-않고-바로-본다" data-astro-cid-l6a6buid>① 열지 않고, 바로 본다</a></li><li data-astro-cid-l6a6buid><a href="#-이름만-쳐도-찾는다" data-astro-cid-l6a6buid>② 이름만 쳐도, 찾는다</a></li><li data-astro-cid-l6a6buid><a href="#-작은-일은-탐색기-옆에서" data-astro-cid-l6a6buid>③ 작은 일은, 탐색기 옆에서</a></li><li data-astro-cid-l6a6buid><a href="#-필요한-것만-남긴-화면" data-astro-cid-l6a6buid>④ 필요한 것만 남긴 화면</a></li><li data-astro-cid-l6a6buid><a href="#파일은-이-pc-안에서" data-astro-cid-l6a6buid>파일은 이 PC 안에서</a></li><li data-astro-cid-l6a6buid><a href="#내려받기와-설치" data-astro-cid-l6a6buid>내려받기와 설치</a></li><li data-astro-cid-l6a6buid><a href="#업데이트" data-astro-cid-l6a6buid>업데이트</a></li><li data-astro-cid-l6a6buid><a href="#다음-단계" data-astro-cid-l6a6buid>다음 단계</a></li></ol> </details> <blockquote data-astro-cid-l6a6buid>SECOND SYNTAX가 직접 만든 프로그램을 소개하는 글이에요. 제휴 링크는 없어요. Prism 캐릭터 그림은 AI 이미지 생성이에요.</blockquote> <h1 id="prism-lite-팩-공개-한글pdf를-열지-않고-보고-이름만-쳐도-찾는-windows-탐색기">Prism Lite 팩 공개, 한글·PDF를 열지 않고 보고 이름만 쳐도 찾는 Windows 탐색기</h1>
+<p><img alt="Prism Lite 팩 첫 화면 — 왼쪽 폴더 트리와 파일 목록, 오른쪽에서 한글 문서를 미리 봐요" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="800" src="/_astro/B1.KDTGmFpb_1Dg7aq.webp" ></p>
+<p>한글 파일 하나 확인하려고 한글 프로그램을 열고, 닫고, 다음 파일을 또 여는 일이 많지 않나요? 파일 이름이 정확히 기억나지 않아 폴더를 이리저리 뒤지는 일도요.</p>
+<p><strong>Prism은 파일을 열지 않고 탐색기에서 바로 보고, 이름 몇 글자만 쳐도 드라이브 전체에서 찾아 주는 Windows 탐색기예요.</strong> 필요한 것만 남긴 Lite 팩을 SECOND SYNTAX 사이트에서 내려받을 수 있게 공개했어요.</p>
+<p>👉 <a href="https://second-syntax.com/products/prism/">https://second-syntax.com/products/prism/</a> 의 ‘Lite 팩 내려받기’ 단추</p>
+<h2 id="한눈에">한눈에</h2>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>궁금한 것</th><th>답</th></tr></thead><tbody><tr><td>무엇을 하나요</td><td>한글·PDF를 열지 않고 보기, 드라이브 전체 파일을 이름으로 찾기, 탐색기 옆에서 메모장·계산기·그림판 쓰기</td></tr><tr><td>어디서 받나요</td><td>SECOND SYNTAX 사이트의 Prism 소개 페이지(<a href="https://second-syntax.com/products/prism/">https://second-syntax.com/products/prism/</a>)</td></tr><tr><td>어떤 PC에서 되나요</td><td>Windows 11 64비트(x64)</td></tr><tr><td>지금 버전</td><td>0.1.2</td></tr><tr><td>AI 기능이 있나요</td><td>Lite 팩에는 AI 기능이 없어요</td></tr><tr><td>파일이 밖으로 나가나요</td><td>아니요. Prism은 파일 내용이나 이름, 경로를 밖으로 보내지 않아요</td></tr><tr><td>설치할 때 알아 둘 것</td><td>아직 코드 서명 전이라 경고 창이 뜰 수 있어요. 아래 ‘내려받기와 설치’에 적었어요</td></tr></tbody></table></div>
+<h2 id="-열지-않고-바로-본다">① 열지 않고, 바로 본다</h2>
+<p><img alt="한글(HWPX) 문서를 열지 않고 쪽 그대로 미리 보는 화면" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="800" src="/_astro/C1.DJpLuWeG_wDOwq.webp" ></p>
+<p>파일을 고르면 탐색기 오른쪽에 바로 보여요.</p>
+<ul>
+<li><strong>한글(HWP·HWPX)과 PDF</strong>는 쪽 그대로 봐요. PDF는 글자를 골라 복사할 수 있어요.</li>
+<li><strong>Word·Excel·PowerPoint</strong>는 이 PC에 설치된 Microsoft Office의 미리보기로 보여 줘요.</li>
+<li>사진과 글 파일도 같은 자리에서 봐요.</li>
+</ul>
+<p>미리보기는 보기 전용이에요. 고칠 때는 한글이나 Office 프로그램에서 열어 주세요.</p>
+<h2 id="-이름만-쳐도-찾는다">② 이름만 쳐도, 찾는다</h2>
+<p><img alt="&amp;#x27;프리즘시험&amp;#x27;으로 드라이브 전체를 찾아 시험 파일 6개만 걸러진 목록" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="800" src="/_astro/D2.CCzYTSy4_1Tw6qg.webp" ></p>
+<p>드라이브 전체 파일을 이름으로 찾아요. 입력하는 대로 목록을 걸러 내서, 이름이 반만 기억나도 찾을 수 있어요. 지금 보는 폴더 안에서만 찾을 수도 있어요.</p>
+<h2 id="-작은-일은-탐색기-옆에서">③ 작은 일은, 탐색기 옆에서</h2>
+<p><img alt="탐색기 옆 도구 칸에 메모장을 열고 메모를 쓴 화면" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="800" src="/_astro/E1.Bk8ZsGpT_19Lv5D.webp" ></p>
+<p>메모장·계산기·그림판이 탐색기 옆 도구함에 있어요. 다른 프로그램을 따로 띄우지 않고 그 자리에서 써요.</p>
+<ul>
+<li><strong>메모장</strong>: 메모 한 장을 쓰고, 남기고 싶으면 파일로 저장해요.</li>
+<li><strong>계산기</strong>: 단위와 환율도 바꿔 봐요. 환율은 환율 탭을 열 때 인터넷에서 받아요.</li>
+<li><strong>그림판</strong>: 간단히 그리고 그림 파일로 저장해요.</li>
+</ul>
+<p>그 밖에 손그림, 내 PC 용량, 두 파일 비교, 터미널, 선택한 파일 인쇄도 같은 도구 줄에 있어요.</p>
+<h2 id="-필요한-것만-남긴-화면">④ 필요한 것만 남긴 화면</h2>
+<p><img alt="&amp;#x27;도구와 더 보기&amp;#x27; 단추를 눌러 메뉴를 펼친 화면" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="800" src="/_astro/B2.DSWqLnEm_ZudxRz.webp" ></p>
+<p>Lite 팩은 탐색기 창 하나와 왼쪽 폴더 트리로 이루어진 가벼운 화면이에요. 탐색기 줄 끝의 ‘도구와 더 보기’ 단추 하나로 도구 칸을 열고, 미리보기·새 폴더·정렬·보기·테마 메뉴도 거기서 열어요.</p>
+<p>복사·잘라내기·붙여넣기·이름 바꾸기·휴지통은 Windows 탐색기에서 쓰던 단축키와 오른쪽 클릭 메뉴 그대로예요. 방금 한 파일 작업은 Ctrl+Z로 되돌릴 수 있어요.</p>
+<p>지금 쓰는 Windows 탐색기는 그대로 있어요. Prism은 따로 설치하는 앱이라 함께 쓸 수 있어요.</p>
+<h2 id="파일은-이-pc-안에서">파일은 이 PC 안에서</h2>
+<p>탐색·미리보기·찾기·파일 작업·도구는 모두 이 PC 안에서 동작해요. <strong>Prism은 파일 내용이나 이름, 경로를 밖으로 보내지 않아요.</strong> 계정을 만들거나 로그인할 일도 없어요. Lite 팩에는 AI 기능이 없어요.</p>
+<p>Prism이 인터넷을 쓰는 때는 아래와 같아요. 0.1.2 설치본을 재어 보니, 아무것도 누르지 않은 동안 Prism 자신은 새 버전 확인 1건(GitHub)만 연결했어요.</p>
+<ul>
+<li>계산기의 환율 탭을 열 때 환율을 받아요.</li>
+<li>OneDrive 같은 클라우드 파일을 열 때 그 서비스가 파일을 내려받아요.</li>
+<li>새 버전이 나왔는지 하루 한 번 확인해요. 이때 가는 것은 요청 자체뿐이고, 파일·경로·설정은 보내지 않아요.</li>
+<li>알림에서 ‘업데이트’를 누르면 GitHub에서 새 설치 파일을 받아요. 누르지 않으면 받지 않아요.</li>
+<li>‘의견 보내기’에서 ‘보내기’를 누르면 쓴 의견을 SECOND SYNTAX가 쓰는 Cloudflare로 보내요. 보내기 전에 함께 가는 프로그램 정보(팩·버전·Windows 빌드·화면 배율·표시 언어)를 그대로 보여 주고, 끌 수 있어요. 받은 의견은 1년 뒤 지워요.</li>
+<li>HTML·한글 미리보기를 그리는 Windows의 Microsoft Edge WebView2 엔진이 켜질 때 Microsoft의 설정 서버에서 설정을 받아요. 파일 이름·내용·경로는 가지 않아요.</li>
+</ul>
+<p>자세한 내용은 개인정보처리방침에 있어요: <a href="https://second-syntax.com/products/prism/privacy/">https://second-syntax.com/products/prism/privacy/</a></p>
+<h2 id="내려받기와-설치">내려받기와 설치</h2>
+<ol>
+<li>소개 페이지(<a href="https://second-syntax.com/products/prism/)%EC%97%90%EC%84%9C">https://second-syntax.com/products/prism/)에서</a> Lite 팩 설치 파일 <code>Prism-Lite-Setup-0.1.2.exe</code>를 받아요.</li>
+<li>받은 파일을 실행해요. 경고 창이 뜨면 아래 안내를 읽어 주세요.</li>
+<li>설치가 끝나면 시작 메뉴의 ‘Prism Lite 팩’으로 열어요.</li>
+</ol>
+<p><strong>설치할 때 뜨는 경고 창</strong></p>
+<ul>
+<li>내려받은 설치 파일을 열면 “Windows의 PC 보호” 창이 뜰 수 있어요. 아직 코드 서명 인증서가 없는 새 프로그램이라서 그래요. “추가 정보 → 실행”을 누르면 설치돼요.</li>
+<li><strong>스마트 앱 컨트롤</strong>이 켜진 PC에서는 서명 없는 프로그램이 실행되지 않고, 넘기는 버튼이 없어요. 이런 PC에서는 아직 Prism을 쓸 수 없어요.</li>
+<li>회사 PC는 보안 정책 때문에 설치가 막힐 수 있어요. 개인 PC에서 써 보세요.</li>
+<li>설치는 관리자 승인 없이 내 계정에만 해요. 지울 때는 Windows 설정 → 앱에서 지워요.</li>
+</ul>
+<p>받은 파일이 원본과 같은지는 내려받기 페이지에 적힌 SHA-256 값으로 확인할 수 있어요.</p>
+<p><strong>설치 조건</strong></p>
+<ul>
+<li>Windows 11 64비트(x64)</li>
+<li>설치 파일은 약 100MB, 설치하면 약 340MB를 차지해요.</li>
+<li>글자 인식에 쓰는 Microsoft Visual C++ 런타임이 없는 PC에서는, 설치 화면이 Microsoft에서 받아 설치하도록 안내해요(관리자 승인 한 번).</li>
+</ul>
+<h2 id="업데이트">업데이트</h2>
+<ul>
+<li>Prism은 하루 한 번 새 버전이 나왔는지 확인하고, 나왔으면 “새 버전이 나왔어요” 알림을 띄워요.</li>
+<li>알림에서 ‘업데이트’를 누르면 새 버전을 받아요. 받는 동안에도 창은 그대로 쓸 수 있어요. 받은 파일은 SECOND SYNTAX가 서명한 목록과 맞는지 확인한 뒤에만 써요. ‘다시 시작해서 적용’을 누르면 설치하고 Prism을 다시 켜요.</li>
+<li>누르지 않으면 아무것도 받지 않아요. 알림은 ‘도구와 더 보기’ 메뉴의 ‘업데이트 알림 받기’로 끌 수 있어요.</li>
+<li>이렇게 누르는 업데이트는 이번 버전 다음에 나오는 버전부터 쓸 수 있어요. 예전 버전(0.1.1)을 쓰고 계셨다면 이번에는 소개 페이지에서 새 설치 파일을 받아 실행해 주세요. 설정과 기록은 남아요.</li>
+</ul>
+<h2 id="다음-단계">다음 단계</h2>
+<p><img alt="Prism 캐릭터" loading="lazy" decoding="async" fetchpriority="auto" width="292" height="640" src="/_astro/char-prism.DvcE3Jug_ZjG9mi.webp" ></p>
+<ul>
+<li>소개와 내려받기: <a href="https://second-syntax.com/products/prism/">https://second-syntax.com/products/prism/</a></li>
+<li>의견·버그: Prism ‘도구와 더 보기’ 메뉴의 ‘의견 보내기’, 또는 메일 <a href="mailto:secondsyntax.official@gmail.com">secondsyntax.official@gmail.com</a></li>
+<li>개인정보처리방침: <a href="https://second-syntax.com/products/prism/privacy/">https://second-syntax.com/products/prism/privacy/</a></li>
+</ul>
+<p>써 보시고 설치가 막힌 곳이나 불편한 점을 알려 주세요. 경고 창에서 막혔는지, 어떤 PC였는지 한 줄만 적어 주셔도 큰 도움이 돼요.</p>
+<p>한글은 한글과컴퓨터의, Windows·Word·PowerPoint·Excel·OneDrive·Microsoft Edge는 Microsoft의 상표예요.</p>  <p class="meta" data-astro-cid-l6a6buid>🤖 그날 AI 글을 30초로 묶은 쇼츠는 인스타그램 <a href="https://www.instagram.com/second.syntax/" rel="noopener" target="_blank" data-astro-cid-l6a6buid>@second.syntax</a>에 매일 올려요.</p> </article> <nav class="end-nav" aria-label="목록" data-astro-cid-f3qesd3f><a class="back" href="/docs/tech/" data-back data-astro-cid-f3qesd3f>← 목록으로 · 🛠️ 기술블로그</a><div class="more" data-astro-cid-f3qesd3f><p class="h" data-astro-cid-f3qesd3f>다른 프로젝트 글</p><ul data-astro-cid-f3qesd3f><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261126-text-style-mood-ai/" data-astro-cid-f3qesd3f>브라우저 안에서 도는 0.9MB 분위기 AI, 글씨 뚝딱 추천을 만든 이야기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261124-text-style-birthday/" data-astro-cid-f3qesd3f>생일 축하 문구 꾸미는 법, 생日 축하海·HBD·필기체로 보내기</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261119-text-style-alien-hangul/" data-astro-cid-f3qesd3f>한글 외계어 만드는 법, 미니홈피 감성 ㅅr랑ㅎH부터 15가지</a></li><li data-astro-cid-f3qesd3f><a href="/docs/tech/20261113-text-style-insta-profile/" data-astro-cid-f3qesd3f>인스타 프로필 글씨체 바꾸는 법, 한글 이름과 소개글까지</a></li></ul></div></nav> </main> <footer class="site">
+직접 해본 것만 씁니다. 제휴·광고가 있는 글에는 각 글에 이해관계를 표시합니다.
+<nav class="legal">
+© SECOND SYNTAX by WY · <a href="/">홈</a> · <a href="/docs/">Docs</a> · <a href="/text-style/">글씨 뚝딱</a> · <a href="/products/prism/">Prism</a> · 방문 수는 쿠키 없이 세요
+</nav> </footer> <script>
+      // (2026-10-06) A라인 기술 글(article.tech)의 명령·프롬프트 상자에 복사 버튼 — 네이버판은 복사 버튼이 없어 사이트판으로 안내한다
+      document.querySelectorAll('article.tech pre').forEach(function (pre) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = '복사';
+        b.addEventListener('click', function () {
+          var code = pre.querySelector('code') || pre;
+          var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+          // 네이버 앱 같은 인앱 브라우저는 clipboard API 가 없거나 막혀 있다(네이버판이 이 사이트판으로 보낸다) —
+          // 그때는 글을 골라 두고 execCommand 로 복사, 그것도 안 되면 골라 둔 채 '길게 눌러 복사' 안내 (2026-10-06)
+          var fallback = function () {
+            var r = document.createRange(); r.selectNodeContents(code);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+            if (ok) { s.removeAllRanges(); done(); } else { b.textContent = '길게 눌러 복사'; }
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.innerText).then(done, fallback);
+          else fallback();
+        });
+        pre.appendChild(b);
+      });
+    </script> <script>
+      // 머리글 높이를 --hdr-h 로 (목차 이동·글 양옆 칸·행사 날짜 줄이 머리글 아래에 오게)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var set = function () { document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px'); };
+        set(); addEventListener('resize', set);
+        if ('ResizeObserver' in window) new ResizeObserver(set).observe(h);
+      })();
+    </script> <script>
+      // 언어 목록 — 바깥을 누르거나 Esc 를 누르면 닫는다 (나들이로그와 같음)
+      (function () {
+        var m = document.querySelector('[data-lang-menu]');
+        if (!m) return;
+        document.addEventListener('click', function (e) { if (m.open && !m.contains(e.target)) m.open = false; });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.open) { m.open = false; m.querySelector('summary').focus(); } });
+      })();
+    </script> <script>
+      // 머리글 맞춤 — 가운데 분류 줄이 넘치면 오른쪽 메뉴·언어를 단계적으로 줄인다(위 CSS data-fit 설명)
+      (function () {
+        var h = document.querySelector('header.site');
+        if (!h) return;
+        var mq = matchMedia('(min-width: 901px)');
+        function over() {
+          var hero = h.querySelector('.hero');
+          if (!hero) return false;
+          var t = hero.querySelector('.sec-tabs'), h1 = hero.querySelector('h1');
+          if (t && t.scrollWidth > t.clientWidth + 1) return true;
+          // 오른쪽 메뉴·언어가 넓어 가운데 칸이 정가운데에서 밀렸으면 줄인다
+          var hr = hero.getBoundingClientRect(), r = h.getBoundingClientRect();
+          if (h.getAttribute('data-fit') !== '4' && Math.abs((hr.left + hr.right) / 2 - (r.left + r.right) / 2) > 2) return true;
+          if (h1) { var lh = parseFloat(getComputedStyle(h1).lineHeight) || 24; if (h1.offsetHeight > lh * 1.5) return true; }
+          return false;
+        }
+        var busy = false;
+        function fit() {
+          if (busy) return; busy = true;
+          h.removeAttribute('data-fit');
+          if (mq.matches) for (var lv = 1; lv <= 4 && over(); lv++) h.setAttribute('data-fit', String(lv));
+          busy = false;
+        }
+        fit();
+        addEventListener('resize', fit);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      })();
+    </script> <script>(function(){const VIEWS_API = "https://happyvarious-views.happyvarious.workers.dev/v1/view";
+
+        // 조회수 — 화면이 실제로 보일 때 한 번, 주소 경로와 들어온 곳의 호스트 이름만 보낸다(쿠키·방문자 번호 없음, automations/publish/views).
+        // 주소 끝에 #noview 를 붙여 한 번 열면 그 기기는 세지 않는다(#countview 로 되돌림) — 우리 식구 방문 빼기.
+        (function () {
+          var K = 'hv:noview';
+          function flag() {
+            try {
+              if (location.hash === '#noview') { localStorage.setItem(K, '1'); alert('이 기기의 방문은 조회수에서 뺍니다.'); }
+              if (location.hash === '#countview') { localStorage.removeItem(K); alert('이 기기의 방문을 다시 조회수에 넣습니다.'); }
+              return localStorage.getItem(K) === '1';
+            } catch (e) { return false; }
+          }
+          addEventListener('hashchange', flag);
+          if (flag()) return;
+          if (navigator.webdriver) return;
+          var sent = false;
+          function send() {
+            if (sent || document.visibilityState !== 'visible') return;
+            sent = true;
+            var r = '';
+            try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+            var body = JSON.stringify({ p: location.pathname, r: r });
+            try { if (!(navigator.sendBeacon && navigator.sendBeacon(VIEWS_API, body))) fetch(VIEWS_API, { method: 'POST', body: body, keepalive: true, mode: 'no-cors' }); } catch (e) {}
+          }
+          send();
+          document.addEventListener('visibilitychange', send);
+        })();
+      })();</script> </body> </html> 
