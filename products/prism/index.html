@@ -86,6 +86,7 @@ sup a { color:var(--p-accent); font-weight:700; font-size:.8em; padding:0 1px; }
 .hero .shot { margin-top:56px; }
 /* 한눈에 보기 */
 .glance { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
+.glance.n5 { grid-template-columns:repeat(5, 1fr); gap:14px; } .glance.n5 a { padding:20px 18px; }
 .glance a { display:flex; flex-direction:column; gap:6px; padding:22px; border-radius:18px; background:var(--p-surface); border:1px solid var(--p-stroke); transition:border-color .15s, box-shadow .15s; }
 .glance a:hover { border-color:var(--p-accent); box-shadow:0 8px 24px rgba(109,84,189,.10); }
 .glance b { font-size:19px; }
@@ -189,7 +190,8 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
 @media (max-width: 900px) {
   .band { padding:64px 0; }
   .hero h1 { font-size:44px; } .feature h2, .hub-head h1 { font-size:36px; } .sec-head h2 { font-size:30px; }
-  .glance { grid-template-columns:1fr 1fr; } .more { grid-template-columns:1fr 1fr; }
+  .glance, .glance.n5 { grid-template-columns:1fr 1fr; } .more { grid-template-columns:1fr 1fr; }
+  .glance > a:last-child:nth-child(odd) { grid-column:1 / -1; }   /* 카드가 홀수면 마지막 하나를 한 줄 가득(2026-11-28 다섯 칸) */
   .feature .text, .privacy, .pcard { grid-template-columns:1fr; gap:20px; } .routes, .ways { grid-template-columns:1fr; }
   .hero.has-char .intro { flex-direction:column-reverse; gap:8px; } .hero.has-char .copy { text-align:center; }
   .hero.has-char .product, .hero.has-char .cta { justify-content:center; } .hero.has-char .lead { margin:0 auto; }
@@ -199,7 +201,7 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
   header.site .wrap { grid-template-columns:1fr; height:auto; padding:12px 16px; gap:8px; justify-items:center; }
   .wrap { padding:0 16px; } .band { padding:52px 0; }
   .hero { padding-top:48px; } .hero h1 { font-size:34px; } .hero .lead { font-size:17px; } .feature h2 { font-size:30px; }
-  .glance, .more { grid-template-columns:1fr; } .sendtable .cols { grid-template-columns:1fr; } .sendtable .col + .col { border-left:0; border-top:1px solid var(--p-stroke); }
+  .glance, .glance.n5, .more { grid-template-columns:1fr; } .sendtable .cols { grid-template-columns:1fr; } .sendtable .col + .col { border-left:0; border-top:1px solid var(--p-stroke); }
   .pcard { padding:20px; } .pcard h2 { font-size:32px; } .closing h2 { font-size:30px; }
   .req th { width:110px; }
   .char-hero img { height:180px; } .char-faq img { height:120px; } .char-closing img { height:170px; }
@@ -211,6 +213,14 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
   nav.gnb > a[aria-current]::after { left:9px; right:9px; }
 }
 </style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SECOND SYNTAX">
+<meta property="og:url" content="https://second-syntax.com/products/prism/">
+<meta property="og:image" content="https://second-syntax.com/products/prism/og.jpg?v=e0507e0b">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="손을 흔드는 Prism 캐릭터와 Prism 소개 문구">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 <header class="site"><div class="wrap">
@@ -235,7 +245,7 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
 </div></section>
 <section class="band" id="features"><div class="wrap">
   <div class="sec-head"><h2>한눈에 보는 Prism.</h2></div>
-  <div class="glance"><a href="#preview"><span class="label">미리보기</span><b>열지 않고 보기</b><span>한글·PDF는 쪽 그대로, Office 문서도 탐색기 옆에서 바로 봐요<sup>2</sup>.</span><em>자세히 ↓</em></a><a href="#search"><span class="label">찾기</span><b>이름으로 찾기</b><span>이 폴더에서도, PC 전체에서도 입력하는 대로 걸러 내요.</span><em>자세히 ↓</em></a><a href="#files"><span class="label">파일 작업</span><b>끌어 놓고 되돌리기</b><span>놓은 자리에 들어가고, 압축은 묻지 않고 만들고, Ctrl+Z로 되돌려요.</span><em>자세히 ↓</em></a><a href="#tools"><span class="label">도구</span><b>옆에 두는 도구</b><span>메모장·계산기·그림판·손그림을 탐색기 옆 칸에서 써요.</span><em>자세히 ↓</em></a></div>
+  <div class="glance n5"><a href="#preview"><span class="label">미리보기</span><b>열지 않고 보기</b><span>한글·PDF는 쪽 그대로, Office 문서도 탐색기 옆에서 바로 봐요<sup>2</sup>.</span><em>자세히 ↓</em></a><a href="#search"><span class="label">찾기</span><b>이름으로 찾기</b><span>이 폴더에서도, PC 전체에서도 입력하는 대로 걸러 내요.</span><em>자세히 ↓</em></a><a href="#video"><span class="label">영상 자르기</span><b>잘라서 짤로</b><span>영상에서 구간을 끌어 고르고, 바로 GIF로 만들어요.</span><em>자세히 ↓</em></a><a href="#files"><span class="label">파일 작업</span><b>끌어 놓고 되돌리기</b><span>놓은 자리에 들어가고, 압축은 묻지 않고 만들고, Ctrl+Z로 되돌려요.</span><em>자세히 ↓</em></a><a href="#tools"><span class="label">도구</span><b>옆에 두는 도구</b><span>메모장·계산기·그림판·손그림을 탐색기 옆 칸에서 써요.</span><em>자세히 ↓</em></a></div>
 </div></section>
 <section class="band feature alt" id="preview"><div class="wrap">
   <div class="text"><div><span class="label">미리보기</span><h2>열지 않고, 바로 본다.</h2></div><div class="body"><p>한글(HWP·HWPX)과 PDF를 각 프로그램을 열지 않고 탐색기 옆에서 쪽 그대로 봐요. 그림으로 된 스캔 PDF는 &#x27;글자 인식&#x27;을 누르면 이 PC 안에서 읽고 찾아요<sup><a href="#fn-3">3</a></sup>.</p><p>Word·Excel·PowerPoint도 같은 자리에서 봐요<sup><a href="#fn-2">2</a></sup>. 사진·카메라 RAW·PSD·SVG, 영상·소리, CSV 표, 글꼴, Markdown·코드·HTML도 같은 자리에서 봐요.</p></div></div>
@@ -245,17 +255,21 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
   <div class="text"><div><span class="label">찾기</span><h2>이름만 쳐도, 찾는다.</h2></div><div class="body"><p>주소 칸의 돋보기(Ctrl+F)를 누르면 같은 칸이 &#x27;이 폴더에서 찾기&#x27;로 바뀌어요. <code>*.zip</code>, <code>보고서*</code>처럼 <code>*</code>와 <code>?</code>도 써요.</p><p>도구 칸의 &#x27;전체 파일 찾기&#x27;로는 PC 전체를 이름으로 찾아요. 사진·동영상·문서·압축 같은 종류 단추로 거르고, 시스템·임시 파일은 감춰 둬요.</p></div></div>
   <figure class="shot"><img src="/products/assets/prism/lite-search-folder.webp" alt="Prism Lite 팩에서 주소 칸을 찾기 칸으로 바꿔 &#x27;계획&#x27;으로 폴더 안을 찾은 화면" width="1426" height="893" loading="lazy" decoding="async"><figcaption>주소 칸이 그대로 찾기 칸이 돼요. 아래 &#x27;PC 전체에서 찾기&#x27;로 넓혀요.</figcaption></figure>
 </div></section>
-<section class="band feature alt" id="files"><div class="wrap">
+<section class="band feature alt" id="video"><div class="wrap">
+  <div class="text"><div><span class="label">영상 자르기</span><h2>그 장면만, 짤로.</h2></div><div class="body"><p>영상을 고르면 미리보기에서 바로 잘라요. 재생 막대 아래 구간 줄을 끌어 고르고, &#x27;GIF 만들기&#x27;를 누르면 짤이 돼요. 화질은 상·중·하에서 골라요. GIF는 한 구간, 60초까지예요.</p><p>&#x27;구간 저장&#x27;은 고른 구간을 MP4 한 파일로, &#x27;구간 지우기&#x27;는 나머지를 한 파일로 만들어요. Ctrl+끌기로 여러 구간도 골라요. MP3·WAV 같은 소리 파일도 같은 방법으로 잘라요.</p><p>만든 파일은 원본 옆에 새 파일로 생기고, 원본은 그대로예요. 인터넷 없이 이 PC 안에서 만들고, 파일로 복사해 붙여 넣어요.</p></div></div>
+  <figure class="shot"><img src="/products/assets/prism/lite-video-gif.webp" alt="Prism Lite 팩에서 영상 미리보기의 구간 줄로 구간을 고르고, 구간 저장·구간 지우기·GIF 화질·GIF 만들기 단추가 보이는 화면" width="1280" height="800" loading="lazy" decoding="async"><figcaption>구간을 끌어 고르고 &#x27;GIF 만들기&#x27;를 누르면 원본 옆에 짤이 생겨요.</figcaption></figure>
+</div></section>
+<section class="band feature" id="files"><div class="wrap">
   <div class="text"><div><span class="label">파일 작업</span><h2>옮기고, 묶고, 되돌린다.</h2></div><div class="body"><p>Windows 탐색기나 바탕화면의 파일도 끌어 놓을 수 있고, 놓은 자리에 들어가요. 같은 드라이브면 이동, 다른 드라이브면 복사예요.</p><p>압축하기는 묻지 않고 ZIP을 만들고 Ctrl+Z로 되돌려요. ZIP·tar도 풀어요. 복사·이동·휴지통 보내기 같은 큰 작업은 아래 작업 줄에서 돌아서, 그동안 창을 그대로 써요.</p></div></div>
   <figure class="shot"><img src="/products/assets/prism/lite-zip-job.webp" alt="Prism Lite 팩에서 &#x27;출장 사진&#x27; 폴더를 압축하는 동안 아래 작업 줄에 작업 상자와 진행 카드가 보이는 화면" width="1426" height="893" loading="lazy" decoding="async"><figcaption>압축·복사 같은 큰 작업은 아래 작업 줄에서 돌고, 그동안 창을 그대로 써요.</figcaption></figure>
 </div></section>
-<section class="band feature" id="tools"><div class="wrap">
+<section class="band feature alt" id="tools"><div class="wrap">
   <div class="text"><div><span class="label">도구</span><h2>작은 일은, 그 자리에서.</h2></div><div class="body"><p>탐색기 줄 끝의 &#x27;도구와 더 보기&#x27; 단추로 도구 칸을 열어요. 메모장, 계산기(계산·단위·환율<sup><a href="#fn-4">4</a></sup>·엑셀 탭, 계산 탭에는 공학용·프로그래머·날짜·그래프 모드), 레이어가 있는 그림판, 손그림<sup><a href="#fn-5">5</a></sup>이 있어요.</p><p>글자 파일 두 개의 다른 곳을 보여 주는 &#x27;두 파일 비교&#x27;, 고른 폴더에서 여는 터미널, 드라이브 남은 용량을 보는 &#x27;내 PC&#x27;도 같은 칸에 있어요. 메모는 파일로 저장해요(Ctrl+S).</p></div></div>
   <figure class="shot"><img src="/products/assets/prism/lite-tool-paint.webp" alt="Prism Lite 팩의 그림판 도구에서 사진 위에 네모와 화살표를 그린 화면" width="1426" height="893" loading="lazy" decoding="async"><figcaption>도구는 탐색기 옆 칸에서 열어요. 그림판으로 사진 위에 바로 표시해요.</figcaption></figure>
 </div></section>
 <section class="band"><div class="wrap">
   <div class="sec-head"><h2>그리고 더.</h2><p>자주 쓰는 일을 조금씩 덜어 주는 것들이에요.</p></div>
-  <div class="more"><div><b>Markdown을 깔끔하게</b><span>제목·코드 상자·표·체크 상자를 GitHub처럼 보여 줘요.</span></div><div><b>코드·설정 파일</b><span>소스와 설정 파일을 미리 보고, 한글 ANSI(CP949) 파일도 읽어요.</span></div><div><b>영상은 잘라서</b><span>미리보기에서 구간을 골라 저장하거나 지우고, GIF로 만들어요.</span></div><div><b>어려운 ZIP도 목록부터</b><span>한 번 누르면 안에 든 목록을 보고, 4GB까지의 ZIP과 tar·tar.gz도 풀어요.</span></div><div><b>다운로드는 받은 순서로</b><span>다운로드 폴더는 오늘·어제·이번 주로 나눠 받은 순서대로 보여 줘요.</span></div><div><b>글자만 쳐도 그 파일로</b><span>목록에서 글자를 치면 그 글자로 시작하는 파일·폴더로 바로 가요. 한글은 &#x27;ㄱ&#x27;만 쳐도 &#x27;기획안&#x27;을 찾아요.</span></div><div><b>폴더를 들여다보기</b><span>왼쪽 칸 폴더 옆 작은 단추로, 그 폴더의 파일을 새것부터 바로 봐요.</span></div><div><b>네트워크 폴더도</b><span>\\서버\공유 폴더를 쳐서 열고, 로그인은 Windows 창으로 해요.</span></div><div><b>OneDrive 파일도</b><span>아직 내려받지 않은 OneDrive 파일은 OneDrive가 먼저 받은 뒤 보여 줘요.</span></div><div><b>숫자 순서 그대로</b><span>1, 2, 10, 100처럼 숫자 이름을 숫자 순서로 정렬해요.</span></div><div><b>의견은 앱에서 바로</b><span>도구와 더 보기 → 의견 보내기로 불편한 점을 바로 알려 줄 수 있어요.</span></div></div>
+  <div class="more"><div><b>Markdown을 깔끔하게</b><span>제목·코드 상자·표·체크 상자를 GitHub처럼 보여 줘요.</span></div><div><b>코드·설정 파일</b><span>소스와 설정 파일을 미리 보고, 한글 ANSI(CP949) 파일도 읽어요.</span></div><div><b>어려운 ZIP도 목록부터</b><span>한 번 누르면 안에 든 목록을 보고, 4GB까지의 ZIP과 tar·tar.gz도 풀어요.</span></div><div><b>다운로드는 받은 순서로</b><span>다운로드 폴더는 오늘·어제·이번 주로 나눠 받은 순서대로 보여 줘요.</span></div><div><b>글자만 쳐도 그 파일로</b><span>목록에서 글자를 치면 그 글자로 시작하는 파일·폴더로 바로 가요. 한글은 &#x27;ㄱ&#x27;만 쳐도 &#x27;기획안&#x27;을 찾아요.</span></div><div><b>폴더를 들여다보기</b><span>왼쪽 칸 폴더 옆 작은 단추로, 그 폴더의 파일을 새것부터 바로 봐요.</span></div><div><b>네트워크 폴더도</b><span>\\서버\공유 폴더를 쳐서 열고, 로그인은 Windows 창으로 해요.</span></div><div><b>OneDrive 파일도</b><span>아직 내려받지 않은 OneDrive 파일은 OneDrive가 먼저 받은 뒤 보여 줘요.</span></div><div><b>숫자 순서 그대로</b><span>1, 2, 10, 100처럼 숫자 이름을 숫자 순서로 정렬해요.</span></div><div><b>의견은 앱에서 바로</b><span>도구와 더 보기 → 의견 보내기로 불편한 점을 바로 알려 줄 수 있어요.</span></div></div>
 </div></section>
 <section class="band alt" id="privacy"><div class="wrap">
   <div class="sec-head"><span class="label">개인정보와 인터넷</span><h2>파일은 이 PC 안에서.</h2><p>탐색·미리보기·찾기·파일 작업·도구는 모두 이 PC 안에서 동작해요. Lite 팩에는 AI 기능이 없어요.</p><p><a class="link" href="/products/prism/privacy/">개인정보처리방침 전문 보기 ›</a></p></div>

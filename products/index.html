@@ -86,6 +86,7 @@ sup a { color:var(--p-accent); font-weight:700; font-size:.8em; padding:0 1px; }
 .hero .shot { margin-top:56px; }
 /* 한눈에 보기 */
 .glance { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
+.glance.n5 { grid-template-columns:repeat(5, 1fr); gap:14px; } .glance.n5 a { padding:20px 18px; }
 .glance a { display:flex; flex-direction:column; gap:6px; padding:22px; border-radius:18px; background:var(--p-surface); border:1px solid var(--p-stroke); transition:border-color .15s, box-shadow .15s; }
 .glance a:hover { border-color:var(--p-accent); box-shadow:0 8px 24px rgba(109,84,189,.10); }
 .glance b { font-size:19px; }
@@ -189,7 +190,8 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
 @media (max-width: 900px) {
   .band { padding:64px 0; }
   .hero h1 { font-size:44px; } .feature h2, .hub-head h1 { font-size:36px; } .sec-head h2 { font-size:30px; }
-  .glance { grid-template-columns:1fr 1fr; } .more { grid-template-columns:1fr 1fr; }
+  .glance, .glance.n5 { grid-template-columns:1fr 1fr; } .more { grid-template-columns:1fr 1fr; }
+  .glance > a:last-child:nth-child(odd) { grid-column:1 / -1; }   /* 카드가 홀수면 마지막 하나를 한 줄 가득(2026-11-28 다섯 칸) */
   .feature .text, .privacy, .pcard { grid-template-columns:1fr; gap:20px; } .routes, .ways { grid-template-columns:1fr; }
   .hero.has-char .intro { flex-direction:column-reverse; gap:8px; } .hero.has-char .copy { text-align:center; }
   .hero.has-char .product, .hero.has-char .cta { justify-content:center; } .hero.has-char .lead { margin:0 auto; }
@@ -199,7 +201,7 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
   header.site .wrap { grid-template-columns:1fr; height:auto; padding:12px 16px; gap:8px; justify-items:center; }
   .wrap { padding:0 16px; } .band { padding:52px 0; }
   .hero { padding-top:48px; } .hero h1 { font-size:34px; } .hero .lead { font-size:17px; } .feature h2 { font-size:30px; }
-  .glance, .more { grid-template-columns:1fr; } .sendtable .cols { grid-template-columns:1fr; } .sendtable .col + .col { border-left:0; border-top:1px solid var(--p-stroke); }
+  .glance, .glance.n5, .more { grid-template-columns:1fr; } .sendtable .cols { grid-template-columns:1fr; } .sendtable .col + .col { border-left:0; border-top:1px solid var(--p-stroke); }
   .pcard { padding:20px; } .pcard h2 { font-size:32px; } .closing h2 { font-size:30px; }
   .req th { width:110px; }
   .char-hero img { height:180px; } .char-faq img { height:120px; } .char-closing img { height:170px; }
@@ -211,6 +213,14 @@ footer.site .wrap { display:flex; justify-content:space-between; gap:12px; flex-
   nav.gnb > a[aria-current]::after { left:9px; right:9px; }
 }
 </style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SECOND SYNTAX">
+<meta property="og:url" content="https://second-syntax.com/products/">
+<meta property="og:image" content="https://second-syntax.com/products/prism/og.jpg?v=e0507e0b">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="손을 흔드는 Prism 캐릭터와 Prism 소개 문구">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 <header class="site"><div class="wrap">
