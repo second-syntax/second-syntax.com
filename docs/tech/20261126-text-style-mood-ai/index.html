@@ -48,7 +48,7 @@
 <p>글씨 뚝딱은 쓴 글을 서버로 보내지 않아요. 글씨를 바꾸는 일이 페이지 안에서 끝나요. AI 추천도 같아요. 브라우저가 모델 파일을 받고, 읽고 고르는 일은 기기 안에서 해요.</p>
 <p>처음 만든 AI 추천은 브라우저에서 언어 모델을 통째로 돌리는 방식(WebLLM)이었고, 받아야 하는 크기가 약 350MB였어요. 지금 모델은 약 0.9MB예요. 글씨체 3칸을 고르자고 350MB를 받게 하기에는 너무 컸어요. 그래서 말을 지어내는 모델 대신, 분위기만 읽는 작은 모델로 바꿨어요.</p>
 <h2 id="모델은-점수-표예요">모델은 ‘점수 표’예요</h2>
-<p><img alt="AI 추천을 켜고 happy birthday my friend를 쓴 모습. 맨 위 3칸이 &amp;#x27;축하하는 글&amp;#x27; 추천이에요 (화면 속 캐릭터는 AI 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="975" height="1800" src="/_astro/screenshot-text-style-ai.Bnr3_ADk_Z7boGC.webp" ></p>
+<p><img alt="AI 추천을 켜고 happy birthday my friend를 쓴 모습. 맨 위 3칸이 ‘축하하는 글’ 추천이에요 (화면 속 캐릭터는 AI 이미지 생성)" loading="lazy" decoding="async" fetchpriority="auto" width="975" height="1800" src="/_astro/screenshot-text-style-ai.Bnr3_ADk_Z7boGC.webp" ></p>
 <p>이 모델은 말을 지어내는 AI가 아니에요. 낱말 조각마다 분위기 점수를 적어 둔 표예요. 읽는 순서는 이래요.</p>
 <ol>
 <li><strong>글을 낱말 조각으로 쪼개요.</strong> 영어를 소문자로 바꾸고, 아는 조각 63,091개 가운데 맞는 것으로 나눠요.</li>
